@@ -1,0 +1,11 @@
+BasedOnStyle: LLVM
+ColumnLimit: 120
+
+# Layout
+PointerAlignment: Right
+
+# Indentation
+NamespaceIndentation: All
+IndentWidth: 4
+TabWidth: 4
+UseTab: Never

@@ -1,0 +1,28 @@
+{
+    "version": 3,
+    "configurePresets": [
+        {
+            "name": "Ninja",
+            "generator": "Ninja Multi-Config",
+            "toolchainFile": "$env{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake",
+            "binaryDir": "build",
+            "cacheVariables": {
+                "CMAKE_EXPORT_COMPILE_COMMANDS": "ON",
+                "CMAKE_C_COMPILER": "clang"
+            }
+        }
+    ],
+
+    "buildPresets": [
+        {
+            "name": "Ninja-Debug",
+            "configurePreset": "Ninja",
+            "configuration": "Debug"
+        },
+        {
+            "name": "Ninja-Release",
+            "configurePreset": "Ninja",
+            "configuration": "Release"
+        }
+    ]
+}

@@ -1,0 +1,10 @@
+# Clangd files
+.cache/
+
+# IDE files
+.vscode/
+.vs/
+.idea/
+
+# CMake files
+build/

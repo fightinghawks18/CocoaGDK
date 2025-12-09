@@ -2,36 +2,36 @@
 
 #include "../core.h"
 
-typedef void *EvDynamicArrayObj;
+typedef void *CcoDynamicArrayObj;
 
-typedef EvDynamicArrayObj (*EvDynamicArrayObjConstructorFun)();
-typedef void (*EvDynamicArrayObjDestructorFun)(EvDynamicArrayObj *object);
+typedef CcoDynamicArrayObj (*CcoDynamicArrayObjConstructorFun)();
+typedef void (*CcoDynamicArrayObjDestructorFun)(CcoDynamicArrayObj *object);
 
-typedef struct EvDynamicArray EvDynamicArray;
+typedef struct CcoDynamicArray CcoDynamicArray;
 
-EvDynamicArray *evCreateDynamicArray(u32 reserve, usize size, EvDynamicArrayObjConstructorFun constructor,
-                                     EvDynamicArrayObjDestructorFun destructor);
-void evDestroyDynamicArray(EvDynamicArray *dynArray);
+CcoDynamicArray *ccoCreateDynamicArray(u32 reserve, usize size, CcoDynamicArrayObjConstructorFun constructor,
+                                     CcoDynamicArrayObjDestructorFun destructor);
+void ccoDestroyDynamicArray(CcoDynamicArray *dynArray);
 
-void evResizeDynamicArray(EvDynamicArray *dynArray, usize count);
+void ccoResizeDynamicArray(CcoDynamicArray *dynArray, usize count);
 
-EvDynamicArrayObj evEmplaceBackDynamicArray(EvDynamicArray *dynArray);
+CcoDynamicArrayObj ccoEmplaceBackDynamicArray(CcoDynamicArray *dynArray);
 
-void evAddToDynamicArray(EvDynamicArray *dynArray, usize pos, EvDynamicArrayObj object);
-void evRemoveFromDynamicArray(EvDynamicArray *dynArray, usize pos);
+void ccoAddToDynamicArray(CcoDynamicArray *dynArray, usize pos, CcoDynamicArrayObj object);
+void ccoRemoveFromDynamicArray(CcoDynamicArray *dynArray, usize pos);
 
-void evPushBackDynamicArray(EvDynamicArray *dynArray, EvDynamicArrayObj object);
-void evPopBackDynamicArray(EvDynamicArray *dynArray);
+void ccoPushBackDynamicArray(CcoDynamicArray *dynArray, CcoDynamicArrayObj object);
+void ccoPopBackDynamicArray(CcoDynamicArray *dynArray);
 
-void evClearDynamicArray(EvDynamicArray *dynArray);
+void ccoClearDynamicArray(CcoDynamicArray *dynArray);
 
-bool evHasObjectInDynamicArray(EvDynamicArray *dynArray, EvDynamicArrayObj obj);
-bool evIsDynamicArrayEmpty(EvDynamicArray *dynArray);
+bool ccoHasObjectInDynamicArray(CcoDynamicArray *dynArray, CcoDynamicArrayObj obj);
+bool ccoIsDynamicArrayEmpty(CcoDynamicArray *dynArray);
 
-EvDynamicArrayObj *evGetDynamicArrayObjects(EvDynamicArray *dynArray);
-EvDynamicArrayObj *evGetDynamicArrayObject(EvDynamicArray *dynArray, usize pos);
-EvDynamicArrayObj evGetDynamicArrayObjectBack(EvDynamicArray *dynArray);
-EvDynamicArrayObj evGetDynamicArrayObjectFront(EvDynamicArray *dynArray);
+CcoDynamicArrayObj *ccoGetDynamicArrayObjects(CcoDynamicArray *dynArray);
+CcoDynamicArrayObj *ccoGetDynamicArrayObject(CcoDynamicArray *dynArray, usize pos);
+CcoDynamicArrayObj ccoGetDynamicArrayObjectBack(CcoDynamicArray *dynArray);
+CcoDynamicArrayObj ccoGetDynamicArrayObjectFront(CcoDynamicArray *dynArray);
 
-u32 evGetDynamicArrayCount(EvDynamicArray *dynArray);
-u32 evGetDynamicArrayCapacity(EvDynamicArray *dynArray);
+u32 ccoGetDynamicArrayCount(CcoDynamicArray *dynArray);
+u32 ccoGetDynamicArrayCapacity(CcoDynamicArray *dynArray);

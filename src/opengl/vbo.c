@@ -6,17 +6,17 @@
 #include <glad/glad.h>
 #include <stdlib.h>
 
-struct EvGLVertexBufferObject {
+struct CcoGLVertexBufferObject {
     u32 glId;
 };
 
-EvGLVertexBufferObject *evCreateGLVertexBufferObject() {
-    EvGLVertexBufferObject *vbo = malloc(sizeof(EvGLVertexBufferObject));
+CcoGLVertexBufferObject *ccoCreateGLVertexBufferObject() {
+    CcoGLVertexBufferObject *vbo = malloc(sizeof(CcoGLVertexBufferObject));
     glCreateBuffers(1, &vbo->glId);
     return vbo;
 }
 
-void evDestroyGLVertexBufferObject(EvGLVertexBufferObject *vbo) {
+void ccoDestroyGLVertexBufferObject(CcoGLVertexBufferObject *vbo) {
     if (vbo->glId != 0) {
         glDeleteBuffers(1, &vbo->glId);
         vbo->glId = 0;
@@ -24,7 +24,7 @@ void evDestroyGLVertexBufferObject(EvGLVertexBufferObject *vbo) {
     free(vbo);
 }
 
-void evMapGLVertexBufferObject(const EvGLVertexBufferObject *vbo, const EvBufferMapper &mapper) {
+void ccoMapGLVertexBufferObject(const CcoGLVertexBufferObject *vbo, const CcoBufferMapper &mapper) {
     glBindBuffer(GL_ARRAY_BUFFER, vbo->glId);
     if (mapper.offset > 0) {
         glBufferSubData(GL_ARRAY_BUFFER, mapper.offset, mapper.size, mapper.data);
@@ -34,4 +34,4 @@ void evMapGLVertexBufferObject(const EvGLVertexBufferObject *vbo, const EvBuffer
     glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
-u32 evGetGLVertexBufferObjectId(const EvGLVertexBufferObject *vbo) { return vbo->glId; }
+u32 ccoGetGLVertexBufferObjectId(const CcoGLVertexBufferObject *vbo) { return vbo->glId; }

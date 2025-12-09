@@ -9,15 +9,15 @@
 #include <stdlib.h>
 #include <sys/errno.h>
 
-EvResult read_file(const char *filepath, char **source) {
+CcoResult read_file(const char *filepath, char **source) {
     FILE *file = fopen(filepath, "rb");
     if (!file) {
         switch (errno) {
         case ENOENT:
-            return EV_FAIL_FILE_NON_EXISTENT;
+            return CCO_FAIL_FILE_NON_EXISTENT;
         case EACCES:
         default:
-            return EV_FAIL_CANT_READ_FILE;
+            return CCO_FAIL_CANT_READ_FILE;
         }
     }
 
@@ -28,7 +28,7 @@ EvResult read_file(const char *filepath, char **source) {
     char *buffer = malloc(size + 1);
     if (!buffer) {
         fclose(file);
-        return EV_FAIL_OUT_OF_MEMORY;
+        return CCO_FAIL_OUT_OF_MEMORY;
     }
 
     const size_t bytes_read = fread(buffer, 1, size, file);
@@ -36,29 +36,29 @@ EvResult read_file(const char *filepath, char **source) {
 
     fclose(file);
     *source = buffer;
-    return EV_SUCCESS;
+    return CCO_SUCCESS;
 }
 
-struct EvGLShader {
+struct CcoGLShader {
     u32 glId;
 };
 
-EvResult evCreateGLShader(const EvGLShaderDesc &shaderDesc, EvGLShader **shader) {
-    EvGLShader *glShader = malloc(sizeof(EvGLShader));
+CcoResult ccoCreateGLShader(const CcoGLShaderDesc &shaderDesc, CcoGLShader **shader) {
+    CcoGLShader *glShader = malloc(sizeof(CcoGLShader));
 
     u32 shaderType = 0;
     switch (shaderDesc.shaderType) {
-    case EV_SHADER_TYPE_VERTEX:
+    case CCO_SHADER_TYPE_VERTEX:
         shaderType = GL_VERTEX_SHADER;
         break;
-    case EV_SHADER_TYPE_PIXEL:
+    case CCO_SHADER_TYPE_PIXEL:
         shaderType = GL_FRAGMENT_SHADER;
         break;
     }
 
     char *shaderContents = NULL;
-    const EvResult readFileResult = read_file(shaderDesc.shaderPath, &shaderContents);
-    if (readFileResult != EV_SUCCESS) {
+    const CcoResult readFileResult = read_file(shaderDesc.shaderPath, &shaderContents);
+    if (readFileResult != CCO_SUCCESS) {
         printf("Failed to load shader contents for GL!\n");
         return readFileResult;
     }
@@ -75,15 +75,15 @@ EvResult evCreateGLShader(const EvGLShaderDesc &shaderDesc, EvGLShader **shader)
         char infoLog[512];
         glGetShaderInfoLog(glShader->glId, 512, NULL, infoLog);
         printf("Failed to compile GL shader from path %s! %s\n", shaderDesc.shaderPath, infoLog);
-        evDestroyGLShader(glShader);
-        return EV_FAIL_COMPILE_ERROR;
+        ccoDestroyGLShader(glShader);
+        return CCO_FAIL_COMPILE_ERROR;
     }
 
     *shader = glShader;
-    return EV_SUCCESS;
+    return CCO_SUCCESS;
 }
 
-void evDestroyGLShader(EvGLShader *shader) {
+void ccoDestroyGLShader(CcoGLShader *shader) {
     if (shader->glId != 0) {
         glDeleteShader(shader->glId);
         shader->glId = 0;
@@ -91,4 +91,4 @@ void evDestroyGLShader(EvGLShader *shader) {
     free(shader);
 }
 
-u32 evGetGLShaderId(const EvGLShader *shader) { return shader->glId; }
+u32 ccoGetGLShaderId(const CcoGLShader *shader) { return shader->glId; }

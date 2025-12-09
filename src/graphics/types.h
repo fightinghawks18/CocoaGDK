@@ -12,25 +12,25 @@ typedef struct {
     int w, h;
     u32 minDepth = 0; ///< @brief The smallest depth value allowed (clamps depths smaller than this)
     u32 maxDepth = 1; ///< @brief The largest depth value allowed (clamps depths larger than this)
-} EvViewport;
+} CcoViewport;
 
 typedef struct {
     usize offset;
     usize size;
     void *data;
-} EvBufferMapper;
+} CcoBufferMapper;
 
 /// @brief Describes the regions that pixels/fragments are accepted in,
 /// otherwise it'll discard anything outside the region
-/// @note If you want to transform how the rendered output will look, see EvViewport
-/// @see EvViewport
+/// @note If you want to transform how the rendered output will look, see CcoViewport
+/// @see CcoViewport
 typedef struct {
     int x, y;
     int w, h;
-} EvScissor;
+} CcoScissor;
 
 /// @brief The type of operation that a shader uses
-typedef enum EvShaderType {
-    EV_SHADER_TYPE_VERTEX, ///< @brief Shader operates on per-vertex
-    EV_SHADER_TYPE_PIXEL ///< @brief Shader operates on per-pixel/per-fragment
-} EvShaderType;
+typedef enum CcoShaderType {
+    CCO_SHADER_TYPE_VERTEX, ///< @brief Shader operates on per-vertex
+    CCO_SHADER_TYPE_PIXEL ///< @brief Shader operates on per-pixel/per-fragment
+} CcoShaderType;

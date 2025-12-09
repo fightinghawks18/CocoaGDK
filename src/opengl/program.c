@@ -8,16 +8,16 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-struct EvGLProgram {
+struct CcoGLProgram {
     u32 glId;
 };
 
-EvResult evCreateGLProgram(const EvGLProgramDesc &programDesc, EvGLProgram **program) {
-    EvGLProgram *glProgram = malloc(sizeof(EvGLProgram));
+CcoResult ccoCreateGLProgram(const CcoGLProgramDesc &programDesc, CcoGLProgram **program) {
+    CcoGLProgram *glProgram = malloc(sizeof(CcoGLProgram));
     glProgram->glId = glCreateProgram();
 
-    glAttachShader(glProgram->glId, evGetGLShaderId(programDesc.vertexShader));
-    glAttachShader(glProgram->glId, evGetGLShaderId(programDesc.pixelShader));
+    glAttachShader(glProgram->glId, ccoGetGLShaderId(programDesc.vertexShader));
+    glAttachShader(glProgram->glId, ccoGetGLShaderId(programDesc.pixelShader));
     glLinkProgram(glProgram->glId);
 
     i32 linkSuccess;
@@ -26,18 +26,18 @@ EvResult evCreateGLProgram(const EvGLProgramDesc &programDesc, EvGLProgram **pro
         char infoLog[512];
         glGetProgramInfoLog(glProgram->glId, 512, NULL, infoLog);
         printf("Failed to link GL program! %s\n", infoLog);
-        evDestroyGLProgram(glProgram);
-        return EV_FAIL_PIPELINE_CREATE_ERROR;
+        ccoDestroyGLProgram(glProgram);
+        return CCO_FAIL_PIPELINE_CREATE_ERROR;
     }
 
-    glDetachShader(glProgram->glId, evGetGLShaderId(programDesc.vertexShader));
-    glDetachShader(glProgram->glId, evGetGLShaderId(programDesc.pixelShader));
+    glDetachShader(glProgram->glId, ccoGetGLShaderId(programDesc.vertexShader));
+    glDetachShader(glProgram->glId, ccoGetGLShaderId(programDesc.pixelShader));
 
     *program = glProgram;
-    return EV_SUCCESS;
+    return CCO_SUCCESS;
 }
 
-void evDestroyGLProgram(EvGLProgram *program) {
+void ccoDestroyGLProgram(CcoGLProgram *program) {
     if (program->glId) {
         glDeleteProgram(program->glId);
         program->glId = 0;
@@ -45,4 +45,4 @@ void evDestroyGLProgram(EvGLProgram *program) {
     free(program);
 }
 
-u32 evGetGLProgramId(const EvGLProgram *program) { return program->glId; }
+u32 ccoGetGLProgramId(const CcoGLProgram *program) { return program->glId; }

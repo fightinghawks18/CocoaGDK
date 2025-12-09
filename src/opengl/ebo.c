@@ -6,17 +6,17 @@
 #include <glad/glad.h>
 #include <stdlib.h>
 
-struct EvGLElementBufferObject {
+struct CcoGLElementBufferObject {
     u32 glId;
 };
 
-EvGLElementBufferObject *evCreateGLElementBufferObject() {
-    EvGLElementBufferObject *ebo = malloc(sizeof(EvGLElementBufferObject));
+CcoGLElementBufferObject *ccoCreateGLElementBufferObject() {
+    CcoGLElementBufferObject *ebo = malloc(sizeof(CcoGLElementBufferObject));
     glCreateBuffers(1, &ebo->glId);
     return ebo;
 }
 
-void evDestroyGLElementBufferObject(EvGLElementBufferObject *ebo) {
+void ccoDestroyGLElementBufferObject(CcoGLElementBufferObject *ebo) {
     if (ebo->glId != 0) {
         glDeleteBuffers(1, &ebo->glId);
         ebo->glId = 0;
@@ -24,7 +24,7 @@ void evDestroyGLElementBufferObject(EvGLElementBufferObject *ebo) {
     free(ebo);
 }
 
-void evMapGLElementBufferObject(const EvGLElementBufferObject *ebo, const EvBufferMapper &mapper) {
+void ccoMapGLElementBufferObject(const CcoGLElementBufferObject *ebo, const CcoBufferMapper &mapper) {
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo->glId);
     if (mapper.offset > 0) {
         glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, mapper.offset, mapper.size, mapper.data);
@@ -34,4 +34,4 @@ void evMapGLElementBufferObject(const EvGLElementBufferObject *ebo, const EvBuff
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 }
 
-u32 evGetGLElementBufferObjectId(const EvGLElementBufferObject *ebo) { return ebo->glId; }
+u32 ccoGetGLElementBufferObjectId(const CcoGLElementBufferObject *ebo) { return ebo->glId; }

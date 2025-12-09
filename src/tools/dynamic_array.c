@@ -2,22 +2,22 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-struct EvDynamicArray {
-    EvDynamicArrayObj *objs;
+struct CcoDynamicArray {
+    CcoDynamicArrayObj *objs;
     u32 count;
     u32 capacity;
     usize arrayTypeSize;
-    EvDynamicArrayObjConstructorFun ctor;
-    EvDynamicArrayObjDestructorFun dtor;
+    CcoDynamicArrayObjConstructorFun ctor;
+    CcoDynamicArrayObjDestructorFun dtor;
 };
 
-void addMember(EvDynamicArray *dynArray, usize pos, EvDynamicArrayObj object) {
+void addMember(CcoDynamicArray *dynArray, usize pos, CcoDynamicArrayObj object) {
     if (object == NULL)
         return;
 
     if (dynArray->count >= dynArray->capacity) {
         usize newCapacity = dynArray->capacity == 0 ? 1 : dynArray->capacity * 2;
-        EvDynamicArrayObj *newObjs = realloc(dynArray->objs, newCapacity * sizeof(EvDynamicArrayObj));
+        CcoDynamicArrayObj *newObjs = realloc(dynArray->objs, newCapacity * sizeof(CcoDynamicArrayObj));
         if (newObjs == NULL)
             return;
         dynArray->objs = newObjs;
@@ -42,8 +42,8 @@ void addMember(EvDynamicArray *dynArray, usize pos, EvDynamicArrayObj object) {
     printf("Added member %d\n", dynArray->count);
 }
 
-void removeMember(EvDynamicArray *dynArray, usize pos) {
-    EvDynamicArrayObj obj = dynArray->objs[pos];
+void removeMember(CcoDynamicArray *dynArray, usize pos) {
+    CcoDynamicArrayObj obj = dynArray->objs[pos];
     if (obj == NULL)
         return;
 
@@ -64,9 +64,9 @@ void removeMember(EvDynamicArray *dynArray, usize pos) {
     dynArray->count--;
 }
 
-EvDynamicArray *evCreateDynamicArray(u32 reserve, usize size, EvDynamicArrayObjConstructorFun constructor,
-                                     EvDynamicArrayObjDestructorFun destructor) {
-    EvDynamicArray *dynArray = malloc(1 * sizeof(EvDynamicArray));
+CcoDynamicArray *ccoCreateDynamicArray(u32 reserve, usize size, CcoDynamicArrayObjConstructorFun constructor,
+                                     CcoDynamicArrayObjDestructorFun destructor) {
+    CcoDynamicArray *dynArray = malloc(1 * sizeof(CcoDynamicArray));
 
     dynArray->capacity = reserve;
     dynArray->count = 0;
@@ -78,41 +78,41 @@ EvDynamicArray *evCreateDynamicArray(u32 reserve, usize size, EvDynamicArrayObjC
     return dynArray;
 }
 
-void evDestroyDynamicArray(EvDynamicArray *dynArray) {
-    evClearDynamicArray(dynArray);
+void ccoDestroyDynamicArray(CcoDynamicArray *dynArray) {
+    ccoClearDynamicArray(dynArray);
     free(dynArray->objs);
     free(dynArray);
 }
 
-EvDynamicArrayObj evEmplaceBackDynamicArray(EvDynamicArray *dynArray) {
-    EvDynamicArrayObj obj;
+CcoDynamicArrayObj ccoEmplaceBackDynamicArray(CcoDynamicArray *dynArray) {
+    CcoDynamicArrayObj obj;
     if (dynArray->ctor != NULL) {
         obj = dynArray->ctor();
     } else {
         obj = malloc(dynArray->arrayTypeSize);
     }
-    addMember(dynArray, evGetDynamicArrayCount(dynArray), obj);
+    addMember(dynArray, ccoGetDynamicArrayCount(dynArray), obj);
     return obj;
 }
 
-void evAddToDynamicArray(EvDynamicArray *dynArray, usize pos, EvDynamicArrayObj object) {
+void ccoAddToDynamicArray(CcoDynamicArray *dynArray, usize pos, CcoDynamicArrayObj object) {
     addMember(dynArray, pos, object);
 }
-void evRemoveFromDynamicArray(EvDynamicArray *dynArray, usize pos) { removeMember(dynArray, pos); }
+void ccoRemoveFromDynamicArray(CcoDynamicArray *dynArray, usize pos) { removeMember(dynArray, pos); }
 
-void evPushBackDynamicArray(EvDynamicArray *dynArray, EvDynamicArrayObj object) {
-    addMember(dynArray, evGetDynamicArrayCount(dynArray), object);
+void ccoPushBackDynamicArray(CcoDynamicArray *dynArray, CcoDynamicArrayObj object) {
+    addMember(dynArray, ccoGetDynamicArrayCount(dynArray), object);
 }
-void evPopBackDynamicArray(EvDynamicArray *dynArray) { removeMember(dynArray, evGetDynamicArrayCount(dynArray) - 1); }
+void ccoPopBackDynamicArray(CcoDynamicArray *dynArray) { removeMember(dynArray, ccoGetDynamicArrayCount(dynArray) - 1); }
 
-void evClearDynamicArray(EvDynamicArray *dynArray) {
+void ccoClearDynamicArray(CcoDynamicArray *dynArray) {
     for (u32 i = 0; i < dynArray->count; i++) {
         removeMember(dynArray, i);
     }
     dynArray->count = 0;
 }
 
-bool evHasObjectInDynamicArray(EvDynamicArray *dynArray, EvDynamicArrayObj obj) {
+bool ccoHasObjectInDynamicArray(CcoDynamicArray *dynArray, CcoDynamicArrayObj obj) {
     for (u32 i = 0; i < dynArray->count; i++) {
         if (obj == dynArray->objs[i])
             return true;
@@ -120,22 +120,22 @@ bool evHasObjectInDynamicArray(EvDynamicArray *dynArray, EvDynamicArrayObj obj) 
     return false;
 }
 
-EvDynamicArrayObj *evGetDynamicArrayObjects(EvDynamicArray *dynArray) { return dynArray->objs; }
+CcoDynamicArrayObj *ccoGetDynamicArrayObjects(CcoDynamicArray *dynArray) { return dynArray->objs; }
 
-bool evIsDynamicArrayEmpty(EvDynamicArray *dynArray) {
+bool ccoIsDynamicArrayEmpty(CcoDynamicArray *dynArray) {
     return dynArray->count == 0;
 }
 
-EvDynamicArrayObj *evGetDynamicArrayObject(EvDynamicArray *dynArray, usize pos) {
+CcoDynamicArrayObj *ccoGetDynamicArrayObject(CcoDynamicArray *dynArray, usize pos) {
     if (pos >= dynArray->count)
         return NULL;
     return &dynArray->objs[pos];
 }
 
-EvDynamicArrayObj evGetDynamicArrayObjectBack(EvDynamicArray *dynArray) { return dynArray->objs[dynArray->count - 1]; }
+CcoDynamicArrayObj ccoGetDynamicArrayObjectBack(CcoDynamicArray *dynArray) { return dynArray->objs[dynArray->count - 1]; }
 
-EvDynamicArrayObj evGetDynamicArrayObjectFront(EvDynamicArray *dynArray) { return dynArray->objs[0]; }
+CcoDynamicArrayObj ccoGetDynamicArrayObjectFront(CcoDynamicArray *dynArray) { return dynArray->objs[0]; }
 
-u32 evGetDynamicArrayCount(EvDynamicArray *dynArray) { return dynArray->count; }
+u32 ccoGetDynamicArrayCount(CcoDynamicArray *dynArray) { return dynArray->count; }
 
-u32 evGetDynamicArrayCapacity(EvDynamicArray *dynArray) { return dynArray->capacity; }
+u32 ccoGetDynamicArrayCapacity(EvDynamicArray *dynArray) { return dynArray->capacity; }

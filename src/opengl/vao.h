@@ -2,9 +2,9 @@
 
 #include "../core.h"
 
-typedef struct EvGLVertexArrayObject EvGLVertexArrayObject;
+typedef struct CcoGLVertexArrayObject CcoGLVertexArrayObject;
 
-EvGLVertexArrayObject* evCreateGLVertexArrayObject();
-void evDestroyGLVertexArrayObject(EvGLVertexArrayObject *vao);
+CcoGLVertexArrayObject* ccoCreateGLVertexArrayObject();
+void ccoDestroyGLVertexArrayObject(CcoGLVertexArrayObject *vao);
 
-u32 evGetGLVertexArrayObjectId(const EvGLVertexArrayObject *vao);
+u32 ccoGetGLVertexArrayObjectId(const CcoGLVertexArrayObject *vao);

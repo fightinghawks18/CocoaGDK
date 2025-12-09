@@ -2,17 +2,17 @@
 #include <glad/glad.h>
 #include <stdlib.h>
 
-struct EvGLVertexArrayObject {
+struct CcoGLVertexArrayObject {
     u32 glId;
 };
 
-EvGLVertexArrayObject *evCreateGLVertexArrayObject() {
-    EvGLVertexArrayObject *vao = malloc(sizeof(EvGLVertexArrayObject));
+CcoGLVertexArrayObject *ccoCreateGLVertexArrayObject() {
+    CcoGLVertexArrayObject *vao = malloc(sizeof(CcoGLVertexArrayObject));
     glCreateVertexArrays(1, &vao->glId);
     return vao;
 }
 
-void evDestroyGLVertexArrayObject(EvGLVertexArrayObject *vao) {
+void ccoDestroyGLVertexArrayObject(CcoGLVertexArrayObject *vao) {
     if (vao->glId != 0) {
         glDeleteVertexArrays(1, &vao->glId);
         vao->glId = 0;
@@ -20,4 +20,4 @@ void evDestroyGLVertexArrayObject(EvGLVertexArrayObject *vao) {
     free(vao);
 }
 
-u32 evGetGLVertexArrayObjectId(const EvGLVertexArrayObject *vao) { return vao->glId; }
+u32 ccoGetGLVertexArrayObjectId(const CcoGLVertexArrayObject *vao) { return vao->glId; }

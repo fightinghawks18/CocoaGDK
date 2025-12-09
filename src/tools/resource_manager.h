@@ -2,13 +2,13 @@
 
 #include "../core.h"
 
-typedef struct EvResourceHandle EvResourceHandle;
-typedef struct EvResourceManager EvResourceManager;
+typedef struct CcoResourceHandle CcoResourceHandle;
+typedef struct CcoResourceManager CcoResourceManager;
 
-EvResourceManager* evCreateResourceManager();
-void evDestroyResourceManager(EvResourceManager* resourceManager);
+CcoResourceManager* ccoCreateResourceManager();
+void ccoDestroyResourceManager(CcoResourceManager* resourceManager);
 
-EvResourceHandle evAllocateResource(EvResourceManager* resourceManager, usize size);
-void evDestroyResource(EvResourceManager* resourceManager, EvResourceHandle* handle);
+CcoResourceHandle ccoAllocateResource(CcoResourceManager* resourceManager, usize size);
+void ccoDestroyResource(CcoResourceManager* resourceManager, CcoResourceHandle* handle);
 
-void* evResolveResource(EvResourceManager* resourceManager, EvResourceHandle* handle);
+void* ccoResolveResource(CcoResourceManager* resourceManager, CcoResourceHandle* handle);

@@ -7,14 +7,14 @@
 #include "../core.h"
 #include "shader.h"
 
-typedef struct EvGLProgram EvGLProgram;
+typedef struct CcoGLProgram CcoGLProgram;
 
 typedef struct {
-    EvGLShader *vertexShader;
-    EvGLShader *pixelShader;
-} EvGLProgramDesc;
+    CcoGLShader *vertexShader;
+    CcoGLShader *pixelShader;
+} CcoGLProgramDesc;
 
-EvResult evCreateGLProgram(const EvGLProgramDesc &programDesc, EvGLProgram **program);
-void evDestroyGLProgram(EvGLProgram *program);
+CcoResult ccoCreateGLProgram(const CcoGLProgramDesc &programDesc, CcoGLProgram **program);
+void ccoDestroyGLProgram(CcoGLProgram *program);
 
-u32 evGetGLProgramId(const EvGLProgram *program);
+u32 ccoGetGLProgramId(const CcoGLProgram *program);

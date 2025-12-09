@@ -1,11 +1,11 @@
 cmake_minimum_required(VERSION 3.20)
-project(everest_engine C)
+project(ccoerest_engine C)
 
 find_package(OpenGL REQUIRED)
 find_package(glfw3 CONFIG REQUIRED)
 find_package(glad CONFIG REQUIRED)
 
-add_executable(everest_engine
+add_executable(ccoerest_engine
     src/main.c
     src/tools/dynamic_array.c
     src/tools/resource_manager.c
@@ -14,7 +14,7 @@ add_executable(everest_engine
         src/opengl/ebo.h
 )
 
-target_link_libraries(everest_engine
+target_link_libraries(ccoerest_engine
     PRIVATE OpenGL::GL
     PRIVATE glfw
     PRIVATE glad::glad

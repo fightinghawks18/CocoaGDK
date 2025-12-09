@@ -15,7 +15,7 @@ int main() {
 #ifdef __APPLE__
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 #endif
-    GLFWwindow *window = glfwCreateWindow(800, 600, "everest", NULL, NULL);
+    GLFWwindow *window = glfwCreateWindow(800, 600, "ccoerest", NULL, NULL);
     glfwMakeContextCurrent(window);
     
     if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {

@@ -7,14 +7,14 @@
 #include "../core.h"
 #include "../graphics/types.h"
 
-typedef struct EvGLShader EvGLShader;
+typedef struct CcoGLShader CcoGLShader;
 
 typedef struct {
-    EvShaderType shaderType;
+    CcoShaderType shaderType;
     const char *shaderPath;
-} EvGLShaderDesc;
+} CcoGLShaderDesc;
 
-EvResult evCreateGLShader(const EvGLShaderDesc &shaderDesc, EvGLShader **shader);
-void evDestroyGLShader(EvGLShader *shader);
+CcoResult ccoCreateGLShader(const CcoGLShaderDesc &shaderDesc, CcoGLShader **shader);
+void ccoDestroyGLShader(CcoGLShader *shader);
 
-u32 evGetGLShaderId(const EvGLShader *shader);
+u32 ccoGetGLShaderId(const CcoGLShader *shader);

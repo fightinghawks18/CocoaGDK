@@ -7,11 +7,11 @@
 #include "../core.h"
 #include "../graphics/types.h"
 
-typedef struct EvGLVertexBufferObject EvGLVertexBufferObject;
+typedef struct CcoGLVertexBufferObject CcoGLVertexBufferObject;
 
-EvGLVertexBufferObject *evCreateGLVertexBufferObject();
-void evDestroyGLVertexBufferObject(EvGLVertexBufferObject *vbo);
+CcoGLVertexBufferObject *ccoCreateGLVertexBufferObject();
+void ccoDestroyGLVertexBufferObject(CcoGLVertexBufferObject *vbo);
 
-void evMapGLVertexBufferObject(const EvGLVertexBufferObject *vbo, const EvBufferMapper& mapper);
+void ccoMapGLVertexBufferObject(const CcoGLVertexBufferObject *vbo, const CcoBufferMapper& mapper);
 
-u32 evGetGLVertexBufferObjectId(const EvGLVertexBufferObject *vbo);
+u32 ccoGetGLVertexBufferObjectId(const CcoGLVertexBufferObject *vbo);

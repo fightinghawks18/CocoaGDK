@@ -25,11 +25,11 @@ typedef float f32;
 typedef double f64;
 
 typedef enum {
-    EV_SUCCESS = 0, ///< @brief Successfully completed operation
-    EV_FAIL_FILE_NON_EXISTENT, ///< @brief Attempted to read a file with an invalid path
-    EV_FAIL_CANT_READ_FILE, ///< @brief Failed to read a file due to insufficient permissions
-    EV_FAIL_OUT_OF_MEMORY, ///< @brief Memory allocation failed due to insufficient memory
-    EV_FAIL_GRAPHICS_INIT_ERROR, ///< @brief The graphics system failed to initialize
-    EV_FAIL_COMPILE_ERROR, ///< @brief Failed to compile a file
-    EV_FAIL_PIPELINE_CREATE_ERROR, ///< @brief Failed to create a pipeline
-} EvResult;
+    CCO_SUCCESS = 0, ///< @brief Successfully completed operation
+    CCO_FAIL_FILE_NON_EXISTENT, ///< @brief Attempted to read a file with an invalid path
+    CCO_FAIL_CANT_READ_FILE, ///< @brief Failed to read a file due to insufficient permissions
+    CCO_FAIL_OUT_OF_MEMORY, ///< @brief Memory allocation failed due to insufficient memory
+    CCO_FAIL_GRAPHICS_INIT_ERROR, ///< @brief The graphics system failed to initialize
+    CCO_FAIL_COMPILE_ERROR, ///< @brief Failed to compile a file
+    CCO_FAIL_PIPELINE_CREATE_ERROR, ///< @brief Failed to create a pipeline
+} CcoResult;

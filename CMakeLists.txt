@@ -7,6 +7,8 @@ find_package(glad CONFIG REQUIRED)
 
 add_executable(everest_engine
     src/main.c
+    src/tools/dynamic_array.c
+    src/tools/resource_manager.c
 )
 
 target_link_libraries(everest_engine

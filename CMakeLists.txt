@@ -9,6 +9,9 @@ add_executable(everest_engine
     src/main.c
     src/tools/dynamic_array.c
     src/tools/resource_manager.c
+        src/opengl/vbo.c
+        src/opengl/ebo.c
+        src/opengl/ebo.h
 )
 
 target_link_libraries(everest_engine

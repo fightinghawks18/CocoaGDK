@@ -1,10 +1,10 @@
 #pragma once
 
-#include "../tools/types.h"
+#include "../core.h"
 
 typedef struct EvGLVertexArrayObject EvGLVertexArrayObject;
 
 EvGLVertexArrayObject* evCreateGLVertexArrayObject();
 void evDestroyGLVertexArrayObject(EvGLVertexArrayObject *vao);
 
-u32 evGetGLVertexArrayObjectId(EvGLVertexArrayObject *vao);
+u32 evGetGLVertexArrayObjectId(const EvGLVertexArrayObject *vao);

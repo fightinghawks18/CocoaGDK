@@ -1,6 +1,6 @@
 #pragma once
 
-#include "types.h"
+#include "../core.h"
 
 typedef void *EvDynamicArrayObj;
 

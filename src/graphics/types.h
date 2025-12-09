@@ -14,6 +14,12 @@ typedef struct {
     u32 maxDepth; ///< @brief The largest depth value allowed (clamps depths larger than this)
 } CcoViewport;
 
+/// @brief A definition of a single point in a geometric object
+typedef struct {
+    f32 pos[3];
+    f32 col[4];
+} CcoVertex;
+
 typedef struct {
     usize offset;
     usize size;

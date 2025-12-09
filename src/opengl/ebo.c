@@ -12,7 +12,7 @@ struct CcoGLElementBufferObject_T {
 
 CcoGLElementBufferObject ccoCreateGLElementBufferObject() {
     CcoGLElementBufferObject ebo = malloc(sizeof(CcoGLElementBufferObject));
-    glCreateBuffers(1, &ebo->glId);
+    glGenBuffers(1, &ebo->glId);
     return ebo;
 }
 

@@ -12,7 +12,7 @@ struct CcoGLVertexBufferObject_T {
 
 CcoGLVertexBufferObject ccoCreateGLVertexBufferObject() {
     CcoGLVertexBufferObject vbo = malloc(sizeof(CcoGLVertexBufferObject));
-    glCreateBuffers(1, &vbo->glId);
+    glGenBuffers(1, &vbo->glId);
     return vbo;
 }
 

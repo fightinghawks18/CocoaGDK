@@ -37,7 +37,7 @@ CcoResult ccoCreateGLProgram(const CcoGLProgramDesc *programDesc, CcoGLProgram *
     return CCO_SUCCESS;
 }
 
-void ccoDestroyGLProgram(CcoGLProgram *program) {
+void ccoDestroyGLProgram(CcoGLProgram program) {
     if (program->glId) {
         glDeleteProgram(program->glId);
         program->glId = 0;
@@ -45,4 +45,4 @@ void ccoDestroyGLProgram(CcoGLProgram *program) {
     free(program);
 }
 
-u32 ccoGetGLProgramId(const CcoGLProgram *program) { return program->glId; }
+u32 ccoGetGLProgramId(CcoGLProgram program) { return program->glId; }

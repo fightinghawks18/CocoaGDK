@@ -11,8 +11,8 @@ typedef struct CcoGLVertexBufferObject_T CcoGLVertexBufferObject_T;
 typedef CcoGLVertexBufferObject_T* CcoGLVertexBufferObject;
 
 CcoGLVertexBufferObject ccoCreateGLVertexBufferObject();
-void ccoDestroyGLVertexBufferObject(CcoGLVertexBufferObject *vbo);
+void ccoDestroyGLVertexBufferObject(CcoGLVertexBufferObject vbo);
 
-void ccoMapGLVertexBufferObject(const CcoGLVertexBufferObject *vbo, const CcoBufferMapper *mapper);
+void ccoMapGLVertexBufferObject(CcoGLVertexBufferObject vbo, const CcoBufferMapper *mapper);
 
-u32 ccoGetGLVertexBufferObjectId(const CcoGLVertexBufferObject *vbo);
+u32 ccoGetGLVertexBufferObjectId(CcoGLVertexBufferObject vbo);

@@ -1,3 +1,6 @@
+#include "opengl/ebo.h"
+
+
 #include <stdio.h>
 
 #include <glad/glad.h>
@@ -5,6 +8,7 @@
 #include "opengl/shader.h"
 #include "opengl/program.h"
 #include "opengl/vao.h"
+#include "opengl/vbo.h"
 
 int main() {
     if (!glfwInit()) {
@@ -26,7 +30,47 @@ int main() {
         return -1;
     }
 
-    CcoGLVertexArrayObject vertexArrayObject = ccoCreateGLVertexArrayObject();
+    CcoGLVertexLayoutDesc posLayout = {
+        0,
+        GL_FLOAT,
+        3,
+        sizeof(CcoVertex),
+        offsetof(CcoVertex, pos)
+    };
+
+    CcoGLVertexLayoutDesc colLayout = {
+        1,
+        GL_FLOAT,
+        4,
+        sizeof(CcoVertex),
+        offsetof(CcoVertex, col)
+    };
+
+    CcoGLVertexLayoutDesc layouts[2] = {posLayout, colLayout};
+    CcoGLVertexArrayObjectDesc vertexArrayDesc = {
+        .layouts = layouts,
+        .layoutCount = 2
+    };
+
+    CcoGLVertexBufferObject vertexBufferObject = ccoCreateGLVertexBufferObject();
+    CcoGLElementBufferObject elementBufferObject = ccoCreateGLElementBufferObject();
+    glBindBuffer(GL_ARRAY_BUFFER, ccoGetGLVertexBufferObjectId(vertexBufferObject));
+
+    CcoGLVertexArrayObject vertexArrayObject = ccoCreateGLVertexArrayObject(&vertexArrayDesc);
+
+    CcoVertex vertices[] = {
+        {{-0.5f, -0.5f, 0.0f}, {1, 0, 0, 1}},
+        {{0.5f, -0.5f, 0.0f}, {0, 1, 0, 1}},
+        {{0.0f, 0.5f, 0.0f}, {0, 0, 1, 1}}
+    };
+
+    u32 indices[] = {
+        0, 1, 2
+    };
+
+    ccoMapGLVertexBufferObject(vertexBufferObject, &(CcoBufferMapper){ .offset = 0, .size = 3 * sizeof(CcoVertex), .data = &vertices });
+    ccoMapGLElementBufferObject(elementBufferObject, &(CcoBufferMapper){ .offset = 0, .size = 3 * sizeof(u32), .data = &indices });
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ccoGetGLElementBufferObjectId(elementBufferObject));
 
     CcoGLShader vertexShader = CCO_NULL_HANDLE;
     if (ccoCreateGLShader(
@@ -53,6 +97,7 @@ int main() {
     }
 
     glBindVertexArray(ccoGetGLVertexArrayObjectId(vertexArrayObject));
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ccoGetGLElementBufferObjectId(elementBufferObject));
 
     while (!glfwWindowShouldClose(window)) {
         glfwPollEvents();
@@ -66,7 +111,7 @@ int main() {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         glUseProgram(ccoGetGLProgramId(program));
-        glDrawArrays(GL_TRIANGLES, 0, 3);
+        glDrawElements(GL_TRIANGLES, 3, GL_UNSIGNED_INT, 0);
 
         glfwSwapBuffers(window);
     }

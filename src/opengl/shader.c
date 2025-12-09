@@ -39,15 +39,15 @@ CcoResult read_file(const char *filepath, char **source) {
     return CCO_SUCCESS;
 }
 
-struct CcoGLShader {
+struct CcoGLShader_T {
     u32 glId;
 };
 
-CcoResult ccoCreateGLShader(const CcoGLShaderDesc &shaderDesc, CcoGLShader **shader) {
-    CcoGLShader *glShader = malloc(sizeof(CcoGLShader));
+CcoResult ccoCreateGLShader(const CcoGLShaderDesc *shaderDesc, CcoGLShader *shader) {
+    CcoGLShader glShader = malloc(sizeof(CcoGLShader));
 
     u32 shaderType = 0;
-    switch (shaderDesc.shaderType) {
+    switch (shaderDesc->shaderType) {
     case CCO_SHADER_TYPE_VERTEX:
         shaderType = GL_VERTEX_SHADER;
         break;
@@ -57,7 +57,7 @@ CcoResult ccoCreateGLShader(const CcoGLShaderDesc &shaderDesc, CcoGLShader **sha
     }
 
     char *shaderContents = NULL;
-    const CcoResult readFileResult = read_file(shaderDesc.shaderPath, &shaderContents);
+    const CcoResult readFileResult = read_file(shaderDesc->shaderPath, &shaderContents);
     if (readFileResult != CCO_SUCCESS) {
         printf("Failed to load shader contents for GL!\n");
         return readFileResult;
@@ -74,7 +74,7 @@ CcoResult ccoCreateGLShader(const CcoGLShaderDesc &shaderDesc, CcoGLShader **sha
     if (!compileSuccess) {
         char infoLog[512];
         glGetShaderInfoLog(glShader->glId, 512, NULL, infoLog);
-        printf("Failed to compile GL shader from path %s! %s\n", shaderDesc.shaderPath, infoLog);
+        printf("Failed to compile GL shader from path %s! %s\n", shaderDesc->shaderPath, infoLog);
         ccoDestroyGLShader(glShader);
         return CCO_FAIL_COMPILE_ERROR;
     }
@@ -83,7 +83,7 @@ CcoResult ccoCreateGLShader(const CcoGLShaderDesc &shaderDesc, CcoGLShader **sha
     return CCO_SUCCESS;
 }
 
-void ccoDestroyGLShader(CcoGLShader *shader) {
+void ccoDestroyGLShader(CcoGLShader shader) {
     if (shader->glId != 0) {
         glDeleteShader(shader->glId);
         shader->glId = 0;
@@ -91,4 +91,4 @@ void ccoDestroyGLShader(CcoGLShader *shader) {
     free(shader);
 }
 
-u32 ccoGetGLShaderId(const CcoGLShader *shader) { return shader->glId; }
+u32 ccoGetGLShaderId(CcoGLShader shader) { return shader->glId; }

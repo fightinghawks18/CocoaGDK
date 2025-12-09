@@ -9,6 +9,8 @@
 #include <inttypes.h>
 #include <stdbool.h>
 
+#define CCO_NULL_HANDLE NULL
+
 typedef size_t usize;
 
 typedef uint8_t u8;

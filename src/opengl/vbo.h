@@ -7,11 +7,12 @@
 #include "../core.h"
 #include "../graphics/types.h"
 
-typedef struct CcoGLVertexBufferObject CcoGLVertexBufferObject;
+typedef struct CcoGLVertexBufferObject_T CcoGLVertexBufferObject_T;
+typedef CcoGLVertexBufferObject_T* CcoGLVertexBufferObject;
 
-CcoGLVertexBufferObject *ccoCreateGLVertexBufferObject();
+CcoGLVertexBufferObject ccoCreateGLVertexBufferObject();
 void ccoDestroyGLVertexBufferObject(CcoGLVertexBufferObject *vbo);
 
-void ccoMapGLVertexBufferObject(const CcoGLVertexBufferObject *vbo, const CcoBufferMapper& mapper);
+void ccoMapGLVertexBufferObject(const CcoGLVertexBufferObject *vbo, const CcoBufferMapper *mapper);
 
 u32 ccoGetGLVertexBufferObjectId(const CcoGLVertexBufferObject *vbo);

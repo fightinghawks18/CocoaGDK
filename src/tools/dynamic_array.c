@@ -138,4 +138,4 @@ CcoDynamicArrayObj ccoGetDynamicArrayObjectFront(CcoDynamicArray *dynArray) { re
 
 u32 ccoGetDynamicArrayCount(CcoDynamicArray *dynArray) { return dynArray->count; }
 
-u32 ccoGetDynamicArrayCapacity(EvDynamicArray *dynArray) { return dynArray->capacity; }
+u32 ccoGetDynamicArrayCapacity(CcoDynamicArray *dynArray) { return dynArray->capacity; }

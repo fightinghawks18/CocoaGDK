@@ -7,11 +7,12 @@
 #include "../core.h"
 #include "../graphics/types.h"
 
-typedef struct CcoGLElementBufferObject CcoGLElementBufferObject;
+typedef struct CcoGLElementBufferObject_T CcoGLElementBufferObject_T;
+typedef CcoGLElementBufferObject_T* CcoGLElementBufferObject;
 
-CcoGLElementBufferObject *ccoCreateGLElementBufferObject();
-void ccoDestroyGLElementBufferObject(CcoGLElementBufferObject *ebo);
+CcoGLElementBufferObject ccoCreateGLElementBufferObject();
+void ccoDestroyGLElementBufferObject(CcoGLElementBufferObject ebo);
 
-void ccoMapGLElementBufferObject(const CcoGLElementBufferObject *ebo, const CcoBufferMapper& mapper);
+void ccoMapGLElementBufferObject(CcoGLElementBufferObject ebo, const CcoBufferMapper *mapper);
 
-u32 ccoGetGLElementBufferObjectId(const CcoGLElementBufferObject *ebo);
+u32 ccoGetGLElementBufferObjectId(CcoGLElementBufferObject ebo);

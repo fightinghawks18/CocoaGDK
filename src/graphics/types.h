@@ -10,8 +10,8 @@
 typedef struct {
     int x, y;
     int w, h;
-    u32 minDepth = 0; ///< @brief The smallest depth value allowed (clamps depths smaller than this)
-    u32 maxDepth = 1; ///< @brief The largest depth value allowed (clamps depths larger than this)
+    u32 minDepth; ///< @brief The smallest depth value allowed (clamps depths smaller than this)
+    u32 maxDepth; ///< @brief The largest depth value allowed (clamps depths larger than this)
 } CcoViewport;
 
 typedef struct {

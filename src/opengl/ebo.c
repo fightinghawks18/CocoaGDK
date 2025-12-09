@@ -6,17 +6,17 @@
 #include <glad/glad.h>
 #include <stdlib.h>
 
-struct CcoGLElementBufferObject {
+struct CcoGLElementBufferObject_T {
     u32 glId;
 };
 
-CcoGLElementBufferObject *ccoCreateGLElementBufferObject() {
-    CcoGLElementBufferObject *ebo = malloc(sizeof(CcoGLElementBufferObject));
+CcoGLElementBufferObject ccoCreateGLElementBufferObject() {
+    CcoGLElementBufferObject ebo = malloc(sizeof(CcoGLElementBufferObject));
     glCreateBuffers(1, &ebo->glId);
     return ebo;
 }
 
-void ccoDestroyGLElementBufferObject(CcoGLElementBufferObject *ebo) {
+void ccoDestroyGLElementBufferObject(CcoGLElementBufferObject ebo) {
     if (ebo->glId != 0) {
         glDeleteBuffers(1, &ebo->glId);
         ebo->glId = 0;
@@ -24,14 +24,14 @@ void ccoDestroyGLElementBufferObject(CcoGLElementBufferObject *ebo) {
     free(ebo);
 }
 
-void ccoMapGLElementBufferObject(const CcoGLElementBufferObject *ebo, const CcoBufferMapper &mapper) {
+void ccoMapGLElementBufferObject(CcoGLElementBufferObject ebo, const CcoBufferMapper *mapper) {
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo->glId);
-    if (mapper.offset > 0) {
-        glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, mapper.offset, mapper.size, mapper.data);
+    if (mapper->offset > 0) {
+        glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, (long)mapper->offset, (long)mapper->size, mapper->data);
     } else {
-        glBufferData(GL_ELEMENT_ARRAY_BUFFER, mapper.size, mapper.data, GL_STATIC_DRAW);
+        glBufferData(GL_ELEMENT_ARRAY_BUFFER, (long)mapper->size, mapper->data, GL_STATIC_DRAW);
     }
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 }
 
-u32 ccoGetGLElementBufferObjectId(const CcoGLElementBufferObject *ebo) { return ebo->glId; }
+u32 ccoGetGLElementBufferObjectId(CcoGLElementBufferObject ebo) { return ebo->glId; }

@@ -7,14 +7,15 @@
 #include "../core.h"
 #include "../graphics/types.h"
 
-typedef struct CcoGLShader CcoGLShader;
+typedef struct CcoGLShader_T CcoGLShader_T;
+typedef CcoGLShader_T* CcoGLShader;
 
 typedef struct {
     CcoShaderType shaderType;
     const char *shaderPath;
 } CcoGLShaderDesc;
 
-CcoResult ccoCreateGLShader(const CcoGLShaderDesc &shaderDesc, CcoGLShader **shader);
-void ccoDestroyGLShader(CcoGLShader *shader);
+CcoResult ccoCreateGLShader(const CcoGLShaderDesc *shaderDesc, CcoGLShader *shader);
+void ccoDestroyGLShader(CcoGLShader shader);
 
-u32 ccoGetGLShaderId(const CcoGLShader *shader);
+u32 ccoGetGLShaderId(CcoGLShader shader);

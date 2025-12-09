@@ -8,16 +8,16 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-struct CcoGLProgram {
+struct CcoGLProgram_T {
     u32 glId;
 };
 
-CcoResult ccoCreateGLProgram(const CcoGLProgramDesc &programDesc, CcoGLProgram **program) {
-    CcoGLProgram *glProgram = malloc(sizeof(CcoGLProgram));
+CcoResult ccoCreateGLProgram(const CcoGLProgramDesc *programDesc, CcoGLProgram *program) {
+    CcoGLProgram glProgram = malloc(sizeof(CcoGLProgram));
     glProgram->glId = glCreateProgram();
 
-    glAttachShader(glProgram->glId, ccoGetGLShaderId(programDesc.vertexShader));
-    glAttachShader(glProgram->glId, ccoGetGLShaderId(programDesc.pixelShader));
+    glAttachShader(glProgram->glId, ccoGetGLShaderId(programDesc->vertexShader));
+    glAttachShader(glProgram->glId, ccoGetGLShaderId(programDesc->pixelShader));
     glLinkProgram(glProgram->glId);
 
     i32 linkSuccess;
@@ -30,8 +30,8 @@ CcoResult ccoCreateGLProgram(const CcoGLProgramDesc &programDesc, CcoGLProgram *
         return CCO_FAIL_PIPELINE_CREATE_ERROR;
     }
 
-    glDetachShader(glProgram->glId, ccoGetGLShaderId(programDesc.vertexShader));
-    glDetachShader(glProgram->glId, ccoGetGLShaderId(programDesc.pixelShader));
+    glDetachShader(glProgram->glId, ccoGetGLShaderId(programDesc->vertexShader));
+    glDetachShader(glProgram->glId, ccoGetGLShaderId(programDesc->pixelShader));
 
     *program = glProgram;
     return CCO_SUCCESS;

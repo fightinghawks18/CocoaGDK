@@ -13,6 +13,7 @@ typedef CcoGLVertexBufferObject_T* CcoGLVertexBufferObject;
 CcoGLVertexBufferObject ccoCreateGLVertexBufferObject();
 void ccoDestroyGLVertexBufferObject(CcoGLVertexBufferObject vbo);
 
+void ccoUseGLVertexBufferObject(CcoGLVertexBufferObject vbo);
 void ccoMapGLVertexBufferObject(CcoGLVertexBufferObject vbo, const CcoBufferMapper *mapper);
 
 u32 ccoGetGLVertexBufferObjectId(CcoGLVertexBufferObject vbo);

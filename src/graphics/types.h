@@ -40,3 +40,20 @@ typedef enum CcoShaderType {
     CCO_SHADER_TYPE_VERTEX, ///< @brief Shader operates on per-vertex
     CCO_SHADER_TYPE_PIXEL ///< @brief Shader operates on per-pixel/per-fragment
 } CcoShaderType;
+
+/// @brief Thw type of value
+typedef enum CcoUniformType {
+    CCO_UNIFORM_TYPE_FLOAT1,
+    CCO_UNIFORM_TYPE_FLOAT2,
+    CCO_UNIFORM_TYPE_FLOAT3,
+    CCO_UNIFORM_TYPE_FLOAT4,
+    CCO_UNIFORM_TYPE_INT1,
+    CCO_UNIFORM_TYPE_INT2,
+    CCO_UNIFORM_TYPE_INT3,
+    CCO_UNIFORM_TYPE_INT4,
+    CCO_UNIFORM_TYPE_UINT1,
+    CCO_UNIFORM_TYPE_UINT2,
+    CCO_UNIFORM_TYPE_UINT3,
+    CCO_UNIFORM_TYPE_UINT4,
+    CCO_UNIFORM_TYPE_MATRIX4X4,
+} CcoUniformType;

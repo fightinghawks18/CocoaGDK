@@ -45,4 +45,8 @@ void ccoDestroyGLProgram(CcoGLProgram program) {
     free(program);
 }
 
+void ccoUseGLProgram(CcoGLProgram program) {
+    glUseProgram(program->glId);
+}
+
 u32 ccoGetGLProgramId(CcoGLProgram program) { return program->glId; }

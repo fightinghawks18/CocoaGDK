@@ -21,4 +21,6 @@ typedef struct {
 CcoGLVertexArrayObject ccoCreateGLVertexArrayObject(const CcoGLVertexArrayObjectDesc *vaoDesc);
 void ccoDestroyGLVertexArrayObject(CcoGLVertexArrayObject vao);
 
+void ccoUseGLVertexArrayObject(CcoGLVertexArrayObject vao);
+
 u32 ccoGetGLVertexArrayObjectId(CcoGLVertexArrayObject vao);

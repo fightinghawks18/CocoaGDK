@@ -14,9 +14,9 @@ add_executable(cocoa_engine
         src/opengl/vao.c
         src/opengl/vbo.c
         src/opengl/ebo.c
-        src/opengl/ebo.h
         src/opengl/program.c
         src/opengl/shader.c
+        src/opengl/ubo.c
 )
 
 copy_content_directory("shaders")

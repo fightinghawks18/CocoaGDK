@@ -54,7 +54,7 @@ int main() {
 
     CcoGLVertexBufferObject vertexBufferObject = ccoCreateGLVertexBufferObject();
     CcoGLElementBufferObject elementBufferObject = ccoCreateGLElementBufferObject();
-    glBindBuffer(GL_ARRAY_BUFFER, ccoGetGLVertexBufferObjectId(vertexBufferObject));
+    ccoUseGLVertexBufferObject(vertexBufferObject);
 
     CcoGLVertexArrayObject vertexArrayObject = ccoCreateGLVertexArrayObject(&vertexArrayDesc);
 
@@ -70,7 +70,7 @@ int main() {
 
     ccoMapGLVertexBufferObject(vertexBufferObject, &(CcoBufferMapper){ .offset = 0, .size = 3 * sizeof(CcoVertex), .data = &vertices });
     ccoMapGLElementBufferObject(elementBufferObject, &(CcoBufferMapper){ .offset = 0, .size = 3 * sizeof(u32), .data = &indices });
-        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ccoGetGLElementBufferObjectId(elementBufferObject));
+    ccoUseGLElementBufferObject(elementBufferObject);
 
     CcoGLShader vertexShader = CCO_NULL_HANDLE;
     if (ccoCreateGLShader(
@@ -96,8 +96,7 @@ int main() {
         return -1;
     }
 
-    glBindVertexArray(ccoGetGLVertexArrayObjectId(vertexArrayObject));
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ccoGetGLElementBufferObjectId(elementBufferObject));
+    ccoUseGLVertexArrayObject(vertexArrayObject);
 
     while (!glfwWindowShouldClose(window)) {
         glfwPollEvents();
@@ -110,7 +109,7 @@ int main() {
         glClearColor(0.35f, 0.15f, 0.25f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-        glUseProgram(ccoGetGLProgramId(program));
+        ccoUseGLProgram(program);
         glDrawElements(GL_TRIANGLES, 3, GL_UNSIGNED_INT, 0);
 
         glfwSwapBuffers(window);

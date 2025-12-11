@@ -24,6 +24,10 @@ void ccoDestroyGLVertexBufferObject(CcoGLVertexBufferObject vbo) {
     free(vbo);
 }
 
+void ccoUseGLVertexBufferObject(CcoGLVertexBufferObject vbo) {
+    glBindBuffer(GL_ARRAY_BUFFER, vbo->glId);
+}
+
 void ccoMapGLVertexBufferObject(CcoGLVertexBufferObject vbo, const CcoBufferMapper *mapper) {
     glBindBuffer(GL_ARRAY_BUFFER, vbo->glId);
     if (mapper->offset > 0) {

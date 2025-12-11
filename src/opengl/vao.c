@@ -29,4 +29,8 @@ void ccoDestroyGLVertexArrayObject(CcoGLVertexArrayObject vao) {
     free(vao);
 }
 
+void ccoUseGLVertexArrayObject(CcoGLVertexArrayObject vao) {
+    glBindVertexArray(vao->glId);
+}
+
 u32 ccoGetGLVertexArrayObjectId(CcoGLVertexArrayObject vao) { return vao->glId; }

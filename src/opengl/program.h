@@ -18,4 +18,6 @@ typedef struct {
 CcoResult ccoCreateGLProgram(const CcoGLProgramDesc *programDesc, CcoGLProgram *program);
 void ccoDestroyGLProgram(CcoGLProgram program);
 
+void ccoUseGLProgram(CcoGLProgram program);
+
 u32 ccoGetGLProgramId(CcoGLProgram program);

@@ -24,6 +24,10 @@ void ccoDestroyGLElementBufferObject(CcoGLElementBufferObject ebo) {
     free(ebo);
 }
 
+void ccoUseGLElementBufferObject(CcoGLElementBufferObject ebo) {
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo->glId);
+}
+
 void ccoMapGLElementBufferObject(CcoGLElementBufferObject ebo, const CcoBufferMapper *mapper) {
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo->glId);
     if (mapper->offset > 0) {

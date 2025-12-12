@@ -5,6 +5,13 @@
 #pragma once
 
 #include "../core.h"
+#include "../math/matrix4x4.h"
+
+typedef struct {
+    CcoMatrix4X4 model;
+    CcoMatrix4X4 view;
+    CcoMatrix4X4 projection;
+} CcoModelViewProjection;
 
 /// @brief Describes how the rendered output is transformed onto the screen
 typedef struct {

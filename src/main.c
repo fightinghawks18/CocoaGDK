@@ -7,8 +7,11 @@
 #include <GLFW/glfw3.h>
 #include "opengl/shader.h"
 #include "opengl/program.h"
+#include "opengl/ubo.h"
 #include "opengl/vao.h"
 #include "opengl/vbo.h"
+
+#include "math/matrix4x4.h"
 
 int main() {
     if (!glfwInit()) {
@@ -95,6 +98,15 @@ int main() {
         printf("Failed to create program!\n");
         return -1;
     }
+
+    CcoModelViewProjection mvp = {
+        .model = ccoCreateMatrix4X4(),
+        .view =  ccoCreateMatrix4X4(),
+        .projection = ccoCreateMatrix4X4()
+    };
+
+    CcoGLUniformBufferObject uniformBufferObject = ccoCreateGLUniformBuffer(0);
+    ccoMapGLUniformBuffer(uniformBufferObject, &(CcoBufferMapper){ .offset = 0, .size = sizeof(CcoModelViewProjection), .data = &mvp });
 
     ccoUseGLVertexArrayObject(vertexArrayObject);
 

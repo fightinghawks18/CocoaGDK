@@ -8,4 +8,4 @@ PointerAlignment: Right
 NamespaceIndentation: All
 IndentWidth: 4
 TabWidth: 4
-UseTab: Nccoer
+UseTab: Never

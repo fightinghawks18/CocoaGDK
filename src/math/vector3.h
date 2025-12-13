@@ -5,6 +5,7 @@
 #pragma once
 
 #include "../core.h"
+#include <math.h>
 
 typedef struct {
     f32 x, y, z;

@@ -55,4 +55,5 @@ void ccoWindowingQuit();
 CcoResult ccoCreateWindow(const CcoWindowDesc *desc, CcoWindow *outWindow);
 void ccoSetWindowShouldClose(CcoWindow window, bool close);
 void ccoCloseWindow(CcoWindow window);
+CcoWindowNativeHandle ccoGetNativeWindowHandle(CcoWindow window);
 bool ccoShouldWindowClose(CcoWindow window);

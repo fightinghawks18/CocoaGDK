@@ -8,13 +8,15 @@
 #include <stdbool.h>
 #include <stddef.h>
 #include <stdint.h>
+#include <stdio.h>
 
 #define CCO_NULL_HANDLE NULL
 #define CCO_TRUE 1
 #define CCO_FALSE 0
 
 #ifdef DEBUG
-#define CCO_LOG(str, ...) printf(str __VA_OPT__(, )##__VA_ARGS__)
+#define CCO_LOG(str, ...) \
+    printf(str "\n", ##__VA_ARGS__);
 #else
 #define CCO_LOG(str, ...)
 #endif

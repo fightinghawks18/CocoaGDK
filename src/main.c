@@ -1,6 +1,7 @@
 #include <stdio.h>
 
 #include "platform/windowing.h"
+#include "vulkan/vulkan_core.h"
 
 int main() {
     if (ccoWindowingInit() != CCO_SUCCESS) {
@@ -9,13 +10,21 @@ int main() {
     }
 
     CcoWindow window;
-    CcoResult windowResult = ccoCreateWindow(
-        &(CcoWindowDesc){CCO_WINDOW_POS_CENTER, CCO_WINDOW_POS_CENTER, 800, 600, "cocoa", CCO_WINDOW_FLAG_DECOR_BIT | CCO_WINDOW_FLAG_RESIZE_BIT}, &window);
+    CcoResult windowResult =
+        ccoCreateWindow(&(CcoWindowDesc){CCO_WINDOW_POS_CENTER, CCO_WINDOW_POS_CENTER, 800, 600, "cocoa",
+                                         CCO_WINDOW_FLAG_DECOR_BIT | CCO_WINDOW_FLAG_RESIZE_BIT},
+                        &window);
     if (windowResult != CCO_SUCCESS) {
         CCO_LOG("Failed to create window!");
         return -1;
     }
 
+    CcoVulkanCore vulkan;
+    ccoCreateVulkanCore(&(CcoVulkanCoreDesc){.gpuPowerPreference = CCO_GPU_POWER_PREFERENCE_HI,
+                                             .desiredQueues = CCO_GPU_QUEUE_GRAPHICS,
+                                             .desiredQueueCount = 1},
+                        &vulkan);
+    
     while (!ccoShouldWindowClose(window)) {
         ccoWindowingPoll();
     }

@@ -109,4 +109,8 @@ void ccoCloseWindow(CcoWindow window) {
     CCO_LOG("Closed window");
 }
 
+CcoWindowNativeHandle ccoGetNativeWindowHandle(CcoWindow window) {
+    return (__bridge CcoWindowNativeHandle)window->window;
+}
+
 bool ccoShouldWindowClose(CcoWindow window) { return window->shouldClose; }

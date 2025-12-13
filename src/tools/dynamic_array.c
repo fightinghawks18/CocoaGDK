@@ -38,8 +38,6 @@ void addMember(CcoDynamicArray *dynArray, usize pos, CcoDynamicArrayObj object) 
 
     dynArray->objs[pos] = object;
     dynArray->count++;
-
-    printf("Added member %d\n", dynArray->count);
 }
 
 void removeMember(CcoDynamicArray *dynArray, usize pos) {
@@ -49,8 +47,6 @@ void removeMember(CcoDynamicArray *dynArray, usize pos) {
 
     if (dynArray->dtor != NULL) {
         dynArray->dtor(obj);
-    } else {
-        free(obj);
     }
 
     // Move members to the left if they come after this position

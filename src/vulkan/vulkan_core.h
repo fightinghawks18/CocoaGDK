@@ -19,7 +19,7 @@ typedef enum { CCO_GPU_QUEUE_GRAPHICS, CCO_GPU_QUEUE_TRANSFER, CCO_GPU_QUEUE_COM
 
 typedef struct {
     CcoGPUPowerPreference gpuPowerPreference;
-    CcoGPUQueue *desiredQueues;
+    CcoGPUQueue desiredQueues[3];
     u32 desiredQueueCount;
 } CcoVulkanCoreDesc;
 

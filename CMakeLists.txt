@@ -9,12 +9,19 @@ add_executable(cocoa_engine
         src/main.c
         src/tools/dynamic_array.c
         src/tools/resource_manager.c
+
+        src/vulkan/vulkan_core.c
 )
 
 copy_content_directory("shaders")
 
 target_link_libraries(cocoa_engine
         PRIVATE Vulkan::Vulkan
+)
+
+target_compile_definitions(cocoa_engine PRIVATE
+    $<$<CONFIG:Debug>:DEBUG>
+    $<$<CONFIG:Release>:NDEBUG>
 )
 
 if(APPLE)

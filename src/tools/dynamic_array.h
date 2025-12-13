@@ -11,6 +11,7 @@ typedef struct CcoDynamicArray CcoDynamicArray;
 
 CcoDynamicArray *ccoCreateDynamicArray(u32 reserve, usize size, CcoDynamicArrayObjConstructorFun constructor,
                                      CcoDynamicArrayObjDestructorFun destructor);
+CcoDynamicArray *ccoCreateDynamicArrayFromArray(u32 *count, usize size, CcoDynamicArrayObj *array);
 void ccoDestroyDynamicArray(CcoDynamicArray *dynArray);
 
 void ccoResizeDynamicArray(CcoDynamicArray *dynArray, usize count);
@@ -20,6 +21,7 @@ CcoDynamicArrayObj ccoEmplaceBackDynamicArray(CcoDynamicArray *dynArray);
 void ccoAddToDynamicArray(CcoDynamicArray *dynArray, usize pos, CcoDynamicArrayObj object);
 void ccoRemoveFromDynamicArray(CcoDynamicArray *dynArray, usize pos);
 
+void ccoPushBackArrayDynamicArray(CcoDynamicArray *dynArray, CcoDynamicArrayObj *array, u32 arrayCount);
 void ccoPushBackDynamicArray(CcoDynamicArray *dynArray, CcoDynamicArrayObj object);
 void ccoPopBackDynamicArray(CcoDynamicArray *dynArray);
 

@@ -1,7 +1,7 @@
 #include <stdio.h>
 
 #include "platform/windowing.h"
-#include "vulkan/vulkan_core.h"
+#include "vulkan/core.h"
 
 int main() {
     if (ccoWindowingInit() != CCO_SUCCESS) {
@@ -21,7 +21,7 @@ int main() {
 
     CcoVulkanCore vulkan;
     ccoCreateVulkanCore(&(CcoVulkanCoreDesc){.gpuPowerPreference = CCO_GPU_POWER_PREFERENCE_HI,
-                                             .desiredQueues = CCO_GPU_QUEUE_GRAPHICS,
+                                             .desiredQueues = &(CcoGPUQueueTypeFlags){CCO_GPU_QUEUE_GRAPHICS},
                                              .desiredQueueCount = 1},
                         &vulkan);
     

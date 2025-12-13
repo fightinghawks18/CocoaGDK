@@ -10,7 +10,7 @@ add_executable(cocoa_engine
         src/tools/dynamic_array.c
         src/tools/resource_manager.c
 
-        src/vulkan/vulkan_core.c
+        src/vulkan/core.c
 )
 
 copy_content_directory("shaders")

@@ -74,6 +74,19 @@ CcoDynamicArray *ccoCreateDynamicArray(u32 reserve, usize size, CcoDynamicArrayO
     return dynArray;
 }
 
+CcoDynamicArray *ccoCreateDynamicArrayFromArray(u32 *count, usize size, CcoDynamicArrayObj *array) {
+    CcoDynamicArray *dynArray = malloc(1 * sizeof(CcoDynamicArray));
+
+    dynArray->capacity = *count;
+    dynArray->count = *count;
+    dynArray->objs = array;
+    dynArray->arrayTypeSize = size;
+    dynArray->ctor = NULL;
+    dynArray->dtor = NULL;
+
+    return dynArray;
+}
+
 void ccoDestroyDynamicArray(CcoDynamicArray *dynArray) {
     ccoClearDynamicArray(dynArray);
     free(dynArray->objs);
@@ -95,6 +108,12 @@ void ccoAddToDynamicArray(CcoDynamicArray *dynArray, usize pos, CcoDynamicArrayO
     addMember(dynArray, pos, object);
 }
 void ccoRemoveFromDynamicArray(CcoDynamicArray *dynArray, usize pos) { removeMember(dynArray, pos); }
+
+void ccoPushBackArrayDynamicArray(CcoDynamicArray *dynArray, CcoDynamicArrayObj *array, u32 arrayCount) {
+    for (u32 i = 0; i < arrayCount; i++) {
+        ccoPushBackDynamicArray(dynArray, &array[i]);
+    }
+}
 
 void ccoPushBackDynamicArray(CcoDynamicArray *dynArray, CcoDynamicArrayObj object) {
     addMember(dynArray, ccoGetDynamicArrayCount(dynArray), object);

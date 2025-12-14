@@ -9,8 +9,14 @@
 #define CCO_WINDOW_SIZE_FILL 0
 #define CCO_WINDOW_POS_CENTER 0
 
+typedef struct VkSurfaceKHR_T VkSurfaceKHR_T;
+typedef VkSurfaceKHR_T *VkSurfaceKHR;
+
+typedef struct VkInstance_T VkInstance_T;
+typedef VkInstance_T *VkInstance;
+
 typedef struct CcoWindow_T CcoWindow_T;
-typedef struct CcoWindow_T *CcoWindow;
+typedef CcoWindow_T *CcoWindow;
 typedef void *CcoWindowNativeHandle;
 
 typedef u32 CcoWindowFlags;
@@ -57,3 +63,5 @@ void ccoSetWindowShouldClose(CcoWindow window, bool close);
 void ccoCloseWindow(CcoWindow window);
 CcoWindowNativeHandle ccoGetNativeWindowHandle(CcoWindow window);
 bool ccoShouldWindowClose(CcoWindow window);
+
+VkSurfaceKHR ccoCreateWindowVulkanSurface(VkInstance instance, CcoWindow window);

@@ -144,7 +144,7 @@ bool ccoIsDynamicArrayEmpty(CcoDynamicArray *dynArray) {
 CcoDynamicArrayObj *ccoGetDynamicArrayObject(CcoDynamicArray *dynArray, usize pos) {
     if (pos >= dynArray->count)
         return NULL;
-    return &dynArray->objs[pos];
+    return dynArray->objs[pos];
 }
 
 CcoDynamicArrayObj ccoGetDynamicArrayObjectBack(CcoDynamicArray *dynArray) { return dynArray->objs[dynArray->count - 1]; }

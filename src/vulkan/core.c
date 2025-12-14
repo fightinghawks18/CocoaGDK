@@ -3,19 +3,17 @@
 //
 
 #include "core.h"
-
+#include "../tools/dynamic_array.h"
 #include <stdlib.h>
 #include <vulkan/vulkan.h>
 
-#include "../tools/dynamic_array.h"
-
-struct CcoVulkanCore_T {
+typedef struct CcoVulkanCore_T {
     VkInstance instance;
     VkPhysicalDevice physicalDevice;
     VkDevice device;
 
     CcoDynamicArray *queues;
-};
+} CcoVulkanCore_T;
 
 typedef struct {
     CcoGPUQueueTypeFlags queueType;
@@ -129,6 +127,7 @@ static CcoResult findPhysicalDevice(CcoVulkanCore core, const CcoVulkanCoreDesc 
         }
     }
 
+    free(physicalDevices);
     if (highestDevice == VK_NULL_HANDLE) {
         CCO_LOG("Failed to get any suitable adapters!");
         return CCO_FAIL_GRAPHICS_NO_SUITABLE_ADAPTERS_ERROR;
@@ -142,8 +141,10 @@ static CcoResult findPhysicalDevice(CcoVulkanCore core, const CcoVulkanCoreDesc 
     return CCO_SUCCESS;
 }
 
-static void checkQueueSupport(VkQueueFamilyProperties *queueFamilies, u32 index, VkQueueFlags queueFlags,
+static void checkQueueSupport(const VkQueueFamilyProperties *queueFamilies, u32 index, VkQueueFlags queueFlags,
                               CcoGPUQueueType queueType, CcoDynamicArray *queues) {
+    if (!queueFamilies)
+        return;
     for (u32 i = 0; i < ccoGetDynamicArrayCount(queues); i++) {
         CcoVulkanQueueObject *queueObject = (CcoVulkanQueueObject *)ccoGetDynamicArrayObject(queues, i);
 
@@ -159,10 +160,14 @@ static void checkQueueSupport(VkQueueFamilyProperties *queueFamilies, u32 index,
     }
 
     // Check if the queue in that family has the specific queue type
-    if (queueFamilies[index].queueFlags & queueFlags) {
-        ccoPushBackDynamicArray(queues, &(CcoVulkanQueueObject){.queueType = queueType,
-                                                                .familyIndex = index,
-                                                                .queueCount = queueFamilies[index].queueCount});
+    VkQueueFamilyProperties queue = queueFamilies[index];
+    if (queue.queueFlags & queueFlags) {
+        CcoVulkanQueueObject *queueObject = malloc(sizeof(CcoVulkanQueueObject));
+        queueObject->queueCount = queue.queueCount;
+        queueObject->familyIndex = index;
+        queueObject->queueType = queueType;
+        queueObject->queues = NULL;
+        ccoPushBackDynamicArray(queues, queueObject);
     }
 }
 
@@ -180,7 +185,7 @@ static CcoResult getDesiredQueues(CcoVulkanCore core, const CcoVulkanCoreDesc *d
     vkGetPhysicalDeviceQueueFamilyProperties(core->physicalDevice, &count, queueFamilies);
 
     for (u32 i = 0; i < desc->desiredQueueCount; i++) {
-        VkQueueFlags queueFlags;
+        VkQueueFlags queueFlags = 0;
         switch (desc->desiredQueues[i]) {
         case CCO_GPU_QUEUE_GRAPHICS:
             queueFlags |= VK_QUEUE_GRAPHICS_BIT;
@@ -191,6 +196,8 @@ static CcoResult getDesiredQueues(CcoVulkanCore core, const CcoVulkanCoreDesc *d
         case CCO_GPU_QUEUE_TRANSFER:
             queueFlags |= VK_QUEUE_TRANSFER_BIT;
             break;
+        default:
+            break;
         }
 
         // Look at every queue family and check for support of this queueType
@@ -199,11 +206,11 @@ static CcoResult getDesiredQueues(CcoVulkanCore core, const CcoVulkanCoreDesc *d
         }
     }
 
+    free(queueFamilies);
     if (ccoGetDynamicArrayCount(queues) == 0) {
         CCO_LOG("Vulkan failed to find desired queues!");
         return CCO_FAIL_GRAPHICS_INIT_ERROR;
     }
-    free(queueFamilies);
 
     core->queues = queues;
     return CCO_SUCCESS;
@@ -214,6 +221,7 @@ static CcoResult createDevice(CcoVulkanCore core, const CcoVulkanCoreDesc *desc)
 #ifdef __APPLE__
     ccoPushBackDynamicArray(extensions, "VK_KHR_portability_subset");
 #endif
+    ccoPushBackDynamicArray(extensions, "VK_KHR_swapchain");
 
     CcoResult getQueues = getDesiredQueues(core, desc);
     if (getQueues != CCO_SUCCESS) {
@@ -222,35 +230,34 @@ static CcoResult createDevice(CcoVulkanCore core, const CcoVulkanCoreDesc *desc)
     }
 
     float priorities = 1.0f;
-    CcoDynamicArray *queueInfos = ccoCreateDynamicArray(ccoGetDynamicArrayCount(core->queues), sizeof(VkDeviceQueueCreateInfo), NULL, NULL);
+    VkDeviceQueueCreateInfo *queueInfos = malloc(ccoGetDynamicArrayCount(core->queues) * sizeof(VkDeviceQueueCreateInfo));
     for (u32 i = 0; i < ccoGetDynamicArrayCount(core->queues); i++) {
         CcoVulkanQueueObject *queueObject = (CcoVulkanQueueObject *)ccoGetDynamicArrayObject(core->queues, i);
 
-        VkDeviceQueueCreateInfo queueInfo = {
-            .sType = VK_STRUCTURE_TYPE_DEVICE_QUEUE_CREATE_INFO,
-            .pNext = NULL,
-            .flags = 0,
-            .queueFamilyIndex = queueObject->familyIndex,
-            .queueCount = queueObject->queueCount,
-            .pQueuePriorities = &priorities
-        };
+        VkDeviceQueueCreateInfo queueInfo = {.sType = VK_STRUCTURE_TYPE_DEVICE_QUEUE_CREATE_INFO,
+                                             .pNext = NULL,
+                                             .flags = 0,
+                                             .queueFamilyIndex = queueObject->familyIndex,
+                                             .queueCount = queueObject->queueCount,
+                                             .pQueuePriorities = &priorities};
+        queueInfos[i] = queueInfo;
     }
 
-    VkDeviceCreateInfo deviceInfo = {.sType = VK_STRUCTURE_TYPE_DEVICE_CREATE_INFO,
-                                     .pNext = NULL,
-                                     .flags = 0,
-                                     .queueCreateInfoCount = ccoGetDynamicArrayCount(queueInfos),
-                                     .pQueueCreateInfos = (VkDeviceQueueCreateInfo *)ccoGetDynamicArrayObjects(queueInfos),
-                                     .enabledExtensionCount = ccoGetDynamicArrayCount(extensions),
-                                     .ppEnabledExtensionNames =
-                                         (const char *const *)ccoGetDynamicArrayObjects(extensions)};
+    const VkDeviceCreateInfo deviceInfo = {
+        .sType = VK_STRUCTURE_TYPE_DEVICE_CREATE_INFO,
+        .pNext = NULL,
+        .flags = 0,
+        .queueCreateInfoCount = ccoGetDynamicArrayCount(core->queues),
+        .pQueueCreateInfos = queueInfos,
+        .enabledExtensionCount = ccoGetDynamicArrayCount(extensions),
+        .ppEnabledExtensionNames = (const char *const *)ccoGetDynamicArrayObjects(extensions)};
 
-    VkResult result = vkCreateDevice(core->physicalDevice, &deviceInfo, NULL, &core->device);
+    const VkResult result = vkCreateDevice(core->physicalDevice, &deviceInfo, NULL, &core->device);
     if (result != VK_SUCCESS) {
         CCO_LOG("Failed to create vulkan device!");
         return CCO_FAIL_GRAPHICS_INIT_ERROR;
     }
-    
+
     for (u32 i = 0; i < ccoGetDynamicArrayCount(core->queues); i++) {
         CcoVulkanQueueObject *queueObject = (CcoVulkanQueueObject *)ccoGetDynamicArrayObject(core->queues, i);
         queueObject->queues = malloc(queueObject->queueCount * sizeof(VkQueue));
@@ -260,9 +267,9 @@ static CcoResult createDevice(CcoVulkanCore core, const CcoVulkanCoreDesc *desc)
         }
     }
 
-    u32 queueCount = ccoGetDynamicArrayCount(core->queues);
+    const u32 queueCount = ccoGetDynamicArrayCount(core->queues);
     CCO_LOG("Vulkan created %d queue%s!", queueCount, queueCount > 1 ? "s" : "");
-    
+
     ccoDestroyDynamicArray(extensions);
     return CCO_SUCCESS;
 }
@@ -297,6 +304,7 @@ void ccoDestroyVulkanCore(CcoVulkanCore core) {
     for (u32 i = 0; i < ccoGetDynamicArrayCount(core->queues); i++) {
         CcoVulkanQueueObject *queueObject = (CcoVulkanQueueObject *)ccoGetDynamicArrayObject(core->queues, i);
         free(queueObject->queues);
+        free(queueObject);
     }
     ccoDestroyDynamicArray(core->queues);
 
@@ -310,3 +318,7 @@ void ccoDestroyVulkanCore(CcoVulkanCore core) {
 
     free(core);
 }
+
+VkInstance ccoGetVulkanCoreInstance(CcoVulkanCore core) { return core->instance; }
+VkPhysicalDevice ccoGetVulkanCorePhysicalDevice(CcoVulkanCore core) { return core->physicalDevice; }
+VkDevice ccoGetVulkanCoreDevice(CcoVulkanCore core) { return core->device; }

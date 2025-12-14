@@ -22,7 +22,7 @@ void ccoAddToDynamicArray(CcoDynamicArray *dynArray, usize pos, CcoDynamicArrayO
 void ccoRemoveFromDynamicArray(CcoDynamicArray *dynArray, usize pos);
 
 void ccoPushBackArrayDynamicArray(CcoDynamicArray *dynArray, CcoDynamicArrayObj *array, u32 arrayCount);
-void ccoPushBackDynamicArray(CcoDynamicArray *dynArray, CcoDynamicArrayObj object);
+void ccoPushBackDynamicArray(CcoDynamicArray *dynArray, CcoDynamicArrayObj obj);
 void ccoPopBackDynamicArray(CcoDynamicArray *dynArray);
 
 void ccoClearDynamicArray(CcoDynamicArray *dynArray);

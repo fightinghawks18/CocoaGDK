@@ -15,8 +15,8 @@ typedef struct {
 
 /// @brief Describes how the rendered output is transformed onto the screen
 typedef struct {
-    int x, y;
-    int w, h;
+    i32 x, y;
+    i32 w, h;
     u32 minDepth; ///< @brief The smallest depth value allowed (clamps depths smaller than this)
     u32 maxDepth; ///< @brief The largest depth value allowed (clamps depths larger than this)
 } CcoViewport;
@@ -38,9 +38,13 @@ typedef struct {
 /// @note If you want to transform how the rendered output will look, see CcoViewport
 /// @see CcoViewport
 typedef struct {
-    int x, y;
-    int w, h;
+    i32 x, y;
+    i32 w, h;
 } CcoScissor;
+
+typedef struct {
+    i32 w, h;
+} CcoExtent;
 
 /// @brief The type of operation that a shader uses
 typedef enum CcoShaderType {

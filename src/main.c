@@ -2,6 +2,7 @@
 
 #include "platform/windowing.h"
 #include "vulkan/core.h"
+#include "vulkan/swapchain.h"
 
 int main() {
     if (ccoWindowingInit() != CCO_SUCCESS) {
@@ -24,10 +25,17 @@ int main() {
                                              .desiredQueues = &(CcoGPUQueueTypeFlags){CCO_GPU_QUEUE_GRAPHICS},
                                              .desiredQueueCount = 1},
                         &vulkan);
+
+    VkSurfaceKHR surface = ccoCreateWindowVulkanSurface(ccoGetVulkanCoreInstance(vulkan), window);
+    CcoVulkanSwapChain vulkanSwapChain;
+    ccoCreateVulkanSwapChain(&(CcoVulkanSwapChainDesc){ .core = vulkan, .surface = surface, .extent = {800, 600} }, &vulkanSwapChain);
     
     while (!ccoShouldWindowClose(window)) {
         ccoWindowingPoll();
     }
+
+    ccoDestroyVulkanSwapChain(vulkan, vulkanSwapChain);
+    ccoDestroyVulkanCore(vulkan);
 
     ccoCloseWindow(window);
     ccoWindowingQuit();

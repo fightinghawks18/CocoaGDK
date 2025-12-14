@@ -2,9 +2,14 @@
 
 #import <Cocoa/Cocoa.h>
 #import <CoreFoundation/CoreFoundation.h>
+#import <QuartzCore/CAMetalLayer.h>
 
-struct CcoWindow_T {
+#include <vulkan/vulkan.h>
+#include <vulkan/vulkan_metal.h>
+
+typedef struct CcoWindow_T {
     NSWindow *window;
+
     bool shouldClose;
     bool focused;
 
@@ -15,7 +20,7 @@ struct CcoWindow_T {
     i32 mousePosY;
     i32 mouseDeltaX;
     i32 mouseDeltaY;
-};
+} CcoWindow_T;
 
 @interface Window : NSObject <NSWindowDelegate>
 @property(assign) CcoWindow window;
@@ -114,3 +119,24 @@ CcoWindowNativeHandle ccoGetNativeWindowHandle(CcoWindow window) {
 }
 
 bool ccoShouldWindowClose(CcoWindow window) { return window->shouldClose; }
+
+VkSurfaceKHR ccoCreateWindowVulkanSurface(VkInstance instance, CcoWindow window) {
+    NSView *view = window->window.contentView;
+    CAMetalLayer *metalLayer = [CAMetalLayer layer];
+    metalLayer.pixelFormat = MTLPixelFormatBGRA8Unorm;
+    metalLayer.frame = view.bounds;
+
+    view.wantsLayer = YES;
+    view.layer = metalLayer;
+
+    VkMetalSurfaceCreateInfoEXT createInfo = {
+        .sType = VK_STRUCTURE_TYPE_METAL_SURFACE_CREATE_INFO_EXT,
+        .pNext = NULL,
+        .flags = 0,
+        .pLayer = metalLayer
+    };
+
+    VkSurfaceKHR surface;
+    vkCreateMetalSurfaceEXT(instance, &createInfo, NULL, &surface);
+    return surface;
+}

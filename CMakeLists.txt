@@ -11,6 +11,7 @@ add_executable(cocoa_engine
         src/tools/resource_manager.c
 
         src/vulkan/core.c
+        src/vulkan/swapchain.c
 )
 
 copy_content_directory("shaders")
@@ -32,5 +33,6 @@ if(APPLE)
     target_link_libraries(cocoa_engine
             PRIVATE "-framework Cocoa"
             PRIVATE "-framework CoreFoundation"
+            PRIVATE "-framework QuartzCore"
     )
 endif()

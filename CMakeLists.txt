@@ -1,38 +1,22 @@
 cmake_minimum_required(VERSION 3.20)
 project(cocoa_engine C)
 
-find_package(Vulkan REQUIRED)
+add_subdirectory("src/core")
+add_subdirectory("src/graphics")
+add_subdirectory("src/math")
+add_subdirectory("src/platform")
+add_subdirectory("src/tools")
+add_subdirectory("src/vulkan")
 
 include("cmake/content.cmake")
 
 add_executable(cocoa_engine
         src/main.c
-        src/tools/dynamic_array.c
-        src/tools/resource_manager.c
-
-        src/vulkan/core.c
-        src/vulkan/swapchain.c
 )
 
 copy_content_directory("shaders")
 
 target_link_libraries(cocoa_engine
-        PRIVATE Vulkan::Vulkan
+        PRIVATE cocoa_platform
+        PRIVATE cocoa_vulkan
 )
-
-target_compile_definitions(cocoa_engine PRIVATE
-    $<$<CONFIG:Debug>:DEBUG>
-    $<$<CONFIG:Release>:NDEBUG>
-)
-
-if(APPLE)
-    target_sources(cocoa_engine
-            PRIVATE src/platform/macos/windowing_macos.m
-    )
-
-    target_link_libraries(cocoa_engine
-            PRIVATE "-framework Cocoa"
-            PRIVATE "-framework CoreFoundation"
-            PRIVATE "-framework QuartzCore"
-    )
-endif()

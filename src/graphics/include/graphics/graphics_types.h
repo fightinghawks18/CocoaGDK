@@ -4,8 +4,8 @@
 
 #pragma once
 
-#include "../core.h"
-#include "../math/matrix4x4.h"
+#include "../../../math/include/math/matrix4x4.h"
+#include "core/core_types.h"
 
 typedef struct {
     CcoMatrix4X4 model;

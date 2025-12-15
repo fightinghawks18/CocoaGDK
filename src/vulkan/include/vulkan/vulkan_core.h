@@ -4,9 +4,9 @@
 
 #pragma once
 
+#include "core/core_types.h"
+#include "vulkan_types.h"
 #include <vulkan/vulkan.h>
-#include "../core.h"
-#include "types.h"
 
 typedef struct CcoVulkanCore_T CcoVulkanCore_T;
 typedef CcoVulkanCore_T *CcoVulkanCore;

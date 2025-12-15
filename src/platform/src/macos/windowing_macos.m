@@ -1,4 +1,4 @@
-#include "../windowing.h"
+#include "platform/windowing.h"
 
 #import <Cocoa/Cocoa.h>
 #import <CoreFoundation/CoreFoundation.h>

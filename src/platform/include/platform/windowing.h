@@ -4,16 +4,10 @@
 
 #pragma once
 
-#include "../core.h"
+#include "core/core_types.h"
 
 #define CCO_WINDOW_SIZE_FILL 0
 #define CCO_WINDOW_POS_CENTER 0
-
-typedef struct VkSurfaceKHR_T VkSurfaceKHR_T;
-typedef VkSurfaceKHR_T *VkSurfaceKHR;
-
-typedef struct VkInstance_T VkInstance_T;
-typedef VkInstance_T *VkInstance;
 
 typedef struct CcoWindow_T CcoWindow_T;
 typedef CcoWindow_T *CcoWindow;
@@ -64,4 +58,12 @@ void ccoCloseWindow(CcoWindow window);
 CcoWindowNativeHandle ccoGetNativeWindowHandle(CcoWindow window);
 bool ccoShouldWindowClose(CcoWindow window);
 
+#ifdef CCO_PLATFORM_USE_VULKAN
+typedef struct VkSurfaceKHR_T VkSurfaceKHR_T;
+typedef VkSurfaceKHR_T *VkSurfaceKHR;
+
+typedef struct VkInstance_T VkInstance_T;
+typedef VkInstance_T *VkInstance;
+
 VkSurfaceKHR ccoCreateWindowVulkanSurface(VkInstance instance, CcoWindow window);
+#endif

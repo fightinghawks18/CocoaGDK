@@ -2,10 +2,10 @@
 // Created by fightinghawks18 on 12/12/25.
 //
 
-#include "core.h"
-#include "../tools/dynamic_array.h"
+#include "vulkan/vulkan_core.h"
 #include <stdlib.h>
 #include <vulkan/vulkan.h>
+#include "tools/dynamic_array.h"
 
 typedef struct CcoVulkanCore_T {
     VkInstance instance;

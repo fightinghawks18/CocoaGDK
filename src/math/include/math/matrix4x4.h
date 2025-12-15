@@ -4,7 +4,7 @@
 
 #pragma once
 
-#include "../core.h"
+#include "core/core_types.h"
 #include "angles.h"
 #include "vector3.h"
 

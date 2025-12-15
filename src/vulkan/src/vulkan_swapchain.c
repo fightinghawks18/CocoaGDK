@@ -1,8 +1,6 @@
-#include "swapchain.h"
-
-#include "../tools/dynamic_array.h"
-
+#include "vulkan/vulkan_swapchain.h"
 #include <stdlib.h>
+#include "tools/dynamic_array.h"
 
 typedef struct CcoVulkanSwapChain_T {
     VkSurfaceKHR surface;

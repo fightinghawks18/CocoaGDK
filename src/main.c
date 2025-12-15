@@ -1,8 +1,9 @@
 #include <stdio.h>
 
+#define CCO_PLATFORM_USE_VULKAN
 #include "platform/windowing.h"
-#include "vulkan/core.h"
-#include "vulkan/swapchain.h"
+#include "vulkan/vulkan_core.h"
+#include "vulkan/vulkan_swapchain.h"
 
 int main() {
     if (ccoWindowingInit() != CCO_SUCCESS) {
@@ -28,8 +29,11 @@ int main() {
 
     VkSurfaceKHR surface = ccoCreateWindowVulkanSurface(ccoGetVulkanCoreInstance(vulkan), window);
     CcoVulkanSwapChain vulkanSwapChain;
-    ccoCreateVulkanSwapChain(&(CcoVulkanSwapChainDesc){ .core = vulkan, .surface = surface, .extent = {800, 600} }, &vulkanSwapChain);
-    
+    ccoCreateVulkanSwapChain(&(CcoVulkanSwapChainDesc){.core = vulkan, .surface = surface, .extent = {800, 600}},
+                             &vulkanSwapChain);
+
+
+
     while (!ccoShouldWindowClose(window)) {
         ccoWindowingPoll();
     }

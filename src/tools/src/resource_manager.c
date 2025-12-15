@@ -1,7 +1,7 @@
-#include "resource_manager.h"
+#include "tools/resource_manager.h"
 #include <stdlib.h>
 
-#include "dynamic_array.h"
+#include "tools/dynamic_array.h"
 
 typedef struct {
     u64 id;
@@ -45,7 +45,7 @@ CcoDynamicArrayObj createResourceSlot(void) {
     slot->resource = NULL;
     slot->active = false;
     
-    return (CcoDynamicArrayObj)slot;
+    return slot;
 }
 
 CcoResourceManager *ccoCreateResourceManager() {

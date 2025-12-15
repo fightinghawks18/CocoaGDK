@@ -1,4 +1,4 @@
-#include "dynamic_array.h"
+#include "tools/dynamic_array.h"
 #include <stdio.h>
 #include <stdlib.h>
 

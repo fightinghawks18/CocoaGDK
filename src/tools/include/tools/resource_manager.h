@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../core.h"
+#include "core/core_types.h"
 
 typedef struct CcoResourceHandle CcoResourceHandle;
 typedef struct CcoResourceManager CcoResourceManager;

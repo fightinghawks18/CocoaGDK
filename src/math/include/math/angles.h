@@ -4,7 +4,7 @@
 
 #pragma once
 
-#include "../core.h"
+#include "core/core_types.h"
 #include <math.h>
 
 // PI constant is not provided in modern C standards

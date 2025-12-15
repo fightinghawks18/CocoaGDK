@@ -1,9 +1,10 @@
 #include <stdio.h>
 
-#define CCO_PLATFORM_USE_VULKAN
+#include <glad/glad.h>
+
+#include "opengl/opengl_context.h"
+#include "opengl/opengl_loader.h"
 #include "platform/windowing.h"
-#include "vulkan/vulkan_core.h"
-#include "vulkan/vulkan_swapchain.h"
 
 int main() {
     if (ccoWindowingInit() != CCO_SUCCESS) {
@@ -21,25 +22,27 @@ int main() {
         return -1;
     }
 
-    CcoVulkanCore vulkan;
-    ccoCreateVulkanCore(&(CcoVulkanCoreDesc){.gpuPowerPreference = CCO_GPU_POWER_PREFERENCE_HI,
-                                             .desiredQueues = &(CcoGPUQueueTypeFlags){CCO_GPU_QUEUE_GRAPHICS},
-                                             .desiredQueueCount = 1},
-                        &vulkan);
 
-    VkSurfaceKHR surface = ccoCreateWindowVulkanSurface(ccoGetVulkanCoreInstance(vulkan), window);
-    CcoVulkanSwapChain vulkanSwapChain;
-    ccoCreateVulkanSwapChain(&(CcoVulkanSwapChainDesc){.core = vulkan, .surface = surface, .extent = {800, 600}},
-                             &vulkanSwapChain);
+    CcoOpenGLContext glCtx;
+    ccoCreateOpenGLContext(ccoGetNativeWindowHandle(window), NULL, &glCtx);
+    ccoMakeCurrentOpenGLContext(glCtx);
 
-
+    if (!gladLoadGLLoader(ccoGetGLProcAddr)) {
+        CCO_LOG("Failed to load glad!");
+        return -1;
+    }
 
     while (!ccoShouldWindowClose(window)) {
         ccoWindowingPoll();
+
+        glViewport(0, 0, 800, 600);
+        glClearColor(1.0f, 0.0f, 0.0f, 1.0f);
+        glClear(GL_COLOR_BUFFER_BIT);
+
+        ccoFlushOpenGLContextBuffer(glCtx);
     }
 
-    ccoDestroyVulkanSwapChain(vulkan, vulkanSwapChain);
-    ccoDestroyVulkanCore(vulkan);
+
 
     ccoCloseWindow(window);
     ccoWindowingQuit();

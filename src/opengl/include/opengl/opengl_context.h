@@ -11,5 +11,6 @@ typedef CcoOpenGLContext_T *CcoOpenGLContext;
 
 CcoResult ccoCreateOpenGLContext(void *windowHandle, void *displayHandle, CcoOpenGLContext *outOpenGLContext);
 void ccoDestroyOpenGLContext(CcoOpenGLContext openGLContext);
+void ccoFlushOpenGLContextBuffer(CcoOpenGLContext openGLContext);
 void ccoMakeCurrentOpenGLContext(CcoOpenGLContext openGLContext);
 void ccoRemoveCurrentOpenGLContext();

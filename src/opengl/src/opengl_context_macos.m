@@ -35,5 +35,9 @@ void ccoDestroyOpenGLContext(CcoOpenGLContext openGLContext) {
     free(openGLContext);
 }
 
+void ccoFlushOpenGLContextBuffer(CcoOpenGLContext openGLContext) {
+    [openGLContext->ctx flushBuffer];
+}
+
 void ccoMakeCurrentOpenGLContext(CcoOpenGLContext openGLContext) { [openGLContext->ctx makeCurrentContext]; }
 void ccoRemoveCurrentOpenGLContext() { [NSOpenGLContext clearCurrentContext]; }

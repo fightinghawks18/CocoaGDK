@@ -3,6 +3,11 @@ find_package(glad CONFIG REQUIRED)
 
 add_library(cocoa_opengl STATIC
         src/opengl_vao.c
+        src/opengl_vbo.c
+        src/opengl_ebo.c
+        src/opengl_ubo.c
+        src/opengl_shader.c
+        src/opengl_pipeline.c
 
 )
 target_include_directories(cocoa_opengl

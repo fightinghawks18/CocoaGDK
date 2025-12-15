@@ -13,6 +13,27 @@ typedef struct {
     CcoMatrix4X4 projection;
 } CcoModelViewProjection;
 
+/// @brief Describes how data will be mapped into a buffer
+typedef struct {
+    usize dataSize;
+    usize dataOffset;
+    void *data;
+} CcoBufferMapping;
+
+/// @brief Describes how a vertex attribute will be laid out in memory
+typedef struct {
+    u32 location;
+    u32 numComponents;
+    usize stride;
+    usize offset;
+} CcoVertexAttribute;
+
+/// @brief Describes how vertex data will be laid out in memory
+typedef struct {
+    CcoVertexAttribute *attributes;
+    u32 attributeCount;
+} CcoVertexLayout;
+
 /// @brief Describes how the rendered output is transformed onto the screen
 typedef struct {
     i32 x, y;

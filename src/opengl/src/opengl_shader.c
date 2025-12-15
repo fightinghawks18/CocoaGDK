@@ -42,7 +42,7 @@ CcoResult readFile(const char *filepath, char **source) {
 }
 
 struct CcoOpenGLShader_T {
-    u32 glId;
+    u32 glID;
 };
 
 CcoResult ccoCreateOpenGLShader(const CcoOpenGLShaderDesc *shaderDesc, CcoOpenGLShader *outShader) {
@@ -67,17 +67,17 @@ CcoResult ccoCreateOpenGLShader(const CcoOpenGLShaderDesc *shaderDesc, CcoOpenGL
         return readFileResult;
     }
 
-    shader->glId = glCreateShader(shaderType);
-    glShaderSource(shader->glId, 1, &shaderContents, NULL);
-    glCompileShader(shader->glId);
+    shader->glID = glCreateShader(shaderType);
+    glShaderSource(shader->glID, 1, (const char * const *)&shaderContents, NULL);
+    glCompileShader(shader->glID);
 
     free(shaderContents);
 
     i32 compileSuccess;
-    glGetShaderiv(shader->glId, GL_COMPILE_STATUS, &compileSuccess);
+    glGetShaderiv(shader->glID, GL_COMPILE_STATUS, &compileSuccess);
     if (!compileSuccess) {
         char infoLog[512];
-        glGetShaderInfoLog(shader->glId, 512, NULL, infoLog);
+        glGetShaderInfoLog(shader->glID, 512, NULL, infoLog);
         CCO_LOG("Failed to compile GL shader from path %s! %s", shaderDesc->shaderPath, infoLog);
         ccoDestroyOpenGLShader(shader);
         return CCO_FAIL_COMPILE_ERROR;
@@ -88,11 +88,11 @@ CcoResult ccoCreateOpenGLShader(const CcoOpenGLShaderDesc *shaderDesc, CcoOpenGL
 }
 
 void ccoDestroyOpenGLShader(CcoOpenGLShader shader) {
-    if (shader->glId != CCO_NULL_GLID) {
-        glDeleteShader(shader->glId);
-        shader->glId = CCO_NULL_GLID;
+    if (shader->glID != CCO_NULL_GLID) {
+        glDeleteShader(shader->glID);
+        shader->glID = CCO_NULL_GLID;
     }
     free(shader);
 }
 
-u32 ccoGetOpenGLShaderID(CcoOpenGLShader shader) { return shader->glId; }
+u32 ccoGetOpenGLShaderID(CcoOpenGLShader shader) { return shader->glID; }

@@ -5,7 +5,17 @@
             "name": "Ninja",
             "generator": "Ninja Multi-Config",
             "toolchainFile": "$env{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake",
-            "binaryDir": "build",
+            "binaryDir": "build/ninja",
+            "cacheVariables": {
+                "CMAKE_EXPORT_COMPILE_COMMANDS": "ON",
+                "CMAKE_C_COMPILER": "clang"
+            }
+        },
+        {
+            "name": "Xcode",
+            "generator": "Xcode",
+            "toolchainFile": "$env{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake",
+            "binaryDir": "build/xcode",
             "cacheVariables": {
                 "CMAKE_EXPORT_COMPILE_COMMANDS": "ON",
                 "CMAKE_C_COMPILER": "clang"
@@ -22,6 +32,16 @@
         {
             "name": "Ninja-Release",
             "configurePreset": "Ninja",
+            "configuration": "Release"
+        },
+        {
+            "name": "Xcode-Debug",
+            "configurePreset": "Xcode",
+            "configuration": "Debug"
+        },
+        {
+            "name": "Xcode-Release",
+            "configurePreset": "Xcode",
             "configuration": "Release"
         }
     ]

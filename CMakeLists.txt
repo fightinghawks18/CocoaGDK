@@ -6,7 +6,6 @@ add_subdirectory("src/graphics")
 add_subdirectory("src/math")
 add_subdirectory("src/platform")
 add_subdirectory("src/tools")
-add_subdirectory("src/vulkan")
 add_subdirectory("src/opengl")
 
 include("cmake/content.cmake")

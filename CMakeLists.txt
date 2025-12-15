@@ -7,6 +7,7 @@ add_subdirectory("src/math")
 add_subdirectory("src/platform")
 add_subdirectory("src/tools")
 add_subdirectory("src/vulkan")
+add_subdirectory("src/opengl")
 
 include("cmake/content.cmake")
 
@@ -18,5 +19,5 @@ copy_content_directory("shaders")
 
 target_link_libraries(cocoa_engine
         PRIVATE cocoa_platform
-        PRIVATE cocoa_vulkan
+        PRIVATE cocoa_opengl
 )

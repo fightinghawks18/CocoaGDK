@@ -16,12 +16,14 @@ LRESULT Wndproc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
     if (uMsg == WM_NCCREATE) {
         CREATESTRUCT *cs = (CREATESTRUCT *)lParam;
         SetWindowLongPtr(hWnd, GWLP_USERDATA, (LONG_PTR)cs->lpCreateParams);
+        window = (CcoWindow)cs->lpCreateParams;
+    } else {
+        window = (CcoWindow)GetWindowLongPtr(hWnd, GWLP_USERDATA);
     }
-    window = (CcoWindow)GetWindowLongPtr(hWnd, GWLP_USERDATA);
 
-    if (uMsg == WM_DESTROY) {
+    if (uMsg == WM_CLOSE) {
         window->shouldClose = true;
-        return FALSE;
+        return 0;
     }
     return DefWindowProc(hWnd, uMsg, wParam, lParam);
 }
@@ -53,7 +55,7 @@ CcoResult ccoCreateWindow(const CcoWindowDesc *desc, CcoWindow *outWindow) {
     if (!window)
         return CCO_FAIL_OUT_OF_MEMORY;
     HWND hWnd = CreateWindowEx(0, "CocoaWindow", desc->title, WS_OVERLAPPEDWINDOW, desc->x, desc->y, desc->w, desc->h,
-                               NULL, NULL, GetModuleHandle(NULL), &window);
+                               NULL, NULL, GetModuleHandle(NULL), window);
     if (!hWnd) {
         CCO_LOG("Windows failed to create window!");
         return CCO_FAIL_WINDOWING_CREATE_ERROR;

@@ -1,0 +1,23 @@
+//
+// Created by fightinghawks18 on 12/15/2025.
+//
+
+#include "opengl/opengl_loader.h"
+
+#include <windows.h>
+
+void *ccoGetGLProcAddr(const char *addrName) {
+    // Test WGL for extensions first
+    void *proc = (void*)wglGetProcAddress(addrName);
+    if (proc) {
+        return proc;
+    }
+
+    // Fall back to GetProcAddress if WGL failed
+    static HMODULE opengl32 = NULL;
+    if (!opengl32) {
+        opengl32 = LoadLibraryA("opengl32.dll");
+    }
+
+    return (void*)GetProcAddress(opengl32, addrName);
+}

@@ -1,4 +1,5 @@
 cmake_minimum_required(VERSION 3.20)
+
 project(cocoa_engine C)
 
 add_subdirectory("src/core")
@@ -20,3 +21,7 @@ target_link_libraries(cocoa_engine
         PRIVATE cocoa_platform
         PRIVATE cocoa_opengl
 )
+
+if(WIN32)
+    add_compile_definitions(WIN32_LEAN_AND_MEAN)
+endif()

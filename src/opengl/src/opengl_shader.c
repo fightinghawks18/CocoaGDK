@@ -9,7 +9,12 @@
 #include <glad/glad.h>
 #include <stdio.h>
 #include <stdlib.h>
+
+#ifdef _WIN32
+#include <errno.h>
+#else
 #include <sys/errno.h>
+#endif
 
 CcoResult readFile(const char *filepath, char **source) {
     FILE *file = fopen(filepath, "rb");

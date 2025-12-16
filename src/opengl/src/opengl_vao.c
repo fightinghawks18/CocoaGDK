@@ -31,15 +31,17 @@ void ccoDestroyOpenGLVao(CcoOpenGLVao vao) {
 void ccoUseOpenGLVao(CcoOpenGLVao vao) { glBindVertexArray(vao->glID); }
 
 void ccoSetOpenGLVaoLayout(CcoOpenGLVao vao, CcoOpenGLVbo vbo, CcoOpenGLEbo ebo, const CcoVertexLayout *layout) {
-    ccoUseOpenGLVbo(vbo);
-    ccoUseOpenGLEbo(ebo);
     ccoUseOpenGLVao(vao);
+    ccoUseOpenGLVbo(vbo);
     for (u32 i = 0; i < layout->attributeCount; i++) {
         const CcoVertexAttribute attribute = layout->attributes[i];
         glVertexAttribPointer(attribute.location, (i32)attribute.numComponents, GL_FLOAT, GL_FALSE,
-                              (i32)attribute.stride, NULL);
+                              (i32)attribute.stride, (void *)(uintptr_t)attribute.offset);
         glEnableVertexAttribArray(attribute.location);
     }
+
+    ccoUseOpenGLEbo(ebo);
+
     ccoRemoveCurrentOpenGLVao();
 }
 

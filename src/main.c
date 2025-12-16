@@ -3,6 +3,7 @@
 #include <glad/glad.h>
 
 #include "opengl/opengl_context.h"
+#include "opengl/opengl_core.h"
 #include "opengl/opengl_ebo.h"
 #include "opengl/opengl_loader.h"
 #include "opengl/opengl_pipeline.h"
@@ -31,15 +32,12 @@ int main() {
     ccoCreateOpenGLContext(ccoGetNativeWindowHandle(window), NULL, &glCtx);
     ccoMakeCurrentOpenGLContext(glCtx);
 
-    if (!gladLoadGLLoader(ccoGetGLProcAddr)) {
-        CCO_LOG("Failed to load glad!");
-        return -1;
-    }
+    ccoInitializeOpenGL();
 
     CcoVertex vertices[3] = {
-        {{0.0f, 1.0f, 0.0f}, {1.0f, 0.0f, 0.0f, 1.0f}},
-        {{1.0f, -1.0f, 0.0f}, {0.0f, 1.0f, 0.0f, 1.0f}},
-        {{-1.0f, -1.0f, 0.0f}, {0.0f, 0.0f, 1.0f, 1.0f}},
+        {{0.0f, 0.5f, 0.0f}, {1.0f, 0.0f, 0.0f, 1.0f}},
+        {{0.5f, -0.5f, 0.0f}, {0.0f, 1.0f, 0.0f, 1.0f}},
+        {{-0.5f, -0.5f, 0.0f}, {0.0f, 0.0f, 1.0f, 1.0f}},
     };
 
     u32 indices[3] = {0, 1, 2};
@@ -48,7 +46,7 @@ int main() {
     CcoVector3 rotation = ccoCreateVector3(0, 0, 0);
     CcoVector3 scale = ccoCreateVector3(1, 1, 1);
 
-    CcoVector3 cameraPosition = ccoCreateVector3(0, 0, 12.0f);
+    CcoVector3 cameraPosition = ccoCreateVector3(0, 0, 5.0f);
 
     CcoMatrix4X4 modelMatrix = ccoCreateModelMatrix4X4(
         ccoCreateTranslationMatrix4X4(position), ccoCreateRotationMatrix4X4(rotation), ccoCreateScaleMatrix4x4(scale));
@@ -99,14 +97,14 @@ int main() {
 
         CcoWindowFramebufferSize windowFramebufferSize = ccoGetWindowFramebufferSize(window);
 
-        rotation = ccoAddVector3_Vector3(rotation, ccoCreateVector3(0.0005f, 0, 0));
+        rotation = ccoAddVector3_Vector3(rotation, ccoCreateVector3(0.0f, 0.0f, 0));
 
         projectionMatrix = ccoCreatePerspectiveMatrix4X4(
             ccoDegreesToRadian(80.0f), (f32)windowFramebufferSize.w / (f32)windowFramebufferSize.h, 0.001f, 100.0f);
         mvpBuffer.projection = ccoTransposeMatrix4X4(projectionMatrix);
 
-        modelMatrix = ccoCreateModelMatrix4X4(
-        ccoCreateTranslationMatrix4X4(position), ccoCreateRotationMatrix4X4(rotation), ccoCreateScaleMatrix4x4(scale));
+        modelMatrix = ccoCreateModelMatrix4X4(ccoCreateTranslationMatrix4X4(position),
+                                              ccoCreateRotationMatrix4X4(rotation), ccoCreateScaleMatrix4x4(scale));
         mvpBuffer.model = ccoTransposeMatrix4X4(modelMatrix);
 
         ccoMapToOpenGLUbo(ubo, &(CcoBufferMapping){.dataSize = sizeof(CcoModelViewProjection),
@@ -116,18 +114,20 @@ int main() {
                                                    .dataOffset = offsetof(CcoModelViewProjection, model),
                                                    .data = &mvpBuffer.model});
 
-        glViewport(0, 0, (i32)windowFramebufferSize.w, (i32)windowFramebufferSize.h);
-        glClearColor(0.07f, 0.07f, 0.07f, 1.0f);
-        glClear(GL_COLOR_BUFFER_BIT);
-
-        glDisable(GL_DEPTH_TEST);
-        glDisable(GL_CULL_FACE);
+        ccoSetOpenGLViewport((CcoViewport){.x = 0,
+                                           .y = 0,
+                                           .w = (i32)windowFramebufferSize.w,
+                                           .h = (i32)windowFramebufferSize.h,
+                                           .minDepth = 0.0f,
+                                           .maxDepth = 1.0f});
+        ccoSetOpenGLClearColor((CcoClearColor){.r = 0.12f, .g = 0.12f, .b = 0.12f, .a = 1.0f});
+        ccoClearOpenGLBuffers(CCO_OPENGL_COLOR_BUFFER_BIT | CCO_OPENGL_DEPTH_BUFFER_BIT);
 
         ccoUseOpenGLPipeline(pip);
         ccoUseOpenGLVao(vao);
         ccoUseOpenGLUbo(&(CcoOpenGLUboBinding){.type = CCO_OPENGL_UBO_BINDING_BLOCK_NAME, .pip = pip, .name = "MVP"},
                         ubo);
-        glDrawElements(GL_TRIANGLES, 3, GL_UNSIGNED_INT, NULL);
+        ccoDrawOpenGLElements(CCO_OPENGL_PRIMITIVE_TRIANGLES, 3, CCO_OPENGL_INDEX_TYPE_U32);
 
         ccoFlushOpenGLContextBuffer(glCtx);
     }

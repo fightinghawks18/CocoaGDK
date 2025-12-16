@@ -38,8 +38,8 @@ typedef struct {
 typedef struct {
     i32 x, y;
     i32 w, h;
-    u32 minDepth; ///< @brief The smallest depth value allowed (clamps depths smaller than this)
-    u32 maxDepth; ///< @brief The largest depth value allowed (clamps depths larger than this)
+    f32 minDepth; ///< @brief The smallest depth value allowed (clamps depths smaller than this)
+    f32 maxDepth; ///< @brief The largest depth value allowed (clamps depths larger than this)
 } CcoViewport;
 
 /// @brief A definition of a single point in a geometric object

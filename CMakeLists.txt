@@ -2,6 +2,9 @@ cmake_minimum_required(VERSION 3.20)
 
 project(cocoa_engine C)
 
+set(CMAKE_C_STANDARD 17)
+set(CMAKE_C_STANDARD_REQUIRED 17)
+
 add_subdirectory("src/core")
 add_subdirectory("src/graphics")
 add_subdirectory("src/math")

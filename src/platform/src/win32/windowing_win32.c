@@ -6,6 +6,8 @@
 
 #include <windows.h>
 
+static u32 DEFAULT_DPI_SCALE = 96;
+
 typedef struct CcoWindow_T {
     HWND hWnd;
     bool shouldClose;
@@ -87,6 +89,21 @@ CcoWindowDimensions ccoGetWindowDimensions(CcoWindow window) {
     const i32 width = rect.right - rect.left;
     const i32 height = rect.bottom - rect.top;
     return (CcoWindowDimensions){rect.left, rect.top, width, height};
+}
+
+CcoWindowFramebufferSize ccoGetWindowFramebufferSize(CcoWindow window) {
+    const u32 dpi = GetDpiForWindow(window->hWnd);
+    const u32 dpiScale = dpi / DEFAULT_DPI_SCALE;
+
+    RECT clientRect;
+    GetClientRect(window->hWnd, &clientRect);
+
+    const i32 logicalWidth = clientRect.right - clientRect.left;
+    const i32 logicalHeight = clientRect.bottom - clientRect.top;
+    const i32 width = (i32)(logicalWidth * dpiScale);
+    const i32 height = (i32)(logicalHeight * dpiScale);
+
+    return (CcoWindowFramebufferSize){width, height};
 }
 
 bool ccoShouldWindowClose(CcoWindow window) { return window->shouldClose; }

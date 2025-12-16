@@ -1,15 +1,13 @@
 #include <stdio.h>
 
-#include <glad/glad.h>
-
 #include "opengl/opengl_context.h"
 #include "opengl/opengl_core.h"
 #include "opengl/opengl_ebo.h"
-#include "opengl/opengl_loader.h"
 #include "opengl/opengl_pipeline.h"
 #include "opengl/opengl_shader.h"
 #include "opengl/opengl_ubo.h"
 #include "opengl/opengl_vao.h"
+#include "platform/utils.h"
 #include "platform/windowing.h"
 
 int main() {
@@ -46,7 +44,7 @@ int main() {
     CcoVector3 rotation = ccoCreateVector3(0, 0, 0);
     CcoVector3 scale = ccoCreateVector3(1, 1, 1);
 
-    CcoVector3 cameraPosition = ccoCreateVector3(0, 0, 5.0f);
+    CcoVector3 cameraPosition = ccoCreateVector3(0, 0, 1.0f);
 
     CcoMatrix4X4 modelMatrix = ccoCreateModelMatrix4X4(
         ccoCreateTranslationMatrix4X4(position), ccoCreateRotationMatrix4X4(rotation), ccoCreateScaleMatrix4x4(scale));
@@ -97,29 +95,20 @@ int main() {
 
         CcoWindowFramebufferSize windowFramebufferSize = ccoGetWindowFramebufferSize(window);
 
-        rotation = ccoAddVector3_Vector3(rotation, ccoCreateVector3(0.0f, 0.0f, 0));
-
         projectionMatrix = ccoCreatePerspectiveMatrix4X4(
             ccoDegreesToRadian(80.0f), (f32)windowFramebufferSize.w / (f32)windowFramebufferSize.h, 0.001f, 100.0f);
         mvpBuffer.projection = ccoTransposeMatrix4X4(projectionMatrix);
 
-        modelMatrix = ccoCreateModelMatrix4X4(ccoCreateTranslationMatrix4X4(position),
-                                              ccoCreateRotationMatrix4X4(rotation), ccoCreateScaleMatrix4x4(scale));
-        mvpBuffer.model = ccoTransposeMatrix4X4(modelMatrix);
-
         ccoMapToOpenGLUbo(ubo, &(CcoBufferMapping){.dataSize = sizeof(CcoModelViewProjection),
                                                    .dataOffset = offsetof(CcoModelViewProjection, projection),
                                                    .data = &mvpBuffer.projection});
-        ccoMapToOpenGLUbo(ubo, &(CcoBufferMapping){.dataSize = sizeof(CcoModelViewProjection),
-                                                   .dataOffset = offsetof(CcoModelViewProjection, model),
-                                                   .data = &mvpBuffer.model});
 
         ccoSetOpenGLViewport((CcoViewport){.x = 0,
                                            .y = 0,
                                            .w = (i32)windowFramebufferSize.w,
                                            .h = (i32)windowFramebufferSize.h,
-                                           .minDepth = 0.0f,
-                                           .maxDepth = 1.0f});
+                                           .minDepth = 0,
+                                           .maxDepth = 1});
         ccoSetOpenGLClearColor((CcoClearColor){.r = 0.12f, .g = 0.12f, .b = 0.12f, .a = 1.0f});
         ccoClearOpenGLBuffers(CCO_OPENGL_COLOR_BUFFER_BIT | CCO_OPENGL_DEPTH_BUFFER_BIT);
 
@@ -130,6 +119,8 @@ int main() {
         ccoDrawOpenGLElements(CCO_OPENGL_PRIMITIVE_TRIANGLES, 3, CCO_OPENGL_INDEX_TYPE_U32);
 
         ccoFlushOpenGLContextBuffer(glCtx);
+
+        ccoSleep(5);
     }
 
     ccoCloseWindow(window);

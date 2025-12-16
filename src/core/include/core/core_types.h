@@ -42,6 +42,7 @@ typedef enum {
     CCO_FAIL_GRAPHICS_INIT_ERROR,                 ///< @brief The graphics system failed to initialize
     CCO_FAIL_GRAPHICS_NO_ADAPTERS_ERROR,          ///< @brief The graphics system failed to find any adapters available
     CCO_FAIL_GRAPHICS_NO_SUITABLE_ADAPTERS_ERROR, ///< @brief The graphics system failed to find a suitable adapter
+    CCO_FAIL_GRAPHICS_CREATE_ERROR,               ///< @brief Failed to create a graphics resource
     CCO_FAIL_COMPILE_ERROR,                       ///< @brief Failed to compile a file
     CCO_FAIL_PIPELINE_CREATE_ERROR,               ///< @brief Failed to create a pipeline
     CCO_FAIL_WINDOWING_INIT_ERROR,                ///< @brief Failed to initialize the windowing system

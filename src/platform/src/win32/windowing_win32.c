@@ -62,6 +62,8 @@ CcoResult ccoCreateWindow(const CcoWindowDesc *desc, CcoWindow *outWindow) {
     window->hWnd = hWnd;
     window->shouldClose = false;
 
+    ShowWindow(window->hWnd, SW_SHOW);
+
     *outWindow = window;
     return CCO_SUCCESS;
 }

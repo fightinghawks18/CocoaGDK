@@ -31,4 +31,9 @@ if(APPLE)
     target_link_libraries(cocoa_opengl
             PRIVATE "-framework AppKit"
     )
+elseif(WIN32)
+    target_sources(cocoa_opengl
+            PRIVATE src/opengl_context_win32.c
+            PRIVATE src/opengl_loader_win32.c
+    )
 endif()

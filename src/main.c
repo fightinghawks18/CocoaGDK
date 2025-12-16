@@ -109,7 +109,7 @@ int main() {
 
         ccoUseOpenGLPipeline(pip);
         ccoUseOpenGLVao(vao);
-        glDrawElements(GL_TRIANGLES, 3, GL_UNSIGNED_INT, 0);
+        glDrawElements(GL_TRIANGLES, 3, GL_UNSIGNED_INT, NULL);
 
         ccoFlushOpenGLContextBuffer(glCtx);
     }

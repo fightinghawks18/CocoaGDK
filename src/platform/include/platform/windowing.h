@@ -52,6 +52,10 @@ typedef struct {
     i32 x, y, w, h;
 } CcoWindowDimensions;
 
+typedef struct {
+    f64 w, h;
+} CcoWindowFramebufferSize;
+
 CcoResult ccoWindowingInit();
 void ccoWindowingPoll();
 void ccoWindowingQuit();
@@ -61,6 +65,12 @@ void ccoSetWindowShouldClose(CcoWindow window, bool close);
 void ccoCloseWindow(CcoWindow window);
 CcoWindowNativeHandle ccoGetNativeWindowHandle(CcoWindow window);
 CcoWindowDimensions ccoGetWindowDimensions(CcoWindow window);
+
+/// @brief Returns the dimensions of this window with DPI accounted for
+/// @note DPI introduces a scaling factor to screens which may not return
+/// a true scale for framebuffers
+/// @returns Window framebuffer size
+CcoWindowFramebufferSize ccoGetWindowFramebufferSize(CcoWindow window);
 bool ccoShouldWindowClose(CcoWindow window);
 
 #ifdef CCO_PLATFORM_USE_VULKAN

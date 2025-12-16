@@ -118,6 +118,21 @@ CcoWindowNativeHandle ccoGetNativeWindowHandle(CcoWindow window) {
     return (__bridge CcoWindowNativeHandle)window->window;
 }
 
+CcoWindowDimensions ccoGetWindowDimensions(CcoWindow window) {
+    NSRect rect = [window->window frame];
+    return (CcoWindowDimensions){(i32)rect.origin.x, (i32)rect.origin.y, (i32)rect.size.width, (i32)rect.size.height};
+}
+
+CcoWindowFramebufferSize ccoGetWindowFramebufferSize(CcoWindow window) {
+    NSRect bounds = [[window->window contentView] bounds];
+    CGFloat dpiScale = [window->window backingScaleFactor];
+
+    CGFloat width = bounds.size.width * dpiScale;
+    CGFloat height = bounds.size.height * dpiScale;
+
+    return (CcoWindowFramebufferSize){width, height};
+}
+
 bool ccoShouldWindowClose(CcoWindow window) { return window->shouldClose; }
 
 VkSurfaceKHR ccoCreateWindowVulkanSurface(VkInstance instance, CcoWindow window) {

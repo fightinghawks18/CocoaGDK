@@ -95,12 +95,14 @@ int main() {
     while (!ccoShouldWindowClose(window)) {
         ccoWindowingPoll();
 
-        CcoWindowDimensions windowDimensions = ccoGetWindowDimensions(window);
+        ccoMakeCurrentOpenGLContext(glCtx);
+
+        CcoWindowFramebufferSize windowFramebufferSize = ccoGetWindowFramebufferSize(window);
 
         rotation = ccoAddVector3_Vector3(rotation, ccoCreateVector3(0.0005f, 0, 0));
 
         projectionMatrix = ccoCreatePerspectiveMatrix4X4(
-            ccoDegreesToRadian(80.0f), (f32)windowDimensions.w / (f32)windowDimensions.h, 0.001f, 100.0f);
+            ccoDegreesToRadian(80.0f), (f32)windowFramebufferSize.w / (f32)windowFramebufferSize.h, 0.001f, 100.0f);
         mvpBuffer.projection = ccoTransposeMatrix4X4(projectionMatrix);
 
         modelMatrix = ccoCreateModelMatrix4X4(
@@ -114,7 +116,7 @@ int main() {
                                                    .dataOffset = offsetof(CcoModelViewProjection, model),
                                                    .data = &mvpBuffer.model});
 
-        glViewport(0, 0, windowDimensions.w, windowDimensions.h);
+        glViewport(0, 0, (i32)windowFramebufferSize.w, (i32)windowFramebufferSize.h);
         glClearColor(0.07f, 0.07f, 0.07f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
 

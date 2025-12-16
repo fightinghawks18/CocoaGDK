@@ -22,6 +22,11 @@ target_link_libraries(cocoa_engine
         PRIVATE cocoa_opengl
 )
 
+add_compile_definitions(
+        $<$<CONFIG:Debug>:DEBUG>
+        $<$<CONFIG:Release>:NDEBUG>
+)
+
 if(WIN32)
     add_compile_definitions(WIN32_LEAN_AND_MEAN)
 endif()

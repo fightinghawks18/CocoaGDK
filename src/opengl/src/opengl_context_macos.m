@@ -16,12 +16,18 @@ CcoResult ccoCreateOpenGLContext(void *windowHandle, void *displayHandle, CcoOpe
     NSOpenGLPixelFormatAttribute attrs[] = {NSOpenGLPFADoubleBuffer,  NSOpenGLPFADepthSize,          24,
                                             NSOpenGLPFAOpenGLProfile, NSOpenGLProfileVersion4_1Core, 0};
 
+    NSWindow *window = (__bridge NSWindow *)windowHandle;
+    NSRect frame = [window frame];
+
     NSOpenGLPixelFormat *pxFormat = [[NSOpenGLPixelFormat alloc] initWithAttributes:attrs];
-    NSOpenGLContext *glContext = [[NSOpenGLContext alloc] initWithFormat:pxFormat shareContext:nil];
+    NSOpenGLView *glView = [[NSOpenGLView alloc] initWithFrame:frame pixelFormat:pxFormat];
+    [window setContentView:glView];
     [pxFormat release];
 
-    [glContext setView:[(__bridge NSWindow *)windowHandle contentView]];
+    NSOpenGLContext *glContext = [glView openGLContext];
     openGLContext->ctx = glContext;
+    [glView setWantsBestResolutionOpenGLSurface:YES];
+    [glView setAutoresizingMask:NSViewWidthSizable | NSViewHeightSizable];
 
     *outOpenGLContext = openGLContext;
     return CCO_SUCCESS;

@@ -44,6 +44,6 @@ void ccoDestroyOpenGLPipeline(CcoOpenGLPipeline pipeline) {
     free(pipeline);
 }
 
-void ccoUseOpenGLPipeline(CcoOpenGLPipeline pipeline) { glBindProgramPipeline(pipeline->glID); }
+void ccoUseOpenGLPipeline(CcoOpenGLPipeline pipeline) { glUseProgram(pipeline->glID); }
 
 u32 ccoGetOpenGLPipelineID(CcoOpenGLPipeline pipeline) { return pipeline->glID; }

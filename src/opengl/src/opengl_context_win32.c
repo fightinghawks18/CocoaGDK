@@ -5,6 +5,8 @@
 #include "opengl/opengl_context.h"
 
 #include <windows.h>
+#include <gl/GL.h>
+#include <gl/wglext.h>
 
 struct CcoOpenGLContext_T {
     HGLRC ctx;
@@ -44,12 +46,34 @@ CcoResult ccoCreateOpenGLContext(void *windowHandle, void *displayHandle, CcoOpe
         return CCO_FAIL_GRAPHICS_CREATE_ERROR;
     }
 
-    openGLContext->ctx = wglCreateContext(hdc);
-    if (!openGLContext->ctx) {
+    HGLRC dumCtx = wglCreateContext(hdc);
+    if (!dumCtx) {
         CCO_LOG("Windows failed to create an OpenGL context!");
         free(openGLContext);
         return CCO_FAIL_GRAPHICS_CREATE_ERROR;
     }
+    wglMakeCurrent(hdc, dumCtx);
+
+    PFNWGLCREATECONTEXTATTRIBSARBPROC wglCreateContextAttribsARB = (PFNWGLCREATECONTEXTATTRIBSARBPROC)wglGetProcAddress("wglCreateContextAttribsARB");
+    if (!wglCreateContextAttribsARB) {
+        CCO_LOG("Windows failed to load the wglCreateContextAttribsARB function!");
+        free(openGLContext);
+        wglDeleteContext(dumCtx);
+        return CCO_FAIL_GRAPHICS_CREATE_ERROR;
+    }
+
+    int attribs[] = {
+        WGL_CONTEXT_MAJOR_VERSION_ARB, 3,
+        WGL_CONTEXT_MINOR_VERSION_ARB, 3,
+        WGL_CONTEXT_PROFILE_MASK_ARB, WGL_CONTEXT_CORE_PROFILE_BIT_ARB,
+        0
+    };
+
+    HGLRC ctx = wglCreateContextAttribsARB(hdc, 0, attribs);
+    wglMakeCurrent(NULL, NULL);
+    wglDeleteContext(dumCtx);
+
+    openGLContext->ctx = ctx;
     openGLContext->hdc = hdc;
 
     *outOpenGLContext = openGLContext;

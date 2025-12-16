@@ -3,8 +3,8 @@
 //
 
 #include "opengl/opengl_ubo.h"
-#include <stdlib.h>
 #include <glad/glad.h>
+#include <stdlib.h>
 #include "opengl/opengl_types.h"
 
 struct CcoOpenGLUbo_T {
@@ -28,14 +28,35 @@ void ccoDestroyOpenGLUbo(CcoOpenGLUbo ubo) {
     free(ubo);
 }
 
-void ccoUseOpenGLUbo(CcoOpenGLUbo ubo) { glBindBuffer(GL_UNIFORM_BUFFER, ubo->glID); }
+void ccoUseOpenGLUbo(const CcoOpenGLUboBinding *binding, CcoOpenGLUbo ubo) {
+    glBindBuffer(GL_UNIFORM_BUFFER, ubo->glID);
+    if (!binding)
+        return;
+
+    switch (binding->type) {
+    case CCO_OPENGL_UBO_BINDING_BINDING: {
+        glBindBufferBase(GL_UNIFORM_BUFFER, binding->binding, ubo->glID);
+        break;
+    }
+    case CCO_OPENGL_UBO_BINDING_BLOCK_NAME: {
+        if (!binding->pip)
+            break;
+        const u32 blockIndex = glGetUniformBlockIndex(ccoGetOpenGLPipelineID(binding->pip), binding->name);
+
+        u32 bindingPoint = 0;
+        glUniformBlockBinding(ccoGetOpenGLPipelineID(binding->pip), blockIndex, bindingPoint);
+        glBindBufferBase(GL_UNIFORM_BUFFER, bindingPoint, ubo->glID);
+        break;
+    }
+    }
+}
 
 void ccoMapToOpenGLUbo(CcoOpenGLUbo ubo, const CcoBufferMapping *mapping) {
-    ccoUseOpenGLUbo(ubo);
+    ccoUseOpenGLUbo(NULL, ubo);
     if (mapping->dataOffset > 0) {
         glBufferSubData(GL_UNIFORM_BUFFER, (long)mapping->dataOffset, (long)mapping->dataSize, mapping->data);
     } else {
-        glBufferData(GL_UNIFORM_BUFFER, mapping->dataSize, mapping->data, GL_DYNAMIC_DRAW);
+        glBufferData(GL_UNIFORM_BUFFER, (long)mapping->dataSize, mapping->data, GL_DYNAMIC_DRAW);
     }
 }
 

@@ -41,8 +41,10 @@ static CcoMatrix4X4 ccoMultiplyMatrix4X4_Matrix4X4(const CcoMatrix4X4 matrix4x4_
     CcoMatrix4X4 result = ccoCreateMatrix4X4();
     for (u32 i = 0; i < 4; i++) {
         for (u32 j = 0; j < 4; j++) {
-            result.m[i][j] = matrix4x4_a.m[0][j] * matrix4x4_b.m[i][0] + matrix4x4_a.m[1][j] * matrix4x4_b.m[i][1] +
-                             matrix4x4_a.m[2][j] * matrix4x4_b.m[i][2] + matrix4x4_a.m[3][j] * matrix4x4_b.m[i][3];
+            result.m[i][j] = matrix4x4_a.m[i][0] * matrix4x4_b.m[0][j] +
+                 matrix4x4_a.m[i][1] * matrix4x4_b.m[1][j] +
+                 matrix4x4_a.m[i][2] * matrix4x4_b.m[2][j] +
+                 matrix4x4_a.m[i][3] * matrix4x4_b.m[3][j];
         }
     }
     return result;
@@ -121,8 +123,8 @@ static CcoMatrix4X4 ccoCreatePerspectiveMatrix4X4(const CcoRadians fov, const f3
     result.m[0][0] = xZoom;
     result.m[1][1] = yZoom;
     result.m[2][2] = coefficient;
-    result.m[2][3] = -1.0f;
-    result.m[3][2] = constantOffset;
+    result.m[2][3] = constantOffset;
+    result.m[3][2] = -1.0f;
     result.m[3][3] = 0.0f;
 
     return result;

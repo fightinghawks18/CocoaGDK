@@ -31,10 +31,11 @@ void ccoDestroyOpenGLVbo(CcoOpenGLVbo vbo) {
 void ccoUseOpenGLVbo(CcoOpenGLVbo vbo) { glBindBuffer(GL_ARRAY_BUFFER, vbo->glID); }
 
 void ccoMapToOpenGLVbo(CcoOpenGLVbo vbo, const CcoBufferMapping *mapping) {
+    ccoUseOpenGLVbo(vbo);
     if (mapping->dataOffset > 0) {
         glBufferSubData(GL_ARRAY_BUFFER, (long)mapping->dataOffset, (long)mapping->dataSize, mapping->data);
     } else {
-        glBufferData(GL_ARRAY_BUFFER, mapping->dataSize, mapping->data, GL_STATIC_DRAW);
+        glBufferData(GL_ARRAY_BUFFER, (long)mapping->dataSize, mapping->data, GL_STATIC_DRAW);
     }
 }
 

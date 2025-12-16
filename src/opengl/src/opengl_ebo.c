@@ -31,6 +31,7 @@ void ccoDestroyOpenGLEbo(CcoOpenGLEbo ebo) {
 void ccoUseOpenGLEbo(CcoOpenGLEbo ebo) { glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo->glID); }
 
 void ccoMapToOpenGLEbo(CcoOpenGLEbo ebo, const CcoBufferMapping *mapping) {
+    ccoUseOpenGLEbo(ebo);
     if (mapping->dataOffset > 0) {
         glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, (long)mapping->dataOffset, (long)mapping->dataSize, mapping->data);
     } else {

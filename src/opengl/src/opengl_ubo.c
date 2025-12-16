@@ -31,6 +31,7 @@ void ccoDestroyOpenGLUbo(CcoOpenGLUbo ubo) {
 void ccoUseOpenGLUbo(CcoOpenGLUbo ubo) { glBindBuffer(GL_UNIFORM_BUFFER, ubo->glID); }
 
 void ccoMapToOpenGLUbo(CcoOpenGLUbo ubo, const CcoBufferMapping *mapping) {
+    ccoUseOpenGLUbo(ubo);
     if (mapping->dataOffset > 0) {
         glBufferSubData(GL_UNIFORM_BUFFER, (long)mapping->dataOffset, (long)mapping->dataSize, mapping->data);
     } else {

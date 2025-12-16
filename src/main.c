@@ -102,7 +102,7 @@ int main() {
         mvpBuffer.projection = ccoTransposeMatrix4X4(projectionMatrix);
         ccoMapToOpenGLUbo(ubo, &(CcoBufferMapping){.dataSize = sizeof(CcoModelViewProjection),
                                                    .dataOffset = offsetof(CcoModelViewProjection, projection),
-                                                   .data = &mvpBuffer});
+                                                   .data = &mvpBuffer.projection});
 
         glViewport(0, 0, windowDimensions.w, windowDimensions.h);
         glClearColor(0.07f, 0.07f, 0.07f, 1.0f);

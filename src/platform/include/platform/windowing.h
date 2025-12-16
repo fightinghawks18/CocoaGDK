@@ -48,6 +48,10 @@ typedef struct {
     CcoWindowFlags flags;
 } CcoWindowDesc;
 
+typedef struct {
+    i32 x, y, w, h;
+} CcoWindowDimensions;
+
 CcoResult ccoWindowingInit();
 void ccoWindowingPoll();
 void ccoWindowingQuit();
@@ -56,6 +60,7 @@ CcoResult ccoCreateWindow(const CcoWindowDesc *desc, CcoWindow *outWindow);
 void ccoSetWindowShouldClose(CcoWindow window, bool close);
 void ccoCloseWindow(CcoWindow window);
 CcoWindowNativeHandle ccoGetNativeWindowHandle(CcoWindow window);
+CcoWindowDimensions ccoGetWindowDimensions(CcoWindow window);
 bool ccoShouldWindowClose(CcoWindow window);
 
 #ifdef CCO_PLATFORM_USE_VULKAN

@@ -81,4 +81,12 @@ void ccoCloseWindow(CcoWindow window) {
 
 CcoWindowNativeHandle ccoGetNativeWindowHandle(CcoWindow window) { return window->hWnd; }
 
+CcoWindowDimensions ccoGetWindowDimensions(CcoWindow window) {
+    RECT rect;
+    GetWindowRect(window->hWnd, &rect);
+    const i32 width = rect.right - rect.left;
+    const i32 height = rect.bottom - rect.top;
+    return (CcoWindowDimensions){rect.left, rect.top, width, height};
+}
+
 bool ccoShouldWindowClose(CcoWindow window) { return window->shouldClose; }

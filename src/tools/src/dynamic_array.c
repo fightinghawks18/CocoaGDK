@@ -127,17 +127,17 @@ void ccoClearDynamicArray(CcoDynamicArray *dynArray) {
     dynArray->count = 0;
 }
 
-bool ccoHasObjectInDynamicArray(CcoDynamicArray *dynArray, CcoDynamicArrayObj obj) {
+CcoBool ccoHasObjectInDynamicArray(CcoDynamicArray *dynArray, CcoDynamicArrayObj obj) {
     for (u32 i = 0; i < dynArray->count; i++) {
         if (obj == dynArray->objs[i])
-            return true;
+            return CCO_YES;
     }
-    return false;
+    return CCO_NO;
 }
 
 CcoDynamicArrayObj *ccoGetDynamicArrayObjects(CcoDynamicArray *dynArray) { return dynArray->objs; }
 
-bool ccoIsDynamicArrayEmpty(CcoDynamicArray *dynArray) {
+CcoBool ccoIsDynamicArrayEmpty(CcoDynamicArray *dynArray) {
     return dynArray->count == 0;
 }
 

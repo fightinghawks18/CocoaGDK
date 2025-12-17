@@ -16,7 +16,7 @@ int main() {
         return -1;
     }
 
-    CcoWindow window = CCO_NULL_HANDLE;
+    CcoWindow window = CCO_NIL;
     CcoResult windowResult =
         ccoCreateWindow(&(CcoWindowDesc){CCO_WINDOW_POS_CENTER, CCO_WINDOW_POS_CENTER, 800, 600, "cocoa",
                                          CCO_WINDOW_FLAG_DECOR_BIT | CCO_WINDOW_FLAG_RESIZE_BIT},
@@ -26,7 +26,7 @@ int main() {
         return -1;
     }
 
-    CcoOpenGLContext glCtx = CCO_NULL_HANDLE;
+    CcoOpenGLContext glCtx = CCO_NIL;
     ccoCreateOpenGLContext(ccoGetNativeWindowHandle(window), NULL, &glCtx);
     ccoMakeCurrentOpenGLContext(glCtx);
 
@@ -50,19 +50,19 @@ int main() {
         ccoCreateTranslationMatrix4X4(position), ccoCreateRotationMatrix4X4(rotation), ccoCreateScaleMatrix4x4(scale));
     CcoMatrix4X4 viewMatrix = ccoCreateEyeMatrix4X4(cameraPosition, ccoCreateVector3(0, 0, 0), ccoCreateVector3Up());
     CcoMatrix4X4 projectionMatrix =
-        ccoCreatePerspectiveMatrix4X4(ccoDegreesToRadian(80.0f), 800.0f / 600.0f, 0.001f, 100.0f);
+        ccoCreatePerspectiveMatrix4X4(CCO_NO, CCO_NO, ccoDegreesToRadian(80.0f), 800.0f / 600.0f, 0.001f, 100.0f);
 
     CcoModelViewProjection mvpBuffer = {.model = ccoTransposeMatrix4X4(modelMatrix),
                                         .view = ccoTransposeMatrix4X4(viewMatrix),
                                         .projection = ccoTransposeMatrix4X4(projectionMatrix)};
 
-    CcoOpenGLVbo vbo = CCO_NULL_HANDLE;
-    CcoOpenGLVao vao = CCO_NULL_HANDLE;
-    CcoOpenGLEbo ebo = CCO_NULL_HANDLE;
-    CcoOpenGLUbo ubo = CCO_NULL_HANDLE;
-    CcoOpenGLShader vs = CCO_NULL_HANDLE;
-    CcoOpenGLShader ps = CCO_NULL_HANDLE;
-    CcoOpenGLPipeline pip = CCO_NULL_HANDLE;
+    CcoOpenGLVbo vbo = CCO_NIL;
+    CcoOpenGLVao vao = CCO_NIL;
+    CcoOpenGLEbo ebo = CCO_NIL;
+    CcoOpenGLUbo ubo = CCO_NIL;
+    CcoOpenGLShader vs = CCO_NIL;
+    CcoOpenGLShader ps = CCO_NIL;
+    CcoOpenGLPipeline pip = CCO_NIL;
 
     ccoCreateOpenGLVbo(&vbo);
     ccoCreateOpenGLVao(&vao);
@@ -95,7 +95,7 @@ int main() {
 
         CcoWindowFramebufferSize windowFramebufferSize = ccoGetWindowFramebufferSize(window);
 
-        projectionMatrix = ccoCreatePerspectiveMatrix4X4(
+        projectionMatrix = ccoCreatePerspectiveMatrix4X4(CCO_NO, CCO_NO,
             ccoDegreesToRadian(80.0f), (f32)windowFramebufferSize.w / (f32)windowFramebufferSize.h, 0.001f, 100.0f);
         mvpBuffer.projection = ccoTransposeMatrix4X4(projectionMatrix);
 

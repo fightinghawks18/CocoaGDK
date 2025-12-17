@@ -27,8 +27,8 @@ void ccoPopBackDynamicArray(CcoDynamicArray *dynArray);
 
 void ccoClearDynamicArray(CcoDynamicArray *dynArray);
 
-bool ccoHasObjectInDynamicArray(CcoDynamicArray *dynArray, CcoDynamicArrayObj obj);
-bool ccoIsDynamicArrayEmpty(CcoDynamicArray *dynArray);
+CcoBool ccoHasObjectInDynamicArray(CcoDynamicArray *dynArray, CcoDynamicArrayObj obj);
+CcoBool ccoIsDynamicArrayEmpty(CcoDynamicArray *dynArray);
 
 CcoDynamicArrayObj *ccoGetDynamicArrayObjects(CcoDynamicArray *dynArray);
 CcoDynamicArrayObj *ccoGetDynamicArrayObject(CcoDynamicArray *dynArray, usize pos);

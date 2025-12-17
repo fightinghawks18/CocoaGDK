@@ -10,11 +10,11 @@
 typedef struct CcoWindow_T {
     NSWindow *window;
 
-    bool shouldClose;
-    bool focused;
+    CcoBool shouldClose;
+    CcoBool focused;
 
-    bool keysPressed[512];
-    bool keysPressedLast[512];
+    CcoBool keysPressed[512];
+    CcoBool keysPressedLast[512];
     i32 mouseScroll;
     i32 mousePosX;
     i32 mousePosY;
@@ -28,14 +28,14 @@ typedef struct CcoWindow_T {
 
 @implementation Window
 - (BOOL)windowShouldClose:(NSWindow *)sender {
-    self.window->shouldClose = true;
+    self.window->shouldClose = CCO_YES;
     return NO;
 }
 - (void)windowDidBecomeKey:(NSNotification *)notification {
-    self.window->focused = true;
+    self.window->focused = CCO_YES;
 }
 - (void)windowDidResignKey:(NSNotification *)notification {
-    self.window->focused = false;
+    self.window->focused = CCO_NO;
 }
 @end
 
@@ -104,7 +104,7 @@ CcoResult ccoCreateWindow(const CcoWindowDesc *desc, CcoWindow *outWindow) {
     return CCO_SUCCESS;
 }
 
-void ccoSetWindowShouldClose(CcoWindow window, const bool close) { window->shouldClose = close; }
+void ccoSetWindowShouldClose(CcoWindow window, const CcoBool close) { window->shouldClose = close; }
 
 void ccoCloseWindow(CcoWindow window) {
     if (window->window == NULL)
@@ -133,7 +133,7 @@ CcoWindowFramebufferSize ccoGetWindowFramebufferSize(CcoWindow window) {
     return (CcoWindowFramebufferSize){width, height};
 }
 
-bool ccoShouldWindowClose(CcoWindow window) { return window->shouldClose; }
+CcoBool ccoShouldWindowClose(CcoWindow window) { return window->shouldClose; }
 
 VkSurfaceKHR ccoCreateWindowVulkanSurface(VkInstance instance, CcoWindow window) {
     NSView *view = window->window.contentView;

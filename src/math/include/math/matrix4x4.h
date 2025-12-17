@@ -110,18 +110,25 @@ inline CcoMatrix4X4 ccoCreateScaleMatrix4x4(const CcoVector3 scale) {
     return result;
 }
 
-inline CcoMatrix4X4 ccoCreatePerspectiveMatrix4X4(const CcoRadians fov, const f32 aspectRatio,
+inline CcoMatrix4X4 ccoCreatePerspectiveMatrix4X4(CcoBool flipY, CcoBool zeroToOneDepth, const CcoRadians fov, const f32 aspectRatio,
                                                   const f32 nearClippingPoint, const f32 farClippingPoint) {
     CcoMatrix4X4 result = ccoCreateMatrix4X4();
 
     const CcoRadians tanHalfFov = tan(fov / 2.0f);
     const f32 xZoom = 1.0f / (aspectRatio * (f32)tanHalfFov);
     const f32 yZoom = 1.0f / (f32)tanHalfFov;
-    const f32 coefficient = -(farClippingPoint + nearClippingPoint) / (farClippingPoint - nearClippingPoint);
-    const f32 constantOffset = -(2.0f * farClippingPoint * nearClippingPoint) / (farClippingPoint - nearClippingPoint);
+
+    f32 coefficient, constantOffset;
+    if (zeroToOneDepth) {
+        coefficient = -farClippingPoint / (farClippingPoint - nearClippingPoint);
+        constantOffset = -(farClippingPoint * nearClippingPoint) / (farClippingPoint - nearClippingPoint);
+    } else {
+        coefficient = -(farClippingPoint + nearClippingPoint) / (farClippingPoint - nearClippingPoint);
+        constantOffset = -(2.0f * farClippingPoint * nearClippingPoint) / (farClippingPoint - nearClippingPoint);
+    }
 
     result.m[0][0] = xZoom;
-    result.m[1][1] = yZoom;
+    result.m[1][1] = yZoom * (flipY ? -1.0f : 1.0f);
     result.m[2][2] = coefficient;
     result.m[2][3] = constantOffset;
     result.m[3][2] = -1.0f;

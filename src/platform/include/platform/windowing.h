@@ -6,8 +6,7 @@
 
 #include "core/core_types.h"
 
-#define CCO_WINDOW_SIZE_FILL 0
-#define CCO_WINDOW_POS_CENTER 0
+#define CCO_WINDOW_POS_CENTER 0xFFFF
 
 typedef struct CcoWindow_T CcoWindow_T;
 typedef CcoWindow_T *CcoWindow;
@@ -61,7 +60,7 @@ void ccoWindowingPoll();
 void ccoWindowingQuit();
 
 CcoResult ccoCreateWindow(const CcoWindowDesc *desc, CcoWindow *outWindow);
-void ccoSetWindowShouldClose(CcoWindow window, bool close);
+void ccoSetWindowShouldClose(CcoWindow window, CcoBool close);
 void ccoCloseWindow(CcoWindow window);
 CcoWindowNativeHandle ccoGetNativeWindowHandle(CcoWindow window);
 CcoWindowDimensions ccoGetWindowDimensions(CcoWindow window);
@@ -71,7 +70,7 @@ CcoWindowDimensions ccoGetWindowDimensions(CcoWindow window);
 /// a true scale for framebuffers
 /// @returns Window framebuffer size
 CcoWindowFramebufferSize ccoGetWindowFramebufferSize(CcoWindow window);
-bool ccoShouldWindowClose(CcoWindow window);
+CcoBool ccoShouldWindowClose(CcoWindow window);
 
 #ifdef CCO_PLATFORM_USE_VULKAN
 typedef struct VkSurfaceKHR_T VkSurfaceKHR_T;

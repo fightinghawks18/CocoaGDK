@@ -4,15 +4,13 @@
 
 #pragma once
 
-#include <inttypes.h>
-#include <stdbool.h>
-#include <stddef.h>
 #include <stdint.h>
+#include <stddef.h>
 #include <stdio.h>
 
-#define CCO_NULL_HANDLE NULL
-#define CCO_TRUE 1
-#define CCO_FALSE 0
+#define CCO_NIL NULL
+#define CCO_YES 1
+#define CCO_NO 0
 
 #ifdef DEBUG
 #define CCO_LOG(str, ...) printf(str "\n", ##__VA_ARGS__);
@@ -33,6 +31,8 @@ typedef int64_t i64;
 
 typedef float f32;
 typedef double f64;
+
+typedef u8 CcoBool;
 
 typedef enum {
     CCO_SUCCESS = 0,                              ///< @brief Successfully completed operation

@@ -6,7 +6,7 @@
 typedef struct {
     u64 id;
     void *resource;
-    bool active;
+    CcoBool active;
 } CcoResourceSlot;
 
 struct CcoResourceHandle {
@@ -26,7 +26,7 @@ u32 extractGeneration(u64 id) { return (u32)id; }
 
 void invalidateHandle(CcoResourceHandle *handle) { handle->id = UINT64_MAX; }
 
-bool validateHandle(CcoResourceManager *resourceManager, CcoResourceHandle handle) {
+CcoBool validateHandle(CcoResourceManager *resourceManager, CcoResourceHandle handle) {
     u32 index_handle = extractIndex(handle.id);
     CcoResourceSlot *slot = (CcoResourceSlot *)ccoGetDynamicArrayObject(resourceManager->slotArray, index_handle);
     u32 index_slot = extractIndex(slot->id);
@@ -43,7 +43,7 @@ CcoDynamicArrayObj createResourceSlot(void) {
     
     slot->id = UINT64_MAX;
     slot->resource = NULL;
-    slot->active = false;
+    slot->active = CCO_NO;
     
     return slot;
 }
@@ -83,7 +83,7 @@ CcoResourceHandle ccoAllocateResource(CcoResourceManager *resourceManager, usize
         gen = extractGeneration(slot->id);
     }
     slot->id = createId(index, gen);
-    slot->active = true;
+    slot->active = CCO_YES;
     return (CcoResourceHandle){slot->id};
 }
 
@@ -96,7 +96,7 @@ void ccoDestroyResource(CcoResourceManager *resourceManager, CcoResourceHandle *
     CcoResourceSlot *slot = (CcoResourceSlot*)ccoGetDynamicArrayObject(resourceManager->slotArray, extractIndex(handle->id));
     free(slot->resource);
     slot->resource = NULL;
-    slot->active = false;
+    slot->active = CCO_NO;
 
     u32 gen = extractGeneration(slot->id) + 1;
     u32 index = extractIndex(slot->id);

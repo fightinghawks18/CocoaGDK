@@ -10,11 +10,11 @@ static u32 DEFAULT_DPI_SCALE = 96;
 
 typedef struct CcoWindow_T {
     HWND hWnd;
-    bool shouldClose;
+    CcoBool shouldClose;
 } CcoWindow_T;
 
 LRESULT Wndproc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
-    CcoWindow window = CCO_NULL_HANDLE;
+    CcoWindow window = CCO_NIL;
     if (uMsg == WM_NCCREATE) {
         CREATESTRUCT *cs = (CREATESTRUCT *)lParam;
         SetWindowLongPtr(hWnd, GWLP_USERDATA, (LONG_PTR)cs->lpCreateParams);
@@ -23,9 +23,20 @@ LRESULT Wndproc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
         window = (CcoWindow)GetWindowLongPtr(hWnd, GWLP_USERDATA);
     }
 
-    if (uMsg == WM_CLOSE) {
-        window->shouldClose = true;
+    switch (uMsg) {
+    case WM_CLOSE: {
+        window->shouldClose = CCO_YES;
         return 0;
+    }
+    case WM_SETCURSOR: {
+        if (LOWORD(lParam) == HTCLIENT) {
+            SetCursor(LoadCursor(NULL, IDC_ARROW));
+            return TRUE;
+        }
+        break;
+    }
+    default:
+        break;
     }
     return DefWindowProc(hWnd, uMsg, wParam, lParam);
 }
@@ -33,6 +44,7 @@ LRESULT Wndproc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
 CcoResult ccoWindowingInit() {
     WNDCLASS wc = {};
     wc.lpfnWndProc = &Wndproc;
+    wc.style = CS_HREDRAW | CS_VREDRAW;
     wc.hInstance = GetModuleHandle(NULL);
     wc.lpszClassName = "CocoaWindow";
     if (!RegisterClass(&wc)) {
@@ -56,15 +68,31 @@ CcoResult ccoCreateWindow(const CcoWindowDesc *desc, CcoWindow *outWindow) {
     CcoWindow window = malloc(sizeof(CcoWindow_T));
     if (!window)
         return CCO_FAIL_OUT_OF_MEMORY;
-    HWND hWnd = CreateWindowEx(0, "CocoaWindow", desc->title, WS_OVERLAPPEDWINDOW, desc->x, desc->y, desc->w, desc->h,
-                               NULL, NULL, GetModuleHandle(NULL), window);
+
+    const i32 width = desc->w;
+    const i32 height = desc->h;
+
+    DWORD dwStyles = WS_POPUP;
+    if (desc->flags & CCO_WINDOW_FLAG_DECOR_BIT)
+        dwStyles |= WS_CAPTION | WS_SYSMENU | WS_MINIMIZEBOX | WS_MAXIMIZEBOX;
+    if (desc->flags & CCO_WINDOW_FLAG_RESIZE_BIT)
+        dwStyles |= WS_THICKFRAME;
+
+    const i32 screenWidth = GetSystemMetrics(SM_CXSCREEN);
+    const i32 screenHeight = GetSystemMetrics(SM_CYSCREEN);
+
+    const i32 x = desc->x == CCO_WINDOW_POS_CENTER ? (screenWidth - width) / 2 : desc->x;
+    const i32 y = desc->y == CCO_WINDOW_POS_CENTER ? (screenHeight - height) / 2 : desc->y;
+
+    HWND hWnd = CreateWindowEx(0, "CocoaWindow", desc->title, dwStyles, x, y, width, height, NULL, NULL,
+                               GetModuleHandle(NULL), window);
     if (!hWnd) {
         CCO_LOG("Windows failed to create window!");
         return CCO_FAIL_WINDOWING_CREATE_ERROR;
     }
 
     window->hWnd = hWnd;
-    window->shouldClose = false;
+    window->shouldClose = CCO_NO;
 
     ShowWindow(window->hWnd, SW_SHOW);
 
@@ -72,7 +100,7 @@ CcoResult ccoCreateWindow(const CcoWindowDesc *desc, CcoWindow *outWindow) {
     return CCO_SUCCESS;
 }
 
-void ccoSetWindowShouldClose(CcoWindow window, bool close) { window->shouldClose = close; }
+void ccoSetWindowShouldClose(CcoWindow window, CcoBool close) { window->shouldClose = close; }
 
 void ccoCloseWindow(CcoWindow window) {
     if (IsWindow(window->hWnd)) {
@@ -106,4 +134,4 @@ CcoWindowFramebufferSize ccoGetWindowFramebufferSize(CcoWindow window) {
     return (CcoWindowFramebufferSize){width, height};
 }
 
-bool ccoShouldWindowClose(CcoWindow window) { return window->shouldClose; }
+CcoBool ccoShouldWindowClose(CcoWindow window) { return window->shouldClose; }

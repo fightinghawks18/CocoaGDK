@@ -16,7 +16,7 @@ typedef struct {
  * @brief Creates an identity matrix with 4 rows and 4 columns
  * @return Matrix4X4
  */
-static CcoMatrix4X4 ccoCreateMatrix4X4() {
+inline CcoMatrix4X4 ccoCreateMatrix4X4() {
     CcoMatrix4X4 matrix;
     matrix.m[0][0] = 1;
     matrix.m[0][1] = 0;
@@ -37,7 +37,7 @@ static CcoMatrix4X4 ccoCreateMatrix4X4() {
     return matrix;
 }
 
-static CcoMatrix4X4 ccoMultiplyMatrix4X4_Matrix4X4(const CcoMatrix4X4 matrix4x4_a, const CcoMatrix4X4 matrix4x4_b) {
+inline CcoMatrix4X4 ccoMultiplyMatrix4X4_Matrix4X4(const CcoMatrix4X4 matrix4x4_a, const CcoMatrix4X4 matrix4x4_b) {
     CcoMatrix4X4 result = ccoCreateMatrix4X4();
     for (u32 i = 0; i < 4; i++) {
         for (u32 j = 0; j < 4; j++) {
@@ -50,7 +50,7 @@ static CcoMatrix4X4 ccoMultiplyMatrix4X4_Matrix4X4(const CcoMatrix4X4 matrix4x4_
     return result;
 }
 
-static CcoMatrix4X4 ccoTransposeMatrix4X4(const CcoMatrix4X4 matrix4x4) {
+inline CcoMatrix4X4 ccoTransposeMatrix4X4(const CcoMatrix4X4 matrix4x4) {
     CcoMatrix4X4 result = ccoCreateMatrix4X4();
     for (u32 i = 0; i < 4; i++) {
         for (u32 j = 0; j < 4; j++) {
@@ -60,7 +60,7 @@ static CcoMatrix4X4 ccoTransposeMatrix4X4(const CcoMatrix4X4 matrix4x4) {
     return result;
 }
 
-static CcoMatrix4X4 ccoCreateTranslationMatrix4X4(const CcoVector3 position) {
+inline CcoMatrix4X4 ccoCreateTranslationMatrix4X4(const CcoVector3 position) {
     CcoMatrix4X4 result = ccoCreateMatrix4X4();
     result.m[0][3] = position.x;
     result.m[1][3] = position.y;
@@ -68,41 +68,41 @@ static CcoMatrix4X4 ccoCreateTranslationMatrix4X4(const CcoVector3 position) {
     return result;
 }
 
-static CcoMatrix4X4 ccoCreateXRotationMatrix4X4(const CcoRadians radians) {
+inline CcoMatrix4X4 ccoCreateXRotationMatrix4X4(const CcoRadians radians) {
     CcoMatrix4X4 result = ccoCreateMatrix4X4();
-    result.m[1][1] = cos(radians);
-    result.m[1][2] = -sin(radians);
-    result.m[2][1] = sin(radians);
-    result.m[2][2] = cos(radians);
+    result.m[1][1] = (f32)cos(radians);
+    result.m[1][2] = (f32)-sin(radians);
+    result.m[2][1] = (f32)sin(radians);
+    result.m[2][2] = (f32)cos(radians);
     return result;
 }
 
-static CcoMatrix4X4 ccoCreateYRotationMatrix4X4(const CcoRadians radians) {
+inline CcoMatrix4X4 ccoCreateYRotationMatrix4X4(const CcoRadians radians) {
     CcoMatrix4X4 result = ccoCreateMatrix4X4();
-    result.m[0][0] = cos(radians);
-    result.m[0][2] = -sin(radians);
-    result.m[2][0] = cos(radians);
-    result.m[2][2] = sin(radians);
+    result.m[0][0] = (f32)cos(radians);
+    result.m[0][2] = (f32)sin(radians);
+    result.m[2][0] = (f32)-sin(radians);
+    result.m[2][2] = (f32)cos(radians);
     return result;
 }
 
-static CcoMatrix4X4 ccoCreateZRotationMatrix4X4(const CcoRadians radians) {
+inline CcoMatrix4X4 ccoCreateZRotationMatrix4X4(const CcoRadians radians) {
     CcoMatrix4X4 result = ccoCreateMatrix4X4();
-    result.m[0][0] = cos(radians);
-    result.m[0][1] = -sin(radians);
-    result.m[1][0] = sin(radians);
-    result.m[1][1] = cos(radians);
+    result.m[0][0] = (f32)cos(radians);
+    result.m[0][1] = (f32)-sin(radians);
+    result.m[1][0] = (f32)sin(radians);
+    result.m[1][1] = (f32)cos(radians);
     return result;
 }
 
-static CcoMatrix4X4 ccoCreateRotationMatrix4X4(const CcoVector3 rotation) {
+inline CcoMatrix4X4 ccoCreateRotationMatrix4X4(const CcoVector3 rotation) {
     const CcoMatrix4X4 xRotation = ccoCreateXRotationMatrix4X4(rotation.x);
     const CcoMatrix4X4 yRotation = ccoCreateYRotationMatrix4X4(rotation.y);
     const CcoMatrix4X4 zRotation = ccoCreateZRotationMatrix4X4(rotation.z);
     return ccoMultiplyMatrix4X4_Matrix4X4(xRotation, ccoMultiplyMatrix4X4_Matrix4X4(yRotation, zRotation));
 }
 
-static CcoMatrix4X4 ccoCreateScaleMatrix4x4(const CcoVector3 scale) {
+inline CcoMatrix4X4 ccoCreateScaleMatrix4x4(const CcoVector3 scale) {
     CcoMatrix4X4 result = ccoCreateMatrix4X4();
     result.m[0][0] = scale.x;
     result.m[1][1] = scale.y;
@@ -110,13 +110,13 @@ static CcoMatrix4X4 ccoCreateScaleMatrix4x4(const CcoVector3 scale) {
     return result;
 }
 
-static CcoMatrix4X4 ccoCreatePerspectiveMatrix4X4(const CcoRadians fov, const f32 aspectRatio,
+inline CcoMatrix4X4 ccoCreatePerspectiveMatrix4X4(const CcoRadians fov, const f32 aspectRatio,
                                                   const f32 nearClippingPoint, const f32 farClippingPoint) {
     CcoMatrix4X4 result = ccoCreateMatrix4X4();
 
     const CcoRadians tanHalfFov = tan(fov / 2.0f);
-    const f32 xZoom = 1.0f / (aspectRatio * tanHalfFov);
-    const f32 yZoom = 1.0f / tanHalfFov;
+    const f32 xZoom = 1.0f / (aspectRatio * (f32)tanHalfFov);
+    const f32 yZoom = 1.0f / (f32)tanHalfFov;
     const f32 coefficient = -(farClippingPoint + nearClippingPoint) / (farClippingPoint - nearClippingPoint);
     const f32 constantOffset = -(2.0f * farClippingPoint * nearClippingPoint) / (farClippingPoint - nearClippingPoint);
 
@@ -130,7 +130,7 @@ static CcoMatrix4X4 ccoCreatePerspectiveMatrix4X4(const CcoRadians fov, const f3
     return result;
 }
 
-static CcoMatrix4X4 ccoCreateEyeMatrix4X4(const CcoVector3 eyePosition, const CcoVector3 eyeTarget,
+inline CcoMatrix4X4 ccoCreateEyeMatrix4X4(const CcoVector3 eyePosition, const CcoVector3 eyeTarget,
                                           const CcoVector3 eyeUp) {
     const CcoVector3 forward = ccoNormalizeVector3(ccoSubtractVector3_Vector3(eyePosition, eyeTarget));
     const CcoVector3 right = ccoNormalizeVector3(ccoCrossVector3(eyeUp, forward));
@@ -157,12 +157,12 @@ static CcoMatrix4X4 ccoCreateEyeMatrix4X4(const CcoVector3 eyePosition, const Cc
     return result;
 }
 
-static CcoMatrix4X4 ccoCreateModelMatrix4X4(const CcoMatrix4X4 translation, const CcoMatrix4X4 rotation,
+inline CcoMatrix4X4 ccoCreateModelMatrix4X4(const CcoMatrix4X4 translation, const CcoMatrix4X4 rotation,
                                             const CcoMatrix4X4 scale) {
     return ccoMultiplyMatrix4X4_Matrix4X4(translation, ccoMultiplyMatrix4X4_Matrix4X4(rotation, scale));
 }
 
-static void ccoConvertMatrix4X4ToFloatArray(const CcoMatrix4X4 matrix4x4, f32 *result) {
+inline void ccoConvertMatrix4X4ToFloatArray(const CcoMatrix4X4 matrix4x4, f32 *result) {
     for (u32 i = 0; i < 4; i++) {
         for (u32 j = 0; j < 4; j++) {
             result[i * 4 + j] = matrix4x4.m[i][j];

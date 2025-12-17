@@ -32,50 +32,50 @@ inline Vec3 ccoVec3Forward() {
     return ccoVec3(0, 0, 1);
 }
 
-inline f32 ccoGetVec3Magnitude(const Vec3 vec3) {
+inline f32 ccoVec3Magnitude(const Vec3 vec3) {
     return sqrtf(powf(vec3.x, 2) + powf(vec3.y, 2) + powf(vec3.z, 2));
 }
 
-inline Vec3 ccoNormalizeVec3(const Vec3 vec3) {
-    const f32 mag = ccoGetVec3Magnitude(vec3);
+inline Vec3 ccoVec3Normalized(const Vec3 vec3) {
+    const f32 mag = ccoVec3Magnitude(vec3);
     return ccoVec3(vec3.x/mag, vec3.y/mag, vec3.z/mag);
 }
 
-inline f32 ccoDotVec3(const Vec3 vec3_a, const Vec3 vec3_b) {
+inline f32 ccoVec3Dot(const Vec3 vec3_a, const Vec3 vec3_b) {
     return vec3_a.x * vec3_b.x +
         vec3_a.y * vec3_b.y +
         vec3_a.z * vec3_b.z;
 }
 
-inline Vec3 ccoCrossVec3(const Vec3 vec3_a, const Vec3 vec3_b) {
+inline Vec3 ccoVec3Cross(const Vec3 vec3_a, const Vec3 vec3_b) {
     const f32 x = vec3_a.y * vec3_b.z - vec3_a.z * vec3_b.y;
     const f32 y = vec3_a.z * vec3_b.x - vec3_a.x * vec3_b.z;
     const f32 z = vec3_a.x * vec3_b.y - vec3_a.y * vec3_b.x;
     return ccoVec3(x, y, z);
 }
 
-inline Vec3 ccoAddVec3_Vec3(const Vec3 vec3_a, const Vec3 vec3_b) {
+inline Vec3 ccoVec3Add(const Vec3 vec3_a, const Vec3 vec3_b) {
     return ccoVec3(
         vec3_a.x + vec3_b.x,
         vec3_a.y + vec3_b.y,
         vec3_a.z + vec3_b.z);
 }
 
-inline Vec3 ccoSubtractVec3_Vec3(const Vec3 vec3_a, const Vec3 vec3_b) {
+inline Vec3 ccoVec3Sub(const Vec3 vec3_a, const Vec3 vec3_b) {
     return ccoVec3(
         vec3_a.x - vec3_b.x,
         vec3_a.y - vec3_b.y,
         vec3_a.z - vec3_b.z);
 }
 
-inline Vec3 ccoDivideVec3_Vec3(const Vec3 vec3_a, const Vec3 vec3_b) {
+inline Vec3 ccoVec3Div(const Vec3 vec3_a, const Vec3 vec3_b) {
     return ccoVec3(
         vec3_a.x / vec3_b.x,
         vec3_a.y / vec3_b.y,
         vec3_a.z / vec3_b.z);
 }
 
-inline Vec3 ccoMultiplyVec3_Scalar(const Vec3 vec3_a, const f32 scalar) {
+inline Vec3 ccoVec3Scale(const Vec3 vec3_a, const f32 scalar) {
     return ccoVec3(
         vec3_a.x * scalar,
         vec3_a.y * scalar,

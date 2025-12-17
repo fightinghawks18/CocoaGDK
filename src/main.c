@@ -46,15 +46,15 @@ int main() {
 
     Vec3 cameraPosition = ccoVec3(0, 0, 1.0f);
 
-    Mat4 modelMatrix = ccoCreateModelMat4(
-        ccoCreateTranslationMat4(position), ccoCreateRotationMat4(rotation), ccoCreateScaleMatrix4x4(scale));
-    Mat4 viewMatrix = ccoCreateEyeMat4(cameraPosition, ccoVec3(0, 0, 0), ccoVec3Up());
+    Mat4 modelMatrix = ccoMat4Model(
+        ccoMat4Translation(position), ccoMat4Rotation(rotation), ccoMat4Scale(scale));
+    Mat4 viewMatrix = ccoMat4Eye(cameraPosition, ccoVec3(0, 0, 0), ccoVec3Up());
     Mat4 projectionMatrix =
-        ccoCreatePerspectiveMat4(CCO_NO, CCO_NO, ccoDegreesToRadian(80.0f), 800.0f / 600.0f, 0.001f, 100.0f);
+        ccoMat4Perspective(CCO_NO, CCO_NO, ccoDegToRad(80.0f), 800.0f / 600.0f, 0.001f, 100.0f);
 
-    CcoModelViewProjection mvpBuffer = {.model = ccoTransposeMat4(modelMatrix),
-                                        .view = ccoTransposeMat4(viewMatrix),
-                                        .projection = ccoTransposeMat4(projectionMatrix)};
+    CcoModelViewProjection mvpBuffer = {.model = ccoMat4Transpose(modelMatrix),
+                                        .view = ccoMat4Transpose(viewMatrix),
+                                        .projection = ccoMat4Transpose(projectionMatrix)};
 
     CcoOpenGLVbo vbo = CCO_NIL;
     CcoOpenGLVao vao = CCO_NIL;
@@ -96,9 +96,9 @@ int main() {
         CcoWindowFramebufferSize windowFramebufferSize = ccoGetWindowFramebufferSize(window);
 
         projectionMatrix =
-            ccoCreatePerspectiveMat4(CCO_NO, CCO_NO, ccoDegreesToRadian(80.0f),
+            ccoMat4Perspective(CCO_NO, CCO_NO, ccoDegToRad(80.0f),
                                           (f32)windowFramebufferSize.w / (f32)windowFramebufferSize.h, 0.001f, 100.0f);
-        mvpBuffer.projection = ccoTransposeMat4(projectionMatrix);
+        mvpBuffer.projection = ccoMat4Transpose(projectionMatrix);
 
         ccoMapToOpenGLUbo(ubo, &(CcoBufferMapping){.dataSize = sizeof(CcoModelViewProjection),
                                                    .dataOffset = offsetof(CcoModelViewProjection, projection),

@@ -38,7 +38,7 @@ inline Mat4 ccoMat4() {
     return matrix;
 }
 
-inline Mat4 ccoMultiplyMat4_Mat4(const Mat4 mat4_a, const Mat4 mat4_b) {
+inline Mat4 ccoMat4Mul(const Mat4 mat4_a, const Mat4 mat4_b) {
     Mat4 result = ccoMat4();
     for (u32 i = 0; i < 4; i++) {
         for (u32 j = 0; j < 4; j++) {
@@ -51,7 +51,7 @@ inline Mat4 ccoMultiplyMat4_Mat4(const Mat4 mat4_a, const Mat4 mat4_b) {
     return result;
 }
 
-inline Mat4 ccoTransposeMat4(const Mat4 mat4) {
+inline Mat4 ccoMat4Transpose(const Mat4 mat4) {
     Mat4 result = ccoMat4();
     for (u32 i = 0; i < 4; i++) {
         for (u32 j = 0; j < 4; j++) {
@@ -61,7 +61,7 @@ inline Mat4 ccoTransposeMat4(const Mat4 mat4) {
     return result;
 }
 
-inline Mat4 ccoCreateTranslationMat4(const Vec3 position) {
+inline Mat4 ccoMat4Translation(const Vec3 position) {
     Mat4 result = ccoMat4();
     result.m[0][3] = position.x;
     result.m[1][3] = position.y;
@@ -69,7 +69,7 @@ inline Mat4 ccoCreateTranslationMat4(const Vec3 position) {
     return result;
 }
 
-inline Mat4 ccoCreateXRotationMat4(const CcoRadians radians) {
+inline Mat4 ccoMat4XRotation(const CcoRadians radians) {
     Mat4 result = ccoMat4();
     result.m[1][1] = (f32)cos(radians);
     result.m[1][2] = (f32)-sin(radians);
@@ -78,7 +78,7 @@ inline Mat4 ccoCreateXRotationMat4(const CcoRadians radians) {
     return result;
 }
 
-inline Mat4 ccoCreateYRotationMat4(const CcoRadians radians) {
+inline Mat4 ccoMat4YRotation(const CcoRadians radians) {
     Mat4 result = ccoMat4();
     result.m[0][0] = (f32)cos(radians);
     result.m[0][2] = (f32)sin(radians);
@@ -87,7 +87,7 @@ inline Mat4 ccoCreateYRotationMat4(const CcoRadians radians) {
     return result;
 }
 
-inline Mat4 ccoCreateZRotationMat4(const CcoRadians radians) {
+inline Mat4 ccoMat4ZRotation(const CcoRadians radians) {
     Mat4 result = ccoMat4();
     result.m[0][0] = (f32)cos(radians);
     result.m[0][1] = (f32)-sin(radians);
@@ -96,14 +96,14 @@ inline Mat4 ccoCreateZRotationMat4(const CcoRadians radians) {
     return result;
 }
 
-inline Mat4 ccoCreateRotationMat4(const Vec3 rotation) {
-    const Mat4 xRotation = ccoCreateXRotationMat4(rotation.x);
-    const Mat4 yRotation = ccoCreateYRotationMat4(rotation.y);
-    const Mat4 zRotation = ccoCreateZRotationMat4(rotation.z);
-    return ccoMultiplyMat4_Mat4(xRotation, ccoMultiplyMat4_Mat4(yRotation, zRotation));
+inline Mat4 ccoMat4Rotation(const Vec3 rotation) {
+    const Mat4 xRotation = ccoMat4XRotation(rotation.x);
+    const Mat4 yRotation = ccoMat4YRotation(rotation.y);
+    const Mat4 zRotation = ccoMat4ZRotation(rotation.z);
+    return ccoMat4Mul(xRotation, ccoMat4Mul(yRotation, zRotation));
 }
 
-inline Mat4 ccoCreateScaleMatrix4x4(const Vec3 scale) {
+inline Mat4 ccoMat4Scale(const Vec3 scale) {
     Mat4 result = ccoMat4();
     result.m[0][0] = scale.x;
     result.m[1][1] = scale.y;
@@ -111,7 +111,7 @@ inline Mat4 ccoCreateScaleMatrix4x4(const Vec3 scale) {
     return result;
 }
 
-inline Mat4 ccoCreatePerspectiveMat4(CcoBool flipY, CcoBool zeroToOneDepth, const CcoRadians fov, const f32 aspectRatio,
+inline Mat4 ccoMat4Perspective(const CcoBool flipY, const CcoBool zeroToOneDepth, const CcoRadians fov, const f32 aspectRatio,
                                                   const f32 nearClippingPoint, const f32 farClippingPoint) {
     Mat4 result = ccoMat4();
 
@@ -138,11 +138,11 @@ inline Mat4 ccoCreatePerspectiveMat4(CcoBool flipY, CcoBool zeroToOneDepth, cons
     return result;
 }
 
-inline Mat4 ccoCreateEyeMat4(const Vec3 eyePosition, const Vec3 eyeTarget,
+inline Mat4 ccoMat4Eye(const Vec3 eyePosition, const Vec3 eyeTarget,
                                           const Vec3 eyeUp) {
-    const Vec3 forward = ccoNormalizeVec3(ccoSubtractVec3_Vec3(eyePosition, eyeTarget));
-    const Vec3 right = ccoNormalizeVec3(ccoCrossVec3(eyeUp, forward));
-    const Vec3 cameraUp = ccoCrossVec3(forward, right);
+    const Vec3 forward = ccoVec3Normalized(ccoVec3Sub(eyePosition, eyeTarget));
+    const Vec3 right = ccoVec3Normalized(ccoVec3Cross(eyeUp, forward));
+    const Vec3 cameraUp = ccoVec3Cross(forward, right);
 
     Mat4 result = ccoMat4();
     result.m[0][0] = right.x;
@@ -157,20 +157,20 @@ inline Mat4 ccoCreateEyeMat4(const Vec3 eyePosition, const Vec3 eyeTarget,
     result.m[2][1] = forward.y;
     result.m[2][2] = forward.z;
 
-    result.m[0][3] = -ccoDotVec3(right, eyePosition);
-    result.m[1][3] = -ccoDotVec3(cameraUp, eyePosition);
-    result.m[2][3] = -ccoDotVec3(forward, eyePosition);
+    result.m[0][3] = -ccoVec3Dot(right, eyePosition);
+    result.m[1][3] = -ccoVec3Dot(cameraUp, eyePosition);
+    result.m[2][3] = -ccoVec3Dot(forward, eyePosition);
 
     result.m[3][3] = 1.0f;
     return result;
 }
 
-inline Mat4 ccoCreateModelMat4(const Mat4 translation, const Mat4 rotation,
+inline Mat4 ccoMat4Model(const Mat4 translation, const Mat4 rotation,
                                             const Mat4 scale) {
-    return ccoMultiplyMat4_Mat4(translation, ccoMultiplyMat4_Mat4(rotation, scale));
+    return ccoMat4Mul(translation, ccoMat4Mul(rotation, scale));
 }
 
-inline void ccoConvertMat4ToFloatArray(const Mat4 mat4, f32 *result) {
+inline void ccoMat4ToF32Arr(const Mat4 mat4, f32 *result) {
     for (u32 i = 0; i < 4; i++) {
         for (u32 j = 0; j < 4; j++) {
             result[i * 4 + j] = mat4.m[i][j];

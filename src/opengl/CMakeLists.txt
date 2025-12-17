@@ -25,8 +25,8 @@ target_link_libraries(cocoa_opengl
 
 if(APPLE)
     target_sources(cocoa_opengl
-            PRIVATE src/opengl_context_macos.m
-            PRIVATE src/opengl_loader_macos.c
+            PRIVATE src/platform/macos/opengl_context_macos.m
+            PRIVATE src/platform/macos/opengl_loader_macos.c
     )
 
     target_link_libraries(cocoa_opengl
@@ -34,7 +34,7 @@ if(APPLE)
     )
 elseif(WIN32)
     target_sources(cocoa_opengl
-            PRIVATE src/opengl_context_win32.c
-            PRIVATE src/opengl_loader_win32.c
+            PRIVATE src/platform/win32/opengl_context_win32.c
+            PRIVATE src/platform/win32/opengl_loader_win32.c
     )
 endif()

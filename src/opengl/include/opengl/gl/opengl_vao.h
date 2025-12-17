@@ -4,10 +4,10 @@
 
 #pragma once
 
+#include "opengl_vbo.h"
 #include "core/core_types.h"
 #include "graphics/graphics_types.h"
 #include "opengl_ebo.h"
-#include "opengl_vbo.h"
 
 typedef struct CcoOpenGLVao_T CcoOpenGLVao_T;
 typedef CcoOpenGLVao_T *CcoOpenGLVao;

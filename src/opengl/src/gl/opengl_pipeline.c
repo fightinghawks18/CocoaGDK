@@ -2,7 +2,7 @@
 // Created by fightinghawks18 on 12/14/25.
 //
 
-#include "opengl/opengl_pipeline.h"
+#include "../../include/opengl/gl/opengl_pipeline.h"
 
 #include <glad/glad.h>
 #include <stdlib.h>

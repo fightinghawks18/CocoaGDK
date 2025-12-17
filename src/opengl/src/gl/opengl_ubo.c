@@ -2,10 +2,10 @@
 // Created by fightinghawks18 on 12/14/25.
 //
 
-#include "opengl/opengl_ubo.h"
+#include "opengl/gl/opengl_ubo.h"
+#include "../../include/opengl/gl/opengl_types.h"
 #include <glad/glad.h>
 #include <stdlib.h>
-#include "opengl/opengl_types.h"
 
 struct CcoOpenGLUbo_T {
     u32 glID;

@@ -5,7 +5,7 @@
 #pragma once
 
 #include "core/core_types.h"
-#include "opengl/opengl_shader.h"
+#include "opengl_shader.h"
 
 typedef struct CcoOpenGLPipeline_T CcoOpenGLPipeline_T;
 typedef CcoOpenGLPipeline_T* CcoOpenGLPipeline;

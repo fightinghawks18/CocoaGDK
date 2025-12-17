@@ -2,7 +2,7 @@
 // Created by fightinghawks18 on 12/15/2025.
 //
 
-#include "opengl/opengl_context.h"
+#include "opengl/gl/opengl_context.h"
 
 #include <windows.h>
 #include <gl/GL.h>

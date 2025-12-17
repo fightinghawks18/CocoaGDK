@@ -2,8 +2,8 @@
 // Created by fightinghawks18 on 12/16/25.
 //
 
-#include "opengl/opengl_core.h"
-#include "opengl/opengl_loader.h"
+#include "../../include/opengl/gl/opengl_core.h"
+#include "opengl/gl/opengl_loader.h"
 #include <glad/glad.h>
 
 CcoResult ccoInitializeOpenGL() {

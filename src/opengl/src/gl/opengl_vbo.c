@@ -2,10 +2,10 @@
 // Created by fightinghawks18 on 12/14/25.
 //
 
-#include "opengl/opengl_vbo.h"
-#include <stdlib.h>
+#include "../../include/opengl/gl/opengl_vbo.h"
+#include "../../include/opengl/gl/opengl_types.h"
 #include <glad/glad.h>
-#include "opengl/opengl_types.h"
+#include <stdlib.h>
 
 struct CcoOpenGLVbo_T {
     u32 glID;

@@ -2,9 +2,9 @@
 // Created by fightinghawks18 on 12/14/25.
 //
 
-#include "opengl/opengl_loader.h"
-#include <dlfcn.h>
+#include "../../../include/opengl/core/opengl_loader.h"
 #include "core/core_types.h"
+#include <dlfcn.h>
 
 void *ccoGetGLProcAddr(const char *addrName) {
     static void* opengl_lib = NULL;

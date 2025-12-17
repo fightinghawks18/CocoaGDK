@@ -8,9 +8,9 @@ set(CMAKE_C_STANDARD_REQUIRED 17)
 add_subdirectory("src/core")
 add_subdirectory("src/graphics")
 add_subdirectory("src/math")
+add_subdirectory("src/opengl")
 add_subdirectory("src/platform")
 add_subdirectory("src/tools")
-add_subdirectory("src/opengl")
 
 include("cmake/content.cmake")
 

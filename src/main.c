@@ -40,21 +40,21 @@ int main() {
 
     u32 indices[3] = {0, 1, 2};
 
-    CcoVector3 position = ccoCreateVector3(0, 0, 0);
-    CcoVector3 rotation = ccoCreateVector3(0, 0, 0);
-    CcoVector3 scale = ccoCreateVector3(1, 1, 1);
+    Vec3 position = ccoCreateVec3(0, 0, 0);
+    Vec3 rotation = ccoCreateVec3(0, 0, 0);
+    Vec3 scale = ccoCreateVec3(1, 1, 1);
 
-    CcoVector3 cameraPosition = ccoCreateVector3(0, 0, 1.0f);
+    Vec3 cameraPosition = ccoCreateVec3(0, 0, 1.0f);
 
-    CcoMatrix4X4 modelMatrix = ccoCreateModelMatrix4X4(
-        ccoCreateTranslationMatrix4X4(position), ccoCreateRotationMatrix4X4(rotation), ccoCreateScaleMatrix4x4(scale));
-    CcoMatrix4X4 viewMatrix = ccoCreateEyeMatrix4X4(cameraPosition, ccoCreateVector3(0, 0, 0), ccoCreateVector3Up());
-    CcoMatrix4X4 projectionMatrix =
-        ccoCreatePerspectiveMatrix4X4(CCO_NO, CCO_NO, ccoDegreesToRadian(80.0f), 800.0f / 600.0f, 0.001f, 100.0f);
+    Mat4 modelMatrix = ccoCreateModelMat4(
+        ccoCreateTranslationMat4(position), ccoCreateRotationMat4(rotation), ccoCreateScaleMatrix4x4(scale));
+    Mat4 viewMatrix = ccoCreateEyeMat4(cameraPosition, ccoCreateVec3(0, 0, 0), ccoCreateVec3Up());
+    Mat4 projectionMatrix =
+        ccoCreatePerspectiveMat4(CCO_NO, CCO_NO, ccoDegreesToRadian(80.0f), 800.0f / 600.0f, 0.001f, 100.0f);
 
-    CcoModelViewProjection mvpBuffer = {.model = ccoTransposeMatrix4X4(modelMatrix),
-                                        .view = ccoTransposeMatrix4X4(viewMatrix),
-                                        .projection = ccoTransposeMatrix4X4(projectionMatrix)};
+    CcoModelViewProjection mvpBuffer = {.model = ccoTransposeMat4(modelMatrix),
+                                        .view = ccoTransposeMat4(viewMatrix),
+                                        .projection = ccoTransposeMat4(projectionMatrix)};
 
     CcoOpenGLVbo vbo = CCO_NIL;
     CcoOpenGLVao vao = CCO_NIL;
@@ -95,9 +95,10 @@ int main() {
 
         CcoWindowFramebufferSize windowFramebufferSize = ccoGetWindowFramebufferSize(window);
 
-        projectionMatrix = ccoCreatePerspectiveMatrix4X4(CCO_NO, CCO_NO,
-            ccoDegreesToRadian(80.0f), (f32)windowFramebufferSize.w / (f32)windowFramebufferSize.h, 0.001f, 100.0f);
-        mvpBuffer.projection = ccoTransposeMatrix4X4(projectionMatrix);
+        projectionMatrix =
+            ccoCreatePerspectiveMat4(CCO_NO, CCO_NO, ccoDegreesToRadian(80.0f),
+                                          (f32)windowFramebufferSize.w / (f32)windowFramebufferSize.h, 0.001f, 100.0f);
+        mvpBuffer.projection = ccoTransposeMat4(projectionMatrix);
 
         ccoMapToOpenGLUbo(ubo, &(CcoBufferMapping){.dataSize = sizeof(CcoModelViewProjection),
                                                    .dataOffset = offsetof(CcoModelViewProjection, projection),

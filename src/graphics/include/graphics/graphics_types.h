@@ -4,13 +4,13 @@
 
 #pragma once
 
-#include "../../../math/include/math/matrix4x4.h"
+#include "math/mat4.h"
 #include "core/core_types.h"
 
 typedef struct {
-    CcoMatrix4X4 model;
-    CcoMatrix4X4 view;
-    CcoMatrix4X4 projection;
+    Mat4 model;
+    Mat4 view;
+    Mat4 projection;
 } CcoModelViewProjection;
 
 /// @brief Describes how data will be mapped into a buffer

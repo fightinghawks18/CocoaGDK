@@ -40,15 +40,15 @@ int main() {
 
     u32 indices[3] = {0, 1, 2};
 
-    Vec3 position = ccoCreateVec3(0, 0, 0);
-    Vec3 rotation = ccoCreateVec3(0, 0, 0);
-    Vec3 scale = ccoCreateVec3(1, 1, 1);
+    Vec3 position = ccoVec3(0, 0, 0);
+    Vec3 rotation = ccoVec3(0, 0, 0);
+    Vec3 scale = ccoVec3(1, 1, 1);
 
-    Vec3 cameraPosition = ccoCreateVec3(0, 0, 1.0f);
+    Vec3 cameraPosition = ccoVec3(0, 0, 1.0f);
 
     Mat4 modelMatrix = ccoCreateModelMat4(
         ccoCreateTranslationMat4(position), ccoCreateRotationMat4(rotation), ccoCreateScaleMatrix4x4(scale));
-    Mat4 viewMatrix = ccoCreateEyeMat4(cameraPosition, ccoCreateVec3(0, 0, 0), ccoCreateVec3Up());
+    Mat4 viewMatrix = ccoCreateEyeMat4(cameraPosition, ccoVec3(0, 0, 0), ccoVec3Up());
     Mat4 projectionMatrix =
         ccoCreatePerspectiveMat4(CCO_NO, CCO_NO, ccoDegreesToRadian(80.0f), 800.0f / 600.0f, 0.001f, 100.0f);
 

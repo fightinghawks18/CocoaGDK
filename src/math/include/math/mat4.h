@@ -17,7 +17,7 @@ typedef Mat4 CcoMat4;
  * @brief Creates an identity matrix with 4 rows and 4 columns
  * @return Mat4
  */
-inline Mat4 ccoCreateMat4() {
+inline Mat4 ccoMat4() {
     Mat4 matrix;
     matrix.m[0][0] = 1;
     matrix.m[0][1] = 0;
@@ -39,7 +39,7 @@ inline Mat4 ccoCreateMat4() {
 }
 
 inline Mat4 ccoMultiplyMat4_Mat4(const Mat4 mat4_a, const Mat4 mat4_b) {
-    Mat4 result = ccoCreateMat4();
+    Mat4 result = ccoMat4();
     for (u32 i = 0; i < 4; i++) {
         for (u32 j = 0; j < 4; j++) {
             result.m[i][j] = mat4_a.m[i][0] * mat4_b.m[0][j] +
@@ -52,7 +52,7 @@ inline Mat4 ccoMultiplyMat4_Mat4(const Mat4 mat4_a, const Mat4 mat4_b) {
 }
 
 inline Mat4 ccoTransposeMat4(const Mat4 mat4) {
-    Mat4 result = ccoCreateMat4();
+    Mat4 result = ccoMat4();
     for (u32 i = 0; i < 4; i++) {
         for (u32 j = 0; j < 4; j++) {
             result.m[i][j] = mat4.m[j][i];
@@ -62,7 +62,7 @@ inline Mat4 ccoTransposeMat4(const Mat4 mat4) {
 }
 
 inline Mat4 ccoCreateTranslationMat4(const Vec3 position) {
-    Mat4 result = ccoCreateMat4();
+    Mat4 result = ccoMat4();
     result.m[0][3] = position.x;
     result.m[1][3] = position.y;
     result.m[2][3] = position.z;
@@ -70,7 +70,7 @@ inline Mat4 ccoCreateTranslationMat4(const Vec3 position) {
 }
 
 inline Mat4 ccoCreateXRotationMat4(const CcoRadians radians) {
-    Mat4 result = ccoCreateMat4();
+    Mat4 result = ccoMat4();
     result.m[1][1] = (f32)cos(radians);
     result.m[1][2] = (f32)-sin(radians);
     result.m[2][1] = (f32)sin(radians);
@@ -79,7 +79,7 @@ inline Mat4 ccoCreateXRotationMat4(const CcoRadians radians) {
 }
 
 inline Mat4 ccoCreateYRotationMat4(const CcoRadians radians) {
-    Mat4 result = ccoCreateMat4();
+    Mat4 result = ccoMat4();
     result.m[0][0] = (f32)cos(radians);
     result.m[0][2] = (f32)sin(radians);
     result.m[2][0] = (f32)-sin(radians);
@@ -88,7 +88,7 @@ inline Mat4 ccoCreateYRotationMat4(const CcoRadians radians) {
 }
 
 inline Mat4 ccoCreateZRotationMat4(const CcoRadians radians) {
-    Mat4 result = ccoCreateMat4();
+    Mat4 result = ccoMat4();
     result.m[0][0] = (f32)cos(radians);
     result.m[0][1] = (f32)-sin(radians);
     result.m[1][0] = (f32)sin(radians);
@@ -104,7 +104,7 @@ inline Mat4 ccoCreateRotationMat4(const Vec3 rotation) {
 }
 
 inline Mat4 ccoCreateScaleMatrix4x4(const Vec3 scale) {
-    Mat4 result = ccoCreateMat4();
+    Mat4 result = ccoMat4();
     result.m[0][0] = scale.x;
     result.m[1][1] = scale.y;
     result.m[2][2] = scale.z;
@@ -113,7 +113,7 @@ inline Mat4 ccoCreateScaleMatrix4x4(const Vec3 scale) {
 
 inline Mat4 ccoCreatePerspectiveMat4(CcoBool flipY, CcoBool zeroToOneDepth, const CcoRadians fov, const f32 aspectRatio,
                                                   const f32 nearClippingPoint, const f32 farClippingPoint) {
-    Mat4 result = ccoCreateMat4();
+    Mat4 result = ccoMat4();
 
     const CcoRadians tanHalfFov = tan(fov / 2.0f);
     const f32 xZoom = 1.0f / (aspectRatio * (f32)tanHalfFov);
@@ -144,7 +144,7 @@ inline Mat4 ccoCreateEyeMat4(const Vec3 eyePosition, const Vec3 eyeTarget,
     const Vec3 right = ccoNormalizeVec3(ccoCrossVec3(eyeUp, forward));
     const Vec3 cameraUp = ccoCrossVec3(forward, right);
 
-    Mat4 result = ccoCreateMat4();
+    Mat4 result = ccoMat4();
     result.m[0][0] = right.x;
     result.m[0][1] = right.y;
     result.m[0][2] = right.z;

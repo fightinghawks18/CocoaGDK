@@ -1,10 +1,7 @@
-find_package(Vulkan REQUIRED)
-
 add_library(cocoa_platform STATIC)
 
 target_link_libraries(cocoa_platform
         PUBLIC cocoa_core
-        PRIVATE Vulkan::Vulkan
 )
 
 target_include_directories(cocoa_platform
@@ -20,6 +17,7 @@ if(APPLE)
     target_sources(cocoa_platform
             PRIVATE src/macos/windowing_macos.m
             PRIVATE src/macos/utils_macos.c
+            PRIVATE src/macos/input_macos.m
     )
 
     target_link_libraries(cocoa_platform

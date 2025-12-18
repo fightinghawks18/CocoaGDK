@@ -9,6 +9,7 @@
 #include "opengl/gl/opengl_vao.h"
 #include "platform/utils.h"
 #include "platform/windowing.h"
+#include "platform/input.h"
 
 int main() {
     if (ccoWindowingInit() != CCO_SUCCESS) {
@@ -23,6 +24,13 @@ int main() {
                         &window);
     if (windowResult != CCO_SUCCESS) {
         CCO_LOG("Failed to create window!");
+        return -1;
+    }
+    
+    CcoWindowInput input = CCO_NIL;
+    CcoResult inputResult = ccoCreateWindowInput(window, &input);
+    if (inputResult != CCO_SUCCESS) {
+        CCO_LOG("Failed to create window input");
         return -1;
     }
 
@@ -90,6 +98,7 @@ int main() {
 
     while (!ccoShouldWindowClose(window)) {
         ccoWindowingPoll();
+        ccoUpdateWindowInput(input);
 
         ccoMakeCurrentOpenGLContext(glCtx);
 

@@ -30,6 +30,14 @@ add_compile_definitions(
         $<$<CONFIG:Release>:NDEBUG>
 )
 
+if(CMAKE_EXPORT_COMPILE_COMMANDS)
+    add_custom_target(cocoa_move_compiled_commands ALL
+            COMMAND ${CMAKE_COMMAND} -E copy_if_different
+            ${CMAKE_CURRENT_BINARY_DIR}/compile_commands.json
+            ${CMAKE_CURRENT_BINARY_DIR}/../compile_commands.json
+    )
+endif()
+
 if(WIN32)
     add_compile_definitions(WIN32_LEAN_AND_MEAN)
 endif()

@@ -24,23 +24,6 @@ typedef enum {
     CCO_WINDOWING_EVENT_QUIT,
 } CcoWindowingEventType;
 
-typedef enum {
-    CCO_INPUT_KEY_NONE = 0,
-    CCO_INPUT_KEY_W,
-    CCO_INPUT_KEY_A,
-    CCO_INPUT_KEY_S,
-    CCO_INPUT_KEY_D,
-    CCO_INPUT_KEY_SPACE,
-    CCO_INPUT_KEY_LCTRL, ///< @brief Left Control
-    CCO_INPUT_KEY_RCTRL, ///< @brief Right Control
-    CCO_INPUT_KEY_ESC,   ///< @brief Escape
-    CCO_INPUT_KEY_M1,    ///< @brief Mouse1 (Left Click)
-    CCO_INPUT_KEY_M2,    ///< @brief Mouse2 (Right Click)
-    CCO_INPUT_KEY_M3,    ///< @brief Mouse3
-    CCO_INPUT_KEY_M4,    ///< @brief Mouse4
-    CCO_INPUT_KEY_M5,    ///< @brief Mouse5
-} CcoInputKey;
-
 typedef struct {
     i32 x, y, w, h;
     const char *title;
@@ -71,13 +54,3 @@ CcoWindowDimensions ccoGetWindowDimensions(CcoWindow window);
 /// @returns Window framebuffer size
 CcoWindowFramebufferSize ccoGetWindowFramebufferSize(CcoWindow window);
 CcoBool ccoShouldWindowClose(CcoWindow window);
-
-#ifdef CCO_PLATFORM_USE_VULKAN
-typedef struct VkSurfaceKHR_T VkSurfaceKHR_T;
-typedef VkSurfaceKHR_T *VkSurfaceKHR;
-
-typedef struct VkInstance_T VkInstance_T;
-typedef VkInstance_T *VkInstance;
-
-VkSurfaceKHR ccoCreateWindowVulkanSurface(VkInstance instance, CcoWindow window);
-#endif

@@ -2,7 +2,7 @@
 // Created by fightinghawks18 on 12/14/25.
 //
 
-#include "../../../include/opengl/core/opengl_loader.h"
+#include "opengl/gl/opengl_loader.h"
 #include "core/core_types.h"
 #include <dlfcn.h>
 

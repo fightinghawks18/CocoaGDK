@@ -80,14 +80,6 @@ CcoResult ccoCreateWindow(const CcoWindowDesc *desc, CcoWindow *outWindow) {
         rect.origin.x = (screenRect.size.width - desc->w) / 2.0f;
     if (desc->y == CCO_WINDOW_POS_CENTER)
         rect.origin.y = (screenRect.size.height - desc->h) / 2.0f;
-    if (desc->w == CCO_WINDOW_SIZE_FILL) {
-        rect.origin.y = 0;
-        rect.size.width = screenRect.size.width;
-    }
-    if (desc->h == CCO_WINDOW_SIZE_FILL) {
-        rect.origin.x = 0;
-        rect.size.height = screenRect.size.height;
-    }
 
     window->window = [[NSWindow alloc] initWithContentRect:rect
                                                  styleMask:styleMask

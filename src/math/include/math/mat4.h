@@ -17,7 +17,7 @@ typedef Mat4 CcoMat4;
  * @brief Creates an identity matrix with 4 rows and 4 columns
  * @return Mat4
  */
-inline Mat4 ccoMat4() {
+static Mat4 ccoMat4() {
     Mat4 matrix;
     matrix.m[0][0] = 1;
     matrix.m[0][1] = 0;
@@ -38,7 +38,7 @@ inline Mat4 ccoMat4() {
     return matrix;
 }
 
-inline Mat4 ccoMat4Mul(const Mat4 mat4_a, const Mat4 mat4_b) {
+static Mat4 ccoMat4Mul(const Mat4 mat4_a, const Mat4 mat4_b) {
     Mat4 result = ccoMat4();
     for (u32 i = 0; i < 4; i++) {
         for (u32 j = 0; j < 4; j++) {
@@ -51,7 +51,7 @@ inline Mat4 ccoMat4Mul(const Mat4 mat4_a, const Mat4 mat4_b) {
     return result;
 }
 
-inline Mat4 ccoMat4Transpose(const Mat4 mat4) {
+static Mat4 ccoMat4Transpose(const Mat4 mat4) {
     Mat4 result = ccoMat4();
     for (u32 i = 0; i < 4; i++) {
         for (u32 j = 0; j < 4; j++) {
@@ -61,7 +61,7 @@ inline Mat4 ccoMat4Transpose(const Mat4 mat4) {
     return result;
 }
 
-inline Mat4 ccoMat4Translation(const Vec3 position) {
+static Mat4 ccoMat4Translation(const Vec3 position) {
     Mat4 result = ccoMat4();
     result.m[0][3] = position.x;
     result.m[1][3] = position.y;
@@ -69,7 +69,7 @@ inline Mat4 ccoMat4Translation(const Vec3 position) {
     return result;
 }
 
-inline Mat4 ccoMat4XRotation(const CcoRadians radians) {
+static Mat4 ccoMat4XRotation(const CcoRadians radians) {
     Mat4 result = ccoMat4();
     result.m[1][1] = (f32)cos(radians);
     result.m[1][2] = (f32)-sin(radians);
@@ -78,7 +78,7 @@ inline Mat4 ccoMat4XRotation(const CcoRadians radians) {
     return result;
 }
 
-inline Mat4 ccoMat4YRotation(const CcoRadians radians) {
+static Mat4 ccoMat4YRotation(const CcoRadians radians) {
     Mat4 result = ccoMat4();
     result.m[0][0] = (f32)cos(radians);
     result.m[0][2] = (f32)sin(radians);
@@ -87,7 +87,7 @@ inline Mat4 ccoMat4YRotation(const CcoRadians radians) {
     return result;
 }
 
-inline Mat4 ccoMat4ZRotation(const CcoRadians radians) {
+static Mat4 ccoMat4ZRotation(const CcoRadians radians) {
     Mat4 result = ccoMat4();
     result.m[0][0] = (f32)cos(radians);
     result.m[0][1] = (f32)-sin(radians);
@@ -96,14 +96,14 @@ inline Mat4 ccoMat4ZRotation(const CcoRadians radians) {
     return result;
 }
 
-inline Mat4 ccoMat4Rotation(const Vec3 rotation) {
+static Mat4 ccoMat4Rotation(const Vec3 rotation) {
     const Mat4 xRotation = ccoMat4XRotation(rotation.x);
     const Mat4 yRotation = ccoMat4YRotation(rotation.y);
     const Mat4 zRotation = ccoMat4ZRotation(rotation.z);
     return ccoMat4Mul(xRotation, ccoMat4Mul(yRotation, zRotation));
 }
 
-inline Mat4 ccoMat4Scale(const Vec3 scale) {
+static Mat4 ccoMat4Scale(const Vec3 scale) {
     Mat4 result = ccoMat4();
     result.m[0][0] = scale.x;
     result.m[1][1] = scale.y;
@@ -111,7 +111,7 @@ inline Mat4 ccoMat4Scale(const Vec3 scale) {
     return result;
 }
 
-inline Mat4 ccoMat4Perspective(const CcoBool flipY, const CcoBool zeroToOneDepth, const CcoRadians fov, const f32 aspectRatio,
+static Mat4 ccoMat4Perspective(const CcoBool flipY, const CcoBool zeroToOneDepth, const CcoRadians fov, const f32 aspectRatio,
                                                   const f32 nearClippingPoint, const f32 farClippingPoint) {
     Mat4 result = ccoMat4();
 
@@ -138,7 +138,7 @@ inline Mat4 ccoMat4Perspective(const CcoBool flipY, const CcoBool zeroToOneDepth
     return result;
 }
 
-inline Mat4 ccoMat4Eye(const Vec3 eyePosition, const Vec3 eyeTarget,
+static Mat4 ccoMat4Eye(const Vec3 eyePosition, const Vec3 eyeTarget,
                                           const Vec3 eyeUp) {
     const Vec3 forward = ccoVec3Normalized(ccoVec3Sub(eyePosition, eyeTarget));
     const Vec3 right = ccoVec3Normalized(ccoVec3Cross(eyeUp, forward));
@@ -165,12 +165,12 @@ inline Mat4 ccoMat4Eye(const Vec3 eyePosition, const Vec3 eyeTarget,
     return result;
 }
 
-inline Mat4 ccoMat4Model(const Mat4 translation, const Mat4 rotation,
+static Mat4 ccoMat4Model(const Mat4 translation, const Mat4 rotation,
                                             const Mat4 scale) {
     return ccoMat4Mul(translation, ccoMat4Mul(rotation, scale));
 }
 
-inline void ccoMat4ToF32Arr(const Mat4 mat4, f32 *result) {
+static void ccoMat4ToF32Arr(const Mat4 mat4, f32 *result) {
     for (u32 i = 0; i < 4; i++) {
         for (u32 j = 0; j < 4; j++) {
             result[i * 4 + j] = mat4.m[i][j];

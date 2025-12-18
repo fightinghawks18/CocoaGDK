@@ -19,6 +19,7 @@ target_compile_definitions(cocoa_platform PRIVATE
 if(APPLE)
     target_sources(cocoa_platform
             PRIVATE src/macos/windowing_macos.m
+            PRIVATE src/macos/utils_macos.c
     )
 
     target_link_libraries(cocoa_platform

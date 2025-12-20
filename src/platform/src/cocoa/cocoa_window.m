@@ -5,6 +5,7 @@
 #include "platform/window.h"
 #import <Cocoa/Cocoa.h>
 #import <CoreFoundation/CoreFoundation.h>
+#include "platform/cocoa/cocoa_input.h"
 
 struct CcoWindow_T {
     NSWindow *window;
@@ -18,7 +19,7 @@ struct CcoWindow_T {
 
 @implementation CocoaWindow
 - (BOOL)windowShouldClose:(NSWindow *)sender {
-    self.window->willClose = true;
+    self.window->willClose = CCO_YES;
     return NO;
 }
 - (void)windowDidBecomeKey:(NSNotification *)notification {
@@ -59,6 +60,7 @@ CcoResult ccoCreateWindow(i32 x, i32 y, i32 width, i32 height, const char *title
     CocoaWindow *delg = [[CocoaWindow alloc] init];
     delg.window = window;
 
+    [window->window setDelegate:delg];
     [window->window makeKeyAndOrderFront:nil];
 
     *outWindow = window;
@@ -97,6 +99,9 @@ void ccoWindowPumpEvents(CcoWindow window) {
                                                 untilDate:[NSDate distantPast]
                                                    inMode:NSDefaultRunLoopMode
                                                   dequeue:YES])) {
+        CcoCocoaInputEventResult inputResult = ccoInputHandleCocoaEvent(event);
+        if (inputResult == CCO_COCOA_INPUT_EVENT_HANDLED)
+            continue;
         [NSApp sendEvent:event];
     }
 }

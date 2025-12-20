@@ -9,6 +9,7 @@
 #include "opengl/gl/opengl_vao.h"
 #include "platform/utils.h"
 #include "platform/window.h"
+#include "platform/input.h"
 
 int main() {
     if (ccoWindowingInit() != CCO_SUCCESS) {
@@ -16,12 +17,20 @@ int main() {
         return -1;
     }
 
+    if (ccoInputInit() != CCO_SUCCESS) {
+        CCO_LOG("Failed to initialize input!");
+        return -1;
+    }
+    ccoInputEnable();
+
     CcoWindow window = CCO_NIL;
     CcoResult windowResult = ccoCreateWindow(0, 0, 800, 600, "cocoa", &window);
     if (windowResult != CCO_SUCCESS) {
         CCO_LOG("Failed to create window!");
         return -1;
     }
+
+    ccoInputGiveWindowFocus(window);
 
     CcoOpenGLContext glCtx = CCO_NIL;
     ccoCreateOpenGLContext(ccoWindowGetHandle(window), NULL, &glCtx);
@@ -87,6 +96,11 @@ int main() {
 
     while (!ccoWindowWillClose(window)) {
         ccoWindowPumpEvents(window);
+        ccoInputPoll();
+
+        if (ccoInputKeyWasJustPressed(CCO_INPUT_KEY_W)) {
+            CCO_LOG("INPUT");
+        }
 
         ccoMakeCurrentOpenGLContext(glCtx);
 

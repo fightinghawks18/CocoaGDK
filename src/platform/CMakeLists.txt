@@ -14,8 +14,9 @@ target_compile_definitions(cocoa_platform PRIVATE
 )
 
 if(APPLE)
-    target_sources(cocoa_platform
-
+    target_sources(cocoa_platform PRIVATE
+            src/cocoa/cocoa_window.m
+            src/cocoa/cocoa_utils.c
     )
 
     target_link_libraries(cocoa_platform

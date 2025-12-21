@@ -8,7 +8,7 @@
 #include "opengl/gl/opengl_pipeline.h"
 #include "opengl/gl/opengl_vao.h"
 #include "platform/utils.h"
-#include "platform/windowing.h"
+#include "platform/window.h"
 #include "platform/input.h"
 
 int main() {
@@ -17,25 +17,23 @@ int main() {
         return -1;
     }
 
+    if (ccoInputInit() != CCO_SUCCESS) {
+        CCO_LOG("Failed to initialize input!");
+        return -1;
+    }
+    ccoInputEnable();
+
     CcoWindow window = CCO_NIL;
-    CcoResult windowResult =
-        ccoCreateWindow(&(CcoWindowDesc){CCO_WINDOW_POS_CENTER, CCO_WINDOW_POS_CENTER, 800, 600, "cocoa",
-                                         CCO_WINDOW_FLAG_DECOR_BIT | CCO_WINDOW_FLAG_RESIZE_BIT},
-                        &window);
+    CcoResult windowResult = ccoCreateWindow(0, 0, 800, 600, "cocoa", &window);
     if (windowResult != CCO_SUCCESS) {
         CCO_LOG("Failed to create window!");
         return -1;
     }
-    
-    CcoWindowInput input = CCO_NIL;
-    CcoResult inputResult = ccoCreateWindowInput(window, &input);
-    if (inputResult != CCO_SUCCESS) {
-        CCO_LOG("Failed to create window input");
-        return -1;
-    }
+
+    ccoInputGiveWindowFocus(window);
 
     CcoOpenGLContext glCtx = CCO_NIL;
-    ccoCreateOpenGLContext(ccoGetNativeWindowHandle(window), NULL, &glCtx);
+    ccoCreateOpenGLContext(ccoWindowGetHandle(window), NULL, &glCtx);
     ccoMakeCurrentOpenGLContext(glCtx);
 
     ccoInitializeOpenGL();
@@ -96,17 +94,21 @@ int main() {
 
     ccoSetOpenGLVaoLayout(vao, vbo, ebo, &(CcoVertexLayout){.attributes = vertexAttributes, .attributeCount = 2});
 
-    while (!ccoShouldWindowClose(window)) {
-        ccoWindowingPoll();
-        ccoUpdateWindowInput(input);
+    while (!ccoWindowWillClose(window)) {
+        ccoWindowPumpEvents(window);
+        ccoInputPoll();
+
+        if (ccoInputKeyWasJustPressed(CCO_INPUT_KEY_W)) {
+            CCO_LOG("INPUT");
+        }
 
         ccoMakeCurrentOpenGLContext(glCtx);
 
-        CcoWindowFramebufferSize windowFramebufferSize = ccoGetWindowFramebufferSize(window);
+        CcoWindowContentSize windowContentSize = ccoWindowGetContentSize(window);
 
         projectionMatrix =
             ccoMat4Perspective(CCO_NO, CCO_NO, ccoDegToRad(80.0f),
-                                          (f32)windowFramebufferSize.w / (f32)windowFramebufferSize.h, 0.001f, 100.0f);
+                                          (f32)windowContentSize.width / (f32)windowContentSize.height, 0.001f, 100.0f);
         mvpBuffer.projection = ccoMat4Transpose(projectionMatrix);
 
         ccoMapToOpenGLUbo(ubo, &(CcoBufferMapping){.dataSize = sizeof(CcoModelViewProjection),
@@ -115,8 +117,8 @@ int main() {
 
         ccoSetOpenGLViewport((CcoViewport){.x = 0,
                                            .y = 0,
-                                           .w = (i32)windowFramebufferSize.w,
-                                           .h = (i32)windowFramebufferSize.h,
+                                           .w = (i32)windowContentSize.width,
+                                           .h = (i32)windowContentSize.height,
                                            .minDepth = 0,
                                            .maxDepth = 1});
         ccoSetOpenGLClearColor((CcoClearColor){.r = 0.12f, .g = 0.12f, .b = 0.12f, .a = 1.0f});
@@ -133,7 +135,7 @@ int main() {
         ccoSleep(5);
     }
 
-    ccoCloseWindow(window);
+    ccoDestroyWindow(window);
     ccoWindowingQuit();
     return 0;
 }

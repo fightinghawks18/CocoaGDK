@@ -1,55 +1,105 @@
 //
-// Created by fightinghawks18 on 12/18/25.
+// Created by fightinghawks18 on 12/20/25.
 //
 
 #pragma once
 
 #include "core/core_types.h"
-#include "windowing.h"
+#include "window.h"
+
+#define KEY_COUNT 10
+#define MOUSE_BUTTON_COUNT 5
 
 typedef enum {
-    CCO_INPUT_KEY_NONE = 0,
     CCO_INPUT_KEY_W,
     CCO_INPUT_KEY_A,
     CCO_INPUT_KEY_S,
     CCO_INPUT_KEY_D,
+
     CCO_INPUT_KEY_SPACE,
     CCO_INPUT_KEY_CTRL,
     CCO_INPUT_KEY_ESC,
 } CcoInputKey;
 
 typedef enum {
-    CCO_INPUT_MOUSE_KEY_M1,    ///< @brief Mouse1 (Left Click)
-    CCO_INPUT_MOUSE_KEY_M2,    ///< @brief Mouse2 (Right Click)
-    CCO_INPUT_MOUSE_KEY_M3,    ///< @brief Mouse3
-    CCO_INPUT_MOUSE_KEY_M4,    ///< @brief Mouse4
-    CCO_INPUT_MOUSE_KEY_M5,    ///< @brief Mouse5
-} CcoInputMouseKey;
+    CCO_INPUT_MOUSE_BUTTON_LEFT,
+    CCO_INPUT_MOUSE_BUTTON_RIGHT,
+    CCO_INPUT_MOUSE_BUTTON_3,
+    CCO_INPUT_MOUSE_BUTTON_4,
+    CCO_INPUT_MOUSE_BUTTON_5,
+} CcoInputMouseButton;
 
+/// @brief Change in mouse state between last frame and the current frame
 typedef struct {
-    f32 x;
-    f32 y;
-    f32 wheel;
+    f32 x, y, wheel;
 } CcoMouseDelta;
 
+/// @brief Mouse position
 typedef struct {
-    i32 x;
-    i32 y;
-} CcoMousePosition;
+    i32 x, y;
+} CcoMousePoint;
 
-typedef struct CcoWindowInput_T CcoWindowInput_T;
-typedef CcoWindowInput_T *CcoWindowInput;
+/// @brief Starts the input listener and begins listening for input
+/// @return CcoResult
+CcoResult ccoInputInit(void);
 
-CcoResult ccoCreateWindowInput(CcoWindow *window, CcoWindowInput *outInput);
-void ccoDestroyWindowInput(CcoWindow *window, CcoWindowInput input);
+/// @brief Closes the input listener
+void ccoInputQuit(void);
 
-void ccoUpdateWindowInput(CcoWindowInput input);
+/// @brief Accesses and caches input state
+void ccoInputPoll(void);
 
-CcoMouseDelta ccoWindowInputGetMouseDelta(CcoWindowInput input);
-CcoMousePosition ccoWindowInputGetMousePosition(CcoWindowInput input);
-CcoBool ccoWindowInputKeyIsPressed(CcoWindowInput input, CcoInputKey key);
-CcoBool ccoWindowInputKeyWasJustPressed(CcoWindowInput input, CcoInputKey key);
-CcoBool ccoWindowInputKeyWasJustReleased(CcoWindowInput input, CcoInputKey key);
-CcoBool ccoWindowInputMouseKeyIsPressed(CcoWindowInput input, CcoInputMouseKey mouseKey);
-CcoBool ccoWindowInputMouseKeyWasJustPressed(CcoWindowInput input, CcoInputMouseKey mouseKey);
-CcoBool ccoWindowInputMouseKeyWasJustReleased(CcoWindowInput input, CcoInputMouseKey mouseKey);
+/// @brief Clears input per-frame state
+void ccoInputClearFrameState(void);
+
+/// @brief Clears input hardware state
+/// @note The hardware state is what is currently being processed before being cached after polling
+void ccoInputClearHardwareState(void);
+
+/// @brief Gives input focus to a new window
+void ccoInputGiveWindowFocus(CcoWindow window);
+
+/// @brief Enables input listening
+void ccoInputEnable(void);
+
+/// @brief Disables input listening
+void ccoInputDisable(void);
+
+/// @brief Gets the current window that is taking input
+/// @return CcoWindow, or CCO_NIL if there is no active window
+/// @see CcoWindow
+CcoWindow ccoInputGetActiveWindow(void);
+
+/// @brief Gets the change in mouse state between last frame and this frame
+/// @return CcoMouseDelta
+/// @see CcoMouseDelta
+CcoMouseDelta ccoInputGetMouseDelta(void);
+
+/// @brief Gets the current position of the mouse
+/// @return CcoMousePoint
+/// @see CcoMousePoint
+CcoMousePoint ccoInputGetMousePoint(void);
+
+/// @brief Checks if a specific keyboard key is being pressed
+/// @return CCO_YES if the key is being pressed, or CCO_NO if it isn't
+CcoBool ccoInputKeyIsPressed(CcoInputKey key);
+
+/// @brief Checks if a specific keyboard key was pressed this frame
+/// @return CCO_YES if the key was pressed this frame, or CCO_NO if it wasn't
+CcoBool ccoInputKeyWasJustPressed(CcoInputKey key);
+
+/// @brief Checks if a specific keyboard key was released this frame
+/// @return CCO_YES if the button was released this frame, or CCO_NO if it wasn't
+CcoBool ccoInputKeyWasJustReleased(CcoInputKey key);
+
+/// @brief Checks if a specific mouse button is being pressed
+/// @return CCO_YES if the button is being pressed, or CCO_NO if it isn't
+CcoBool ccoInputMouseButtonIsPressed(CcoInputMouseButton button);
+
+/// @brief Checks if a specific mouse button was pressed this frame
+/// @return CCO_YES if the button was pressed this frame, or CCO_NO if it wasn't
+CcoBool ccoInputMouseButtonWasJustPressed(CcoInputMouseButton button);
+
+/// @brief Checks if a specific mouse button was released this frame
+/// @return CCO_YES if the button was released this frame, or CCO_NO if it wasn't
+CcoBool ccoInputMouseButtonWasJustReleased(CcoInputMouseButton button);

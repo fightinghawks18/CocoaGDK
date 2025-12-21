@@ -14,10 +14,10 @@ target_compile_definitions(cocoa_platform PRIVATE
 )
 
 if(APPLE)
-    target_sources(cocoa_platform
-            PRIVATE src/macos/windowing_macos.m
-            PRIVATE src/macos/utils_macos.c
-            PRIVATE src/macos/input_macos.m
+    target_sources(cocoa_platform PRIVATE
+            src/cocoa/cocoa_input.m
+            src/cocoa/cocoa_window.m
+            src/cocoa/cocoa_utils.c
     )
 
     target_link_libraries(cocoa_platform
@@ -26,8 +26,9 @@ if(APPLE)
             PRIVATE "-framework QuartzCore"
     )
 elseif(WIN32)
-    target_sources(cocoa_platform
-            PRIVATE src/win32/windowing_win32.c
-            PRIVATE src/win32/utils_win32.c
+    target_sources(cocoa_platform PRIVATE
+            src/win32/win32_input.c
+            src/win32/win32_utils.c
+            src/win32/win32_window.c
     )
 endif()

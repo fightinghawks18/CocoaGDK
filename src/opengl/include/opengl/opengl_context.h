@@ -13,4 +13,4 @@ cco_result cco_create_open_gl_context(void *window_handle, void *display_handle,
 void cco_destroy_open_gl_context(cco_opengl_context open_gl_context);
 void cco_flush_open_gl_context_buffer(cco_opengl_context open_gl_context);
 void cco_make_current_open_gl_context(cco_opengl_context open_gl_context);
-void cco_remove_current_open_gl_context();
+void cco_remove_current_open_gl_context(void);

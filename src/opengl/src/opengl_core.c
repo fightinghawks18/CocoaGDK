@@ -6,7 +6,7 @@
 #include "opengl/opengl_loader.h"
 #include <glad/glad.h>
 
-cco_result cco_initialize_open_gl() {
+cco_result cco_initialize_open_gl(void) {
     if (!gladLoadGLLoader(cco_get_gl_proc_addr)) {
         CCO_LOG("Failed to load glad!");
         return CCO_FAIL_GRAPHICS_INIT_ERROR;

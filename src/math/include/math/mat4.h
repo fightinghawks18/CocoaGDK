@@ -17,7 +17,7 @@ typedef mat4 CcoMat4;
  * @brief Creates an identity matrix with 4 rows and 4 columns
  * @return mat4
  */
-static mat4 cco_mat4() {
+static mat4 cco_mat4(void) {
     mat4 matrix;
     matrix.m[0][0] = 1;
     matrix.m[0][1] = 0;

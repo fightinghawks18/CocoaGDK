@@ -20,15 +20,15 @@ static vec3 cco_vec3(const f32 x, const f32 y, const f32 z) {
     return vec3;
 }
 
-static vec3 cco_vec3_up() {
+static vec3 cco_vec3_up(void) {
     return cco_vec3(0, 1, 0);
 }
 
-static vec3 cco_vec3_right() {
+static vec3 cco_vec3_right(void) {
     return cco_vec3(1, 0, 0);
 }
 
-static vec3 cco_vec3_forward() {
+static vec3 cco_vec3_forward(void) {
     return cco_vec3(0, 0, 1);
 }
 

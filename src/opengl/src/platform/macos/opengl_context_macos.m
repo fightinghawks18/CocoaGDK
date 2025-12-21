@@ -46,4 +46,4 @@ void cco_flush_open_gl_context_buffer(cco_opengl_context open_gl_context) {
 }
 
 void cco_make_current_open_gl_context(cco_opengl_context open_gl_context) { [open_gl_context->ctx makeCurrentContext]; }
-void cco_remove_current_open_gl_context() { [NSOpenGLContext clearCurrentContext]; }
+void cco_remove_current_open_gl_context(void) { [NSOpenGLContext clearCurrentContext]; }

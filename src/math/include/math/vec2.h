@@ -19,11 +19,11 @@ static vec2 cco_vec2(const f32 x, const f32 y) {
     return vec2;
 }
 
-static vec2 cco_vec2_up() {
+static vec2 cco_vec2_up(void) {
     return cco_vec2(0, 1);
 }
 
-static vec2 cco_vec2_right() {
+static vec2 cco_vec2_right(void) {
     return cco_vec2(1, 0);
 }
 

@@ -17,6 +17,6 @@ void cco_destroy_open_gl_vao(cco_opengl_vao vao);
 
 void cco_use_open_gl_vao(cco_opengl_vao vao);
 void cco_set_open_gl_vao_layout(cco_opengl_vao vao, cco_opengl_vbo vbo, cco_opengl_ebo ebo, const cco_vertex_layout *layout);
-void cco_remove_current_open_gl_vao();
+void cco_remove_current_open_gl_vao(void);
 
 u32 cco_get_open_gl_vao_id(cco_opengl_vao vao);

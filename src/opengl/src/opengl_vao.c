@@ -45,6 +45,6 @@ void cco_set_open_gl_vao_layout(cco_opengl_vao vao, cco_opengl_vbo vbo, cco_open
     cco_remove_current_open_gl_vao();
 }
 
-void cco_remove_current_open_gl_vao() { glBindVertexArray(0); }
+void cco_remove_current_open_gl_vao(void) { glBindVertexArray(0); }
 
 u32 cco_get_open_gl_vao_id(cco_opengl_vao vao) { return vao->gl_id; }

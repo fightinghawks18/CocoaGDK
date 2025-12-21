@@ -27,7 +27,7 @@ typedef struct {
     f32 r, g, b, a;
 } cco_clear_color;
 
-cco_result cco_initialize_open_gl();
+cco_result cco_initialize_open_gl(void);
 void cco_set_open_gl_viewport(cco_viewport viewport);
 void cco_clear_open_gl_buffers(CcoOpenGLBufferFlags buffer_flags);
 void cco_set_open_gl_clear_color(cco_clear_color clear_color);

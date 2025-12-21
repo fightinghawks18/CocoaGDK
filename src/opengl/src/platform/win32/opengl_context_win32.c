@@ -97,6 +97,6 @@ void cco_make_current_open_gl_context(cco_opengl_context open_gl_context) {
     wglMakeCurrent(open_gl_context->hdc, open_gl_context->ctx);
 }
 
-void cco_remove_current_open_gl_context() {
+void cco_remove_current_open_gl_context(void) {
     wglMakeCurrent(NULL, NULL);
 }

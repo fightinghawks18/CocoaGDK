@@ -43,3 +43,16 @@ endif()
 if(WIN32)
     add_compile_definitions(WIN32_LEAN_AND_MEAN)
 endif()
+
+install(TARGETS cocoa_core cocoa_graphics cocoa_math cocoa_opengl cocoa_platform
+        EXPORT cocoa_gdk-targets
+        LIBRARY DESTINATION lib
+        ARCHIVE DESTINATION lib
+        RUNTIME DESTINATION bin
+)
+
+install(EXPORT cocoa_gdk-targets
+        FILE cocoa_gdk-targets.cmake
+        NAMESPACE cocoa_gdk::
+        DESTINATION lib/cmake/cocoa_gdk
+)

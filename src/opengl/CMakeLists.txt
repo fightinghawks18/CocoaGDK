@@ -11,8 +11,9 @@ add_library(cocoa_opengl STATIC
         src/opengl_core.c
 
 )
-target_include_directories(cocoa_opengl
-        PUBLIC include
+target_include_directories(cocoa_opengl PUBLIC
+        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+        $<INSTALL_INTERFACE:include>
 )
 
 target_link_libraries(cocoa_opengl
@@ -38,3 +39,5 @@ elseif(WIN32)
             PRIVATE src/platform/win32/opengl_loader_win32.c
     )
 endif()
+
+install(DIRECTORY include/ DESTINATION include)

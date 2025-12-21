@@ -4,8 +4,9 @@ target_link_libraries(cocoa_platform
         PUBLIC cocoa_core
 )
 
-target_include_directories(cocoa_platform
-        PUBLIC include
+target_include_directories(cocoa_platform PUBLIC
+        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+        $<INSTALL_INTERFACE:include>
 )
 
 target_compile_definitions(cocoa_platform PRIVATE
@@ -32,3 +33,4 @@ elseif(WIN32)
             src/win32/win32_window.c
     )
 endif()
+install(DIRECTORY include/ DESTINATION include)

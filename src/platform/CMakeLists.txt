@@ -26,7 +26,9 @@ if(APPLE)
             PRIVATE "-framework QuartzCore"
     )
 elseif(WIN32)
-    target_sources(cocoa_platform
-
+    target_sources(cocoa_platform PRIVATE
+            src/win32/win32_input.c
+            src/win32/win32_utils.c
+            src/win32/win32_window.c
     )
 endif()

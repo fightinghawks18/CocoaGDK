@@ -1,33 +1,35 @@
 cmake_minimum_required(VERSION 3.20)
 
-project(cocoa_engine C)
+project(cocoa_gdk C)
 
 set(CMAKE_C_STANDARD 17)
-set(CMAKE_C_STANDARD_REQUIRED 17)
+set(CMAKE_C_STANDARD_REQUIRED ON)
 
 add_subdirectory("src/core")
 add_subdirectory("src/graphics")
 add_subdirectory("src/math")
 add_subdirectory("src/opengl")
 add_subdirectory("src/platform")
-add_subdirectory("src/tools")
+
+# Namespace aliases
+add_library(cocoa_gdk::core ALIAS cocoa_core)
+add_library(cocoa_gdk::graphics ALIAS cocoa_graphics)
+add_library(cocoa_gdk::math ALIAS cocoa_math)
+add_library(cocoa_gdk::opengl ALIAS cocoa_opengl)
+add_library(cocoa_gdk::platform ALIAS cocoa_platform)
 
 include("cmake/content.cmake")
 
-add_executable(cocoa_engine
-        src/main.c
-)
+# Main library that bundles everything
+add_library(cocoa_gdk INTERFACE)
+add_library(cocoa_gdk::cocoa_gdk ALIAS cocoa_gdk)
 
-copy_content_directory("shaders")
-
-target_link_libraries(cocoa_engine
-        PRIVATE cocoa_platform
-        PRIVATE cocoa_opengl
-)
-
-add_compile_definitions(
-        $<$<CONFIG:Debug>:DEBUG>
-        $<$<CONFIG:Release>:NDEBUG>
+target_link_libraries(cocoa_gdk INTERFACE
+        cocoa_gdk::platform
+        cocoa_gdk::opengl
+        cocoa_gdk::core
+        cocoa_gdk::graphics
+        cocoa_gdk::math
 )
 
 if(CMAKE_EXPORT_COMPILE_COMMANDS)

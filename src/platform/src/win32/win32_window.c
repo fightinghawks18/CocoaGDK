@@ -21,7 +21,7 @@ LRESULT CALLBACK Wndproc(HWND hWnd, UINT u_msg, WPARAM wparam, LPARAM lparam) {
     CcoWindow window = CCO_NIL;
     if (u_msg == WM_NCCREATE) {
         CREATESTRUCT *create_struct = (CREATESTRUCT *)lparam;
-        window = (CcoWindow)create_struct->lp_create_params;
+        window = (CcoWindow)create_struct->lpCreateParams;
         SetWindowLongPtr(hWnd, GWLP_USERDATA, (LONG_PTR)window);
     } else {
         window = (CcoWindow)GetWindowLongPtr(hWnd, GWLP_USERDATA);
@@ -77,10 +77,10 @@ cco_result cco_windowing_init(void) {
     }
 
     WNDCLASSEX wc = {0};
-    wc.cb_size = sizeof(WNDCLASSEX);
-    wc.h_instance = GetModuleHandle(NULL);
-    wc.lpfn_wnd_proc = &Wndproc;
-    wc.lpsz_class_name = "CGDKWindow";
+    wc.cbSize = sizeof(WNDCLASSEX);
+    wc.hInstance = GetModuleHandle(NULL);
+    wc.lpfnWndProc = &Wndproc;
+    wc.lpszClassName = "CGDKWindow";
 
     if (!RegisterClassEx(&wc)) {
         CCO_LOG("Failed to register main win32 window class!");

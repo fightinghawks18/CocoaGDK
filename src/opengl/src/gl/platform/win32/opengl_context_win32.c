@@ -8,13 +8,13 @@
 #include <gl/GL.h>
 #include <gl/wglext.h>
 
-struct CcoOpenGLContext_T {
+struct cco_opengl_context_t {
     HGLRC ctx;
     HDC hdc;
 };
 
-cco_result cco_create_open_gl_context(void *window_handle, void *display_handle, CcoOpenGLContext *out_open_gl_context) {
-    CcoOpenGLContext open_gl_context = malloc(sizeof(CcoOpenGLContext_T));
+cco_result cco_create_open_gl_context(void *window_handle, void *display_handle, cco_opengl_context *out_open_gl_context) {
+    cco_opengl_context open_gl_context = malloc(sizeof(cco_opengl_context_t));
     if (!open_gl_context)
         return CCO_FAIL_OUT_OF_MEMORY;
 
@@ -80,7 +80,7 @@ cco_result cco_create_open_gl_context(void *window_handle, void *display_handle,
     return CCO_SUCCESS;
 }
 
-void cco_destroy_open_gl_context(CcoOpenGLContext open_gl_context) {
+void cco_destroy_open_gl_context(cco_opengl_context open_gl_context) {
     if (open_gl_context->ctx) {
         wglDeleteContext(open_gl_context->ctx);
         open_gl_context->ctx = NULL;
@@ -89,11 +89,11 @@ void cco_destroy_open_gl_context(CcoOpenGLContext open_gl_context) {
     free(open_gl_context);
 }
 
-void cco_flush_open_gl_context_buffer(CcoOpenGLContext open_gl_context) {
+void cco_flush_open_gl_context_buffer(cco_opengl_context open_gl_context) {
     wglSwapLayerBuffers(open_gl_context->hdc, WGL_SWAP_MAIN_PLANE);
 }
 
-void cco_make_current_open_gl_context(CcoOpenGLContext open_gl_context) {
+void cco_make_current_open_gl_context(cco_opengl_context open_gl_context) {
     wglMakeCurrent(open_gl_context->hdc, open_gl_context->ctx);
 }
 

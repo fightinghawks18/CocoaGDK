@@ -41,16 +41,16 @@ cco_result cco_input_init(void) {
     memset(&g_input_state, 0, sizeof(g_input_state));
 
     RAWINPUTDEVICE *keyboard = &g_input_state.rids[0];
-    keyboard->us_usage_page = HID_USAGE_PAGE_GENERIC;
-    keyboard->us_usage = HID_USAGE_GENERIC_KEYBOARD;
-    keyboard->dw_flags = 0;
-    keyboard->hwnd_target = NULL;
+    keyboard->usUsagePage = HID_USAGE_PAGE_GENERIC;
+    keyboard->usUsage = HID_USAGE_GENERIC_KEYBOARD;
+    keyboard->dwFlags = 0;
+    keyboard->hwndTarget = NULL;
 
     RAWINPUTDEVICE *mouse = &g_input_state.rids[1];
-    mouse->us_usage_page = HID_USAGE_PAGE_GENERIC;
-    mouse->us_usage = HID_USAGE_GENERIC_MOUSE;
-    mouse->dw_flags = 0;
-    mouse->hwnd_target = NULL;
+    mouse->usUsagePage = HID_USAGE_PAGE_GENERIC;
+    mouse->usUsage = HID_USAGE_GENERIC_MOUSE;
+    mouse->dwFlags = 0;
+    mouse->hwndTarget = NULL;
 
     if (!RegisterRawInputDevices(g_input_state.rids, 2, sizeof(RAWINPUTDEVICE))) {
         CCO_LOG("Failed to register raw input devices for win32!");
@@ -62,16 +62,16 @@ cco_result cco_input_init(void) {
 
 void cco_input_quit(void) {
     RAWINPUTDEVICE *keyboard = &g_input_state.rids[0];
-    keyboard->us_usage_page = HID_USAGE_PAGE_GENERIC;
-    keyboard->us_usage = HID_USAGE_GENERIC_KEYBOARD;
-    keyboard->dw_flags = RIDEV_REMOVE;
-    keyboard->hwnd_target = NULL;
+    keyboard->usUsagePage = HID_USAGE_PAGE_GENERIC;
+    keyboard->usUsage = HID_USAGE_GENERIC_KEYBOARD;
+    keyboard->dwFlags = RIDEV_REMOVE;
+    keyboard->hwndTarget = NULL;
 
     RAWINPUTDEVICE *mouse = &g_input_state.rids[1];
-    mouse->us_usage_page = HID_USAGE_PAGE_GENERIC;
-    mouse->us_usage = HID_USAGE_GENERIC_MOUSE;
-    mouse->dw_flags = RIDEV_REMOVE;
-    mouse->hwnd_target = NULL;
+    mouse->usUsagePage = HID_USAGE_PAGE_GENERIC;
+    mouse->usUsage = HID_USAGE_GENERIC_MOUSE;
+    mouse->dwFlags = RIDEV_REMOVE;
+    mouse->hwndTarget = NULL;
 
     if (!RegisterRawInputDevices(g_input_state.rids, 2, sizeof(RAWINPUTDEVICE))) {
         CCO_LOG("Failed to unregister raw input devices for win32!");
@@ -157,15 +157,15 @@ CcoBool cco_input_mouse_button_was_just_released(cco_input_mouse_button button) 
 }
 
 static void handle_raw_mouse_input(RAWMOUSE *mouse) {
-    if (mouse->us_flags == MOUSE_MOVE_RELATIVE) {
-        const i32 delta_x = mouse->l_last_x;
-        const i32 delta_y = mouse->l_last_y;
+    if (mouse->usFlags == MOUSE_MOVE_RELATIVE) {
+        const i32 delta_x = mouse->lLastX;
+        const i32 delta_y = mouse->lLastY;
 
-        g_input_state.mouse_delta_processing.x += delta_x;
-        g_input_state.mouse_delta_processing.y += delta_y;
+        g_input_state.mouse_delta_processing.x += (f32)delta_x;
+        g_input_state.mouse_delta_processing.y += (f32)delta_y;
     }
 
-    const u16 button_flags = mouse->us_button_flags;
+    const u16 button_flags = mouse->usButtonFlags;
     if (button_flags & RI_MOUSE_LEFT_BUTTON_DOWN)
         g_input_state.mouse_buttons_processing[CCO_INPUT_MOUSE_BUTTON_LEFT] = CCO_YES;
     if (button_flags & RI_MOUSE_LEFT_BUTTON_UP)
@@ -187,7 +187,7 @@ static void handle_raw_mouse_input(RAWMOUSE *mouse) {
     if (button_flags & RI_MOUSE_BUTTON_5_UP)
         g_input_state.mouse_buttons_processing[CCO_INPUT_MOUSE_BUTTON_5] = CCO_NO;
     if (button_flags & RI_MOUSE_WHEEL) {
-        const i16 wheel_delta = (i16)mouse->us_button_data;
+        const i16 wheel_delta = (i16)mouse->usButtonData;
 
         // The delta of the mouse wheel is in multiples of 120.0f (WHEEL_DELTA)
         g_input_state.mouse_delta_processing.wheel += (f32)wheel_delta / WHEEL_DELTA;
@@ -220,9 +220,9 @@ void cco_input_handle_raw_input(HWND hWnd, LPARAM lparam) {
 
     RAWINPUT *raw_input = (RAWINPUT *)raw_input_buffer;
 
-    if (raw_input->header.dw_type == RIM_TYPEMOUSE) {
+    if (raw_input->header.dwType == RIM_TYPEMOUSE) {
         handle_raw_mouse_input(&raw_input->data.mouse);
-    } else if (raw_input->header.dw_type == RIM_TYPEKEYBOARD) {
+    } else if (raw_input->header.dwType == RIM_TYPEKEYBOARD) {
         handle_raw_keyboard_input(&raw_input->data.keyboard);
     }
 }

@@ -6,6 +6,7 @@
 #import <Cocoa/Cocoa.h>
 #import <CoreFoundation/CoreFoundation.h>
 #include "platform/cocoa/cocoa_input.h"
+#include "platform/input.h"
 
 struct CcoWindow_T {
     NSWindow *window;
@@ -24,9 +25,11 @@ struct CcoWindow_T {
 }
 - (void)windowDidBecomeKey:(NSNotification *)notification {
     self.window->focused = CCO_YES;
+    ccoInputGiveWindowFocus(self.window);
 }
 - (void)windowDidResignKey:(NSNotification *)notification {
     self.window->focused = CCO_NO;
+    ccoInputGiveWindowFocus(CCO_NIL);
 }
 
 @end

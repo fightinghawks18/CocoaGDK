@@ -2,6 +2,7 @@
 // Created by fightinghawks18 on 12/19/25.
 //
 
+#include "platform/input.h"
 #include "platform/win32/win32_input.h"
 #include "platform/window.h"
 #include <windows.h>
@@ -49,6 +50,14 @@ LRESULT CALLBACK Wndproc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
     case WM_INPUT: {
         ccoInputHandleRawInput(hWnd, lParam);
         return 0;
+    }
+    case WM_SETFOCUS: {
+        ccoInputGiveWindowFocus(window);
+        break;
+    }
+    case WM_KILLFOCUS: {
+        ccoInputGiveWindowFocus(CCO_NIL);
+        break;
     }
     case WM_CLOSE: {
         window->willClose = CCO_YES;

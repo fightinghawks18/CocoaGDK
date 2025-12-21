@@ -1,5 +1,17 @@
 find_package(OpenGL REQUIRED)
-find_package(glad CONFIG REQUIRED)
+
+find_package(glad CONFIG QUIET)
+
+if(NOT glad_FOUND)
+    message(STATUS "glad not found, fetching from source...")
+    include(FetchContent)
+    FetchContent_Declare(
+            glad
+            GIT_REPOSITORY https://github.com/Dav1dde/glad.git
+            GIT_TAG v0.1.36
+    )
+    FetchContent_MakeAvailable(glad)
+endif()
 
 add_library(cocoa_opengl STATIC
         src/opengl_vao.c

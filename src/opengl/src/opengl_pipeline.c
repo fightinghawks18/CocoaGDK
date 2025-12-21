@@ -3,9 +3,9 @@
 //
 
 #include "opengl/opengl_pipeline.h"
+#include "opengl/opengl_loader.h"
 #include "opengl/opengl_shader.h"
 
-#include <glad/glad.h>
 #include <stdlib.h>
 
 struct cco_opengl_pipeline_t {

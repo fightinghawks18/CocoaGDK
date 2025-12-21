@@ -3,8 +3,9 @@
 //
 
 #include "opengl/opengl_vao.h"
+#include "opengl/opengl_loader.h"
 #include "opengl/opengl_types.h"
-#include <glad/glad.h>
+
 #include <stdlib.h>
 
 struct cco_opengl_vao_t {

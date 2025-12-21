@@ -1,7 +1,5 @@
 find_package(OpenGL REQUIRED)
 
-find_package(glad CONFIG REQUIRED)
-
 add_library(cocoa_opengl STATIC
         src/opengl_vao.c
         src/opengl_vbo.c
@@ -19,9 +17,12 @@ target_include_directories(cocoa_opengl PUBLIC
 
 target_link_libraries(cocoa_opengl
         PUBLIC OpenGL::GL
-        PUBLIC glad::glad
         PUBLIC cocoa_core
         PUBLIC cocoa_graphics
+)
+
+target_compile_definitions(cocoa_opengl
+        PRIVATE CCO_BUILDING_OPENGL
 )
 
 if(APPLE)

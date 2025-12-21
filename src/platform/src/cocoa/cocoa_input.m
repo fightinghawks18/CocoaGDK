@@ -27,16 +27,16 @@ static const cco_input_mouse_button mouse_number_to_cco_input_mouse_button_map[]
 };
 
 static struct {
-    CcoWindow current_window;
-    CcoBool enabled;
+    cco_window current_window;
+    cco_bool enabled;
 
-    CcoBool keys_processing[KEY_COUNT];
-    CcoBool keys_now[KEY_COUNT];
-    CcoBool keys_last[KEY_COUNT];
+    cco_bool keys_processing[KEY_COUNT];
+    cco_bool keys_now[KEY_COUNT];
+    cco_bool keys_last[KEY_COUNT];
 
-    CcoBool mouse_buttons_processing[MOUSE_BUTTON_COUNT];
-    CcoBool mouse_buttons_now[MOUSE_BUTTON_COUNT];
-    CcoBool mouse_buttons_last[MOUSE_BUTTON_COUNT];
+    cco_bool mouse_buttons_processing[MOUSE_BUTTON_COUNT];
+    cco_bool mouse_buttons_now[MOUSE_BUTTON_COUNT];
+    cco_bool mouse_buttons_last[MOUSE_BUTTON_COUNT];
 
     cco_mouse_point mouse_point_processing;
     cco_mouse_delta mouse_delta_processing;
@@ -87,7 +87,7 @@ void cco_input_clear_hardware_state(void) {
     memset(g_input_state.mouse_buttons_processing, 0, sizeof(g_input_state.mouse_buttons_processing));
 }
 
-void cco_input_give_window_focus(CcoWindow window) {
+void cco_input_give_window_focus(cco_window window) {
     cco_input_clear_frame_state();
     cco_input_clear_hardware_state();
 
@@ -102,7 +102,7 @@ void cco_input_disable(void) {
     g_input_state.enabled = CCO_NO;
 }
 
-CcoWindow cco_input_get_active_window(void) {
+cco_window cco_input_get_active_window(void) {
     return g_input_state.current_window;
 }
 
@@ -114,27 +114,27 @@ cco_mouse_point cco_input_get_mouse_point(void) {
     return g_input_state.mouse_point;
 }
 
-CcoBool cco_input_key_is_pressed(cco_input_key key) {
+cco_bool cco_input_key_is_pressed(cco_input_key key) {
     return g_input_state.keys_now[key];
 }
 
-CcoBool cco_input_key_was_just_pressed(cco_input_key key) {
+cco_bool cco_input_key_was_just_pressed(cco_input_key key) {
     return g_input_state.keys_now[key] == CCO_YES && g_input_state.keys_last[key] == CCO_NO;
 }
 
-CcoBool cco_input_key_was_just_released(cco_input_key key) {
+cco_bool cco_input_key_was_just_released(cco_input_key key) {
     return g_input_state.keys_now[key] == CCO_NO && g_input_state.keys_last[key] == CCO_YES;
 }
 
-CcoBool cco_input_mouse_button_is_pressed(cco_input_mouse_button button) {
+cco_bool cco_input_mouse_button_is_pressed(cco_input_mouse_button button) {
     return g_input_state.mouse_buttons_now[button];
 }
 
-CcoBool cco_input_mouse_button_was_just_pressed(cco_input_mouse_button button) {
+cco_bool cco_input_mouse_button_was_just_pressed(cco_input_mouse_button button) {
     return g_input_state.mouse_buttons_now[button] == CCO_YES && g_input_state.mouse_buttons_last[button] == CCO_NO;
 }
 
-CcoBool cco_input_mouse_button_was_just_released(cco_input_mouse_button button) {
+cco_bool cco_input_mouse_button_was_just_released(cco_input_mouse_button button) {
     return g_input_state.mouse_buttons_now[button] == CCO_NO && g_input_state.mouse_buttons_last[button] == CCO_YES;
 }
 

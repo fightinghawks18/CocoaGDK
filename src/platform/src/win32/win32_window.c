@@ -11,8 +11,8 @@ static const i32 BASE_DPI = 96;
 
 struct CcoWindow_T {
     HWND hWnd;
-    CcoBool will_close;
-    CcoBool focused;
+    cco_bool will_close;
+    cco_bool focused;
 };
 
 static i32 scale_from_dpi(const i32 logical_axis, const i32 dpi) { return MulDiv(logical_axis, dpi, BASE_DPI); }
@@ -182,5 +182,5 @@ cco_window_content_size cco_window_get_content_size(CcoWindow window) {
 }
 
 void *cco_window_get_handle(CcoWindow window) { return window->hWnd; }
-CcoBool cco_window_will_close(CcoWindow window) { return window->will_close; }
-CcoBool cco_window_is_focus(CcoWindow window) { return window->focused; }
+cco_bool cco_window_will_close(CcoWindow window) { return window->will_close; }
+cco_bool cco_window_is_focus(CcoWindow window) { return window->focused; }

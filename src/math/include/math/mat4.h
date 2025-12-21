@@ -111,7 +111,7 @@ static mat4 cco_mat4_scale(const vec3 scale) {
     return result;
 }
 
-static mat4 cco_mat4_perspective(const CcoBool flip_y, const CcoBool zero_to_one_depth, const CcoRadians fov, const f32 aspect_ratio,
+static mat4 cco_mat4_perspective(const cco_bool flip_y, const cco_bool zero_to_one_depth, const CcoRadians fov, const f32 aspect_ratio,
                                                   const f32 near_clipping_point, const f32 far_clipping_point) {
     mat4 result = cco_mat4();
 

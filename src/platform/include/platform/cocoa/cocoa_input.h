@@ -6,6 +6,8 @@
 
 #ifdef __APPLE__
 
+#include "platform/exports.h"
+
 typedef enum {
     CCO_COCOA_INPUT_EVENT_HANDLED,
     CCO_COCOA_INPUT_EVENT_UNHANDLED
@@ -14,7 +16,7 @@ typedef enum {
 #ifdef __OBJC__
 
 #include <AppKit/AppKit.h>
-cco_cocoa_input_event_result cco_input_handle_cocoa_event(NSEvent *event);
+CCO_PLATFORM_API cco_cocoa_input_event_result cco_input_handle_cocoa_event(NSEvent *event);
 
 #endif // __OBJC__
 

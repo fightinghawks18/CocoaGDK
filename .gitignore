@@ -11,3 +11,6 @@
 
 # CMake files
 build/
+
+# Test files
+Testing/

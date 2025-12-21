@@ -8,14 +8,14 @@
 #include "platform/cocoa/cocoa_input.h"
 #include "platform/input.h"
 
-struct CcoWindow_T {
+struct cco_window_t {
     NSWindow *window;
-    CcoBool will_close;
-    CcoBool focused;
+    cco_bool will_close;
+    cco_bool focused;
 };
 
 @interface CocoaWindow : NSObject <NSWindowDelegate>
-@property(nonatomic, assign) CcoWindow window;
+@property(nonatomic, assign) cco_window window;
 @end
 
 @implementation CocoaWindow
@@ -43,8 +43,8 @@ cco_result cco_windowing_init() {
 
 void cco_windowing_quit() {}
 
-cco_result cco_create_window(i32 x, i32 y, i32 width, i32 height, const char *title, CcoWindow *out_window) {
-    CcoWindow window = malloc(sizeof(CcoWindow_T));
+cco_result cco_create_window(i32 x, i32 y, i32 width, i32 height, const char *title, cco_window *out_window) {
+    cco_window window = malloc(sizeof(cco_window_t));
     if (!window)
         return CCO_FAIL_OUT_OF_MEMORY;
 
@@ -70,7 +70,7 @@ cco_result cco_create_window(i32 x, i32 y, i32 width, i32 height, const char *ti
     return CCO_SUCCESS;
 }
 
-void cco_destroy_window(CcoWindow window) {
+void cco_destroy_window(cco_window window) {
     if (window->window) {
         [[window->window delegate] release];
         [window->window release];
@@ -79,24 +79,24 @@ void cco_destroy_window(CcoWindow window) {
     free(window);
 }
 
-void cco_window_move(CcoWindow window, i32 x, i32 y) {
+void cco_window_move(cco_window window, i32 x, i32 y) {
     NSPoint point = NSMakePoint(x, y);
     [window->window setFrameOrigin:point];
 }
-void cco_window_resize(CcoWindow window, i32 width, i32 height) {
+void cco_window_resize(cco_window window, i32 width, i32 height) {
     NSRect window_rect = [window->window frame];
     NSRect rect = NSMakeRect(window_rect.origin.x, window_rect.origin.y, width, height);
     [window->window setFrame:rect display:YES];
 }
 
-void cco_window_rename(CcoWindow window, const char *title) {
+void cco_window_rename(cco_window window, const char *title) {
     @autoreleasepool {
         NSString *str = [NSString stringWithUTF8String:title];
         [window->window setTitle:str];
     }
 }
 
-void cco_window_pump_events(CcoWindow window) {
+void cco_window_pump_events(cco_window window) {
     NSEvent *event;
     while ((event = [window->window nextEventMatchingMask:NSEventMaskAny
                                                 untilDate:[NSDate distantPast]
@@ -109,12 +109,12 @@ void cco_window_pump_events(CcoWindow window) {
     }
 }
 
-cco_window_frame cco_window_get_frame(CcoWindow window) {
+cco_window_frame cco_window_get_frame(cco_window window) {
     NSRect rect = [window->window frame];
     return (cco_window_frame){rect.origin.x, rect.origin.y, rect.size.width, rect.size.height};
 }
 
-cco_window_content_size cco_window_get_content_size(CcoWindow window) {
+cco_window_content_size cco_window_get_content_size(cco_window window) {
     NSRect bounds = [[window->window contentView] bounds];
     CGFloat dpi_scale = [window->window backingScaleFactor];
 
@@ -124,6 +124,6 @@ cco_window_content_size cco_window_get_content_size(CcoWindow window) {
     return (cco_window_content_size){width, height};
 }
 
-void *cco_window_get_handle(CcoWindow window) { return (__bridge void *)window->window; }
-CcoBool cco_window_will_close(CcoWindow window) { return window->will_close; }
-CcoBool cco_window_is_focus(CcoWindow window) { return window->focused; }
+void *cco_window_get_handle(cco_window window) { return (__bridge void *)window->window; }
+cco_bool cco_window_will_close(cco_window window) { return window->will_close; }
+cco_bool cco_window_is_focus(cco_window window) { return window->focused; }

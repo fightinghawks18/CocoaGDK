@@ -32,7 +32,7 @@ typedef int64_t i64;
 typedef float f32;
 typedef double f64;
 
-typedef u8 CcoBool;
+typedef u8 cco_bool;
 
 typedef enum {
     CCO_SUCCESS = 0,                              ///< @brief Successfully completed operation

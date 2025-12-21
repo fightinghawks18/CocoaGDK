@@ -4,7 +4,8 @@
 
 #include "opengl/opengl_ubo.h"
 #include "opengl/opengl_types.h"
-#include <glad/glad.h>
+#include "opengl/opengl_loader.h"
+
 #include <stdlib.h>
 
 struct cco_opengl_ubo_t {

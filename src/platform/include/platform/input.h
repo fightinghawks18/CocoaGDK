@@ -6,6 +6,7 @@
 
 #include "core/core_types.h"
 #include "window.h"
+#include "exports.h"
 
 #define KEY_COUNT 10
 #define MOUSE_BUTTON_COUNT 5
@@ -41,65 +42,65 @@ typedef struct {
 
 /// @brief Starts the input listener and begins listening for input
 /// @return cco_result
-cco_result cco_input_init(void);
+CCO_PLATFORM_API cco_result cco_input_init(void);
 
 /// @brief Closes the input listener
-void cco_input_quit(void);
+CCO_PLATFORM_API void cco_input_quit(void);
 
 /// @brief Accesses and caches input state
-void cco_input_poll(void);
+CCO_PLATFORM_API void cco_input_poll(void);
 
 /// @brief Clears input per-frame state
-void cco_input_clear_frame_state(void);
+CCO_PLATFORM_API void cco_input_clear_frame_state(void);
 
 /// @brief Clears input hardware state
 /// @note The hardware state is what is currently being processed before being cached after polling
-void cco_input_clear_hardware_state(void);
+CCO_PLATFORM_API void cco_input_clear_hardware_state(void);
 
 /// @brief Gives input focus to a new window
-void cco_input_give_window_focus(CcoWindow window);
+CCO_PLATFORM_API void cco_input_give_window_focus(cco_window window);
 
 /// @brief Enables input listening
-void cco_input_enable(void);
+CCO_PLATFORM_API void cco_input_enable(void);
 
 /// @brief Disables input listening
-void cco_input_disable(void);
+CCO_PLATFORM_API void cco_input_disable(void);
 
 /// @brief Gets the current window that is taking input
 /// @return CcoWindow, or CCO_NIL if there is no active window
 /// @see CcoWindow
-CcoWindow cco_input_get_active_window(void);
+CCO_PLATFORM_API cco_window cco_input_get_active_window(void);
 
 /// @brief Gets the change in mouse state between last frame and this frame
 /// @return cco_mouse_delta
 /// @see cco_mouse_delta
-cco_mouse_delta cco_input_get_mouse_delta(void);
+CCO_PLATFORM_API cco_mouse_delta cco_input_get_mouse_delta(void);
 
 /// @brief Gets the current position of the mouse
 /// @return cco_mouse_point
 /// @see cco_mouse_point
-cco_mouse_point cco_input_get_mouse_point(void);
+CCO_PLATFORM_API cco_mouse_point cco_input_get_mouse_point(void);
 
 /// @brief Checks if a specific keyboard key is being pressed
 /// @return CCO_YES if the key is being pressed, or CCO_NO if it isn't
-CcoBool cco_input_key_is_pressed(cco_input_key key);
+CCO_PLATFORM_API cco_bool cco_input_key_is_pressed(cco_input_key key);
 
 /// @brief Checks if a specific keyboard key was pressed this frame
 /// @return CCO_YES if the key was pressed this frame, or CCO_NO if it wasn't
-CcoBool cco_input_key_was_just_pressed(cco_input_key key);
+CCO_PLATFORM_API cco_bool cco_input_key_was_just_pressed(cco_input_key key);
 
 /// @brief Checks if a specific keyboard key was released this frame
 /// @return CCO_YES if the button was released this frame, or CCO_NO if it wasn't
-CcoBool cco_input_key_was_just_released(cco_input_key key);
+CCO_PLATFORM_API cco_bool cco_input_key_was_just_released(cco_input_key key);
 
 /// @brief Checks if a specific mouse button is being pressed
 /// @return CCO_YES if the button is being pressed, or CCO_NO if it isn't
-CcoBool cco_input_mouse_button_is_pressed(cco_input_mouse_button button);
+CCO_PLATFORM_API cco_bool cco_input_mouse_button_is_pressed(cco_input_mouse_button button);
 
 /// @brief Checks if a specific mouse button was pressed this frame
 /// @return CCO_YES if the button was pressed this frame, or CCO_NO if it wasn't
-CcoBool cco_input_mouse_button_was_just_pressed(cco_input_mouse_button button);
+CCO_PLATFORM_API cco_bool cco_input_mouse_button_was_just_pressed(cco_input_mouse_button button);
 
 /// @brief Checks if a specific mouse button was released this frame
 /// @return CCO_YES if the button was released this frame, or CCO_NO if it wasn't
-CcoBool cco_input_mouse_button_was_just_released(cco_input_mouse_button button);
+CCO_PLATFORM_API cco_bool cco_input_mouse_button_was_just_released(cco_input_mouse_button button);

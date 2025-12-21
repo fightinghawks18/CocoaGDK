@@ -2,6 +2,8 @@ cmake_minimum_required(VERSION 3.20)
 
 project(cocoa_gdk C)
 
+enable_testing()
+
 set(CMAKE_C_STANDARD 17)
 set(CMAKE_C_STANDARD_REQUIRED ON)
 
@@ -10,6 +12,7 @@ add_subdirectory("src/graphics")
 add_subdirectory("src/math")
 add_subdirectory("src/opengl")
 add_subdirectory("src/platform")
+add_subdirectory("src/tests")
 
 # Namespace aliases
 add_library(cocoa_gdk::core ALIAS cocoa_core)

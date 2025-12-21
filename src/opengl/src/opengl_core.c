@@ -4,11 +4,10 @@
 
 #include "opengl/opengl_core.h"
 #include "opengl/opengl_loader.h"
-#include <glad/glad.h>
 
 cco_result cco_initialize_open_gl(void) {
-    if (!gladLoadGLLoader(cco_get_gl_proc_addr)) {
-        CCO_LOG("Failed to load glad!");
+    if (!cco_load_gl_funs()) {
+        CCO_LOG("Failed to load OpenGL methods!");
         return CCO_FAIL_GRAPHICS_INIT_ERROR;
     }
     return CCO_SUCCESS;

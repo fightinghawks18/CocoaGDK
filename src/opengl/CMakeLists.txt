@@ -22,7 +22,6 @@ target_link_libraries(cocoa_opengl
         PUBLIC glad::glad
         PUBLIC cocoa_core
         PUBLIC cocoa_graphics
-        PRIVATE cocoa_tools
 )
 
 if(APPLE)

@@ -4,8 +4,8 @@
 
 #pragma once
 
-#include "opengl_vbo.h"
 #include "core/core_types.h"
+#include "opengl/opengl_vbo.h"
 #include "graphics/graphics_types.h"
 #include "opengl_ebo.h"
 

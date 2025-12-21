@@ -2,13 +2,13 @@ find_package(OpenGL REQUIRED)
 find_package(glad CONFIG REQUIRED)
 
 add_library(cocoa_opengl STATIC
-        src/gl/opengl_vao.c
-        src/gl/opengl_vbo.c
-        src/gl/opengl_ebo.c
-        src/gl/opengl_ubo.c
-        src/gl/opengl_shader.c
-        src/gl/opengl_pipeline.c
-        src/gl/opengl_core.c
+        src/opengl_vao.c
+        src/opengl_vbo.c
+        src/opengl_ebo.c
+        src/opengl_ubo.c
+        src/opengl_shader.c
+        src/opengl_pipeline.c
+        src/opengl_core.c
 
 )
 target_include_directories(cocoa_opengl
@@ -25,8 +25,8 @@ target_link_libraries(cocoa_opengl
 
 if(APPLE)
     target_sources(cocoa_opengl
-            PRIVATE src/gl/platform/macos/opengl_context_macos.m
-            PRIVATE src/gl/platform/macos/opengl_loader_macos.c
+            PRIVATE src/platform/macos/opengl_context_macos.m
+            PRIVATE src/platform/macos/opengl_loader_macos.c
     )
 
     target_link_libraries(cocoa_opengl
@@ -34,7 +34,7 @@ if(APPLE)
     )
 elseif(WIN32)
     target_sources(cocoa_opengl
-            PRIVATE src/gl/platform/win32/opengl_context_win32.c
-            PRIVATE src/gl/platform/win32/opengl_loader_win32.c
+            PRIVATE src/platform/win32/opengl_context_win32.c
+            PRIVATE src/platform/win32/opengl_loader_win32.c
     )
 endif()

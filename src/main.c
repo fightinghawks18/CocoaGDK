@@ -1,15 +1,15 @@
 #include <stdio.h>
 
-#include "opengl/include/opengl/gl/opengl_context.h"
-#include "opengl/include/opengl/gl/opengl_ebo.h"
-#include "opengl/include/opengl/gl/opengl_shader.h"
-#include "opengl/include/opengl/gl/opengl_ubo.h"
-#include "opengl/gl/opengl_core.h"
-#include "opengl/gl/opengl_pipeline.h"
-#include "opengl/gl/opengl_vao.h"
+#include "opengl/opengl_core.h"
+#include "opengl/opengl_pipeline.h"
+#include "opengl/include/opengl/opengl_context.h"
+#include "opengl/include/opengl/opengl_ebo.h"
+#include "opengl/include/opengl/opengl_shader.h"
+#include "opengl/include/opengl/opengl_ubo.h"
+#include "opengl/include/opengl/opengl_vao.h"
+#include "platform/input.h"
 #include "platform/utils.h"
 #include "platform/window.h"
-#include "platform/input.h"
 
 int main() {
     if (cco_windowing_init() != CCO_SUCCESS) {

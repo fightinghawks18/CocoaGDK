@@ -2,7 +2,7 @@
 // Created by fightinghawks18 on 12/15/2025.
 //
 
-#include "opengl/gl/opengl_loader.h"
+#include "opengl/opengl_loader.h"
 
 #include <windows.h>
 

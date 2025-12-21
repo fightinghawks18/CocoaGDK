@@ -2,9 +2,9 @@
 // Created by fightinghawks18 on 12/14/25.
 //
 
-#include "../../include/opengl/gl/opengl_shader.h"
+#include "../include/opengl/opengl_shader.h"
 
-#include "opengl/gl/opengl_types.h"
+#include "opengl/opengl_types.h"
 
 #include <glad/glad.h>
 #include <stdio.h>

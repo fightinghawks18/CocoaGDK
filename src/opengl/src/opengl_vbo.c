@@ -2,8 +2,8 @@
 // Created by fightinghawks18 on 12/14/25.
 //
 
-#include "../../include/opengl/gl/opengl_vbo.h"
-#include "../../include/opengl/gl/opengl_types.h"
+#include "opengl/opengl_vbo.h"
+#include "opengl/opengl_types.h"
 #include <glad/glad.h>
 #include <stdlib.h>
 

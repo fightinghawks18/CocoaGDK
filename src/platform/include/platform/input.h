@@ -7,6 +7,9 @@
 #include "core/core_types.h"
 #include "window.h"
 
+#define KEY_COUNT 10
+#define MOUSE_BUTTON_COUNT 5
+
 typedef enum {
     CCO_INPUT_KEY_W,
     CCO_INPUT_KEY_A,
@@ -26,9 +29,9 @@ typedef enum {
     CCO_INPUT_MOUSE_BUTTON_5,
 } CcoInputMouseButton;
 
-/// @brief Change in mouse position between last frame and this frame
+/// @brief Change in mouse state between last frame and the current frame
 typedef struct {
-    f32 x, y;
+    f32 x, y, wheel;
 } CcoMouseDelta;
 
 /// @brief Mouse position
@@ -67,7 +70,7 @@ void ccoInputDisable(void);
 /// @see CcoWindow
 CcoWindow ccoInputGetActiveWindow(void);
 
-/// @brief Gets the change in position between last frame and this frame for the mouse
+/// @brief Gets the change in mouse state between last frame and this frame
 /// @return CcoMouseDelta
 /// @see CcoMouseDelta
 CcoMouseDelta ccoInputGetMouseDelta(void);

@@ -30,13 +30,13 @@ static struct {
     CcoWindow currentWindow;
     CcoBool enabled;
 
-    CcoBool keysProcessing[10];
-    CcoBool keysNow[10];
-    CcoBool keysLast[10];
+    CcoBool keysProcessing[KEY_COUNT];
+    CcoBool keysNow[KEY_COUNT];
+    CcoBool keysLast[KEY_COUNT];
 
-    CcoBool mouseButtonsProcessing[5];
-    CcoBool mouseButtonsNow[5];
-    CcoBool mouseButtonsLast[5];
+    CcoBool mouseButtonsProcessing[MOUSE_BUTTON_COUNT];
+    CcoBool mouseButtonsNow[MOUSE_BUTTON_COUNT];
+    CcoBool mouseButtonsLast[MOUSE_BUTTON_COUNT];
 
     CcoMousePoint mousePointProcessing;
     CcoMouseDelta mouseDeltaProcessing;

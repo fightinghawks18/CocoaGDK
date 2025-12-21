@@ -7,17 +7,17 @@
 #include "core/core_types.h"
 #include "opengl_shader.h"
 
-typedef struct CcoOpenGLPipeline_T CcoOpenGLPipeline_T;
-typedef CcoOpenGLPipeline_T* CcoOpenGLPipeline;
+typedef struct cco_opengl_pipeline_t cco_opengl_pipeline_t;
+typedef cco_opengl_pipeline_t* cco_opengl_pipeline;
 
 typedef struct {
-    CcoOpenGLShader vertexShader;
-    CcoOpenGLShader pixelShader;
-} CcoOpenGLPipelineDesc;
+    cco_opengl_shader vertex_shader;
+    cco_opengl_shader pixel_shader;
+} cco_open_gl_pipeline_desc;
 
-CcoResult ccoCreateOpenGLPipeline(const CcoOpenGLPipelineDesc *description, CcoOpenGLPipeline *outPipeline);
-void ccoDestroyOpenGLPipeline(CcoOpenGLPipeline pipeline);
+cco_result cco_create_open_gl_pipeline(const cco_open_gl_pipeline_desc *description, cco_opengl_pipeline *out_pipeline);
+void cco_destroy_open_gl_pipeline(cco_opengl_pipeline pipeline);
 
-void ccoUseOpenGLPipeline(CcoOpenGLPipeline pipeline);
+void cco_use_open_gl_pipeline(cco_opengl_pipeline pipeline);
 
-u32 ccoGetOpenGLPipelineID(CcoOpenGLPipeline pipeline);
+u32 cco_get_open_gl_pipeline_id(cco_opengl_pipeline pipeline);

@@ -12,33 +12,33 @@
 #include "platform/input.h"
 
 int main() {
-    if (ccoWindowingInit() != CCO_SUCCESS) {
+    if (cco_windowing_init() != CCO_SUCCESS) {
         CCO_LOG("Failed to initialize windowing!");
         return -1;
     }
 
-    if (ccoInputInit() != CCO_SUCCESS) {
+    if (cco_input_init() != CCO_SUCCESS) {
         CCO_LOG("Failed to initialize input!");
         return -1;
     }
-    ccoInputEnable();
+    cco_input_enable();
 
     CcoWindow window = CCO_NIL;
-    CcoResult windowResult = ccoCreateWindow(0, 0, 800, 600, "cocoa", &window);
-    if (windowResult != CCO_SUCCESS) {
+    cco_result window_result = cco_create_window(0, 0, 800, 600, "cocoa", &window);
+    if (window_result != CCO_SUCCESS) {
         CCO_LOG("Failed to create window!");
         return -1;
     }
 
-    ccoInputGiveWindowFocus(window);
+    cco_input_give_window_focus(window);
 
-    CcoOpenGLContext glCtx = CCO_NIL;
-    ccoCreateOpenGLContext(ccoWindowGetHandle(window), NULL, &glCtx);
-    ccoMakeCurrentOpenGLContext(glCtx);
+    cco_opengl_context glCtx = CCO_NIL;
+    cco_create_open_gl_context(cco_window_get_handle(window), NULL, &glCtx);
+    cco_make_current_open_gl_context(glCtx);
 
-    ccoInitializeOpenGL();
+    cco_initialize_open_gl();
 
-    CcoVertex vertices[3] = {
+    cco_vertex vertices[3] = {
         {{0.0f, 0.5f, 0.0f}, {1.0f, 0.0f, 0.0f, 1.0f}},
         {{0.5f, -0.5f, 0.0f}, {0.0f, 1.0f, 0.0f, 1.0f}},
         {{-0.5f, -0.5f, 0.0f}, {0.0f, 0.0f, 1.0f, 1.0f}},
@@ -46,96 +46,96 @@ int main() {
 
     u32 indices[3] = {0, 1, 2};
 
-    Vec3 position = ccoVec3(0, 0, 0);
-    Vec3 rotation = ccoVec3(0, 0, 0);
-    Vec3 scale = ccoVec3(1, 1, 1);
+    vec3 position = cco_vec3(0, 0, 0);
+    vec3 rotation = cco_vec3(0, 0, 0);
+    vec3 scale = cco_vec3(1, 1, 1);
 
-    Vec3 cameraPosition = ccoVec3(0, 0, 1.0f);
+    vec3 camera_position = cco_vec3(0, 0, 1.0f);
 
-    Mat4 modelMatrix = ccoMat4Model(
-        ccoMat4Translation(position), ccoMat4Rotation(rotation), ccoMat4Scale(scale));
-    Mat4 viewMatrix = ccoMat4Eye(cameraPosition, ccoVec3(0, 0, 0), ccoVec3Up());
-    Mat4 projectionMatrix =
-        ccoMat4Perspective(CCO_NO, CCO_NO, ccoDegToRad(80.0f), 800.0f / 600.0f, 0.001f, 100.0f);
+    mat4 model_matrix = cco_mat4_model(
+        cco_mat4_translation(position), cco_mat4_rotation(rotation), cco_mat4_scale(scale));
+    mat4 view_matrix = cco_mat4_eye(camera_position, cco_vec3(0, 0, 0), cco_vec3_up());
+    mat4 projection_matrix =
+        cco_mat4_perspective(CCO_NO, CCO_NO, cco_deg_to_rad(80.0f), 800.0f / 600.0f, 0.001f, 100.0f);
 
-    CcoModelViewProjection mvpBuffer = {.model = ccoMat4Transpose(modelMatrix),
-                                        .view = ccoMat4Transpose(viewMatrix),
-                                        .projection = ccoMat4Transpose(projectionMatrix)};
+    cco_model_view_projection mvp_buffer = {.model = cco_mat4_transpose(model_matrix),
+                                        .view = cco_mat4_transpose(view_matrix),
+                                        .projection = cco_mat4_transpose(projection_matrix)};
 
-    CcoOpenGLVbo vbo = CCO_NIL;
-    CcoOpenGLVao vao = CCO_NIL;
-    CcoOpenGLEbo ebo = CCO_NIL;
-    CcoOpenGLUbo ubo = CCO_NIL;
-    CcoOpenGLShader vs = CCO_NIL;
-    CcoOpenGLShader ps = CCO_NIL;
-    CcoOpenGLPipeline pip = CCO_NIL;
+    cco_opengl_vbo vbo = CCO_NIL;
+    cco_opengl_vao vao = CCO_NIL;
+    cco_opengl_ebo ebo = CCO_NIL;
+    cco_opengl_ubo ubo = CCO_NIL;
+    cco_opengl_shader vs = CCO_NIL;
+    cco_opengl_shader ps = CCO_NIL;
+    cco_opengl_pipeline pip = CCO_NIL;
 
-    ccoCreateOpenGLVbo(&vbo);
-    ccoCreateOpenGLVao(&vao);
-    ccoCreateOpenGLEbo(&ebo);
-    ccoCreateOpenGLUbo(&ubo);
+    cco_create_open_gl_vbo(&vbo);
+    cco_create_open_gl_vao(&vao);
+    cco_create_open_gl_ebo(&ebo);
+    cco_create_open_gl_ubo(&ubo);
 
-    ccoCreateOpenGLShader(
-        &(CcoOpenGLShaderDesc){.shaderType = CCO_SHADER_TYPE_VERTEX, .shaderPath = "shaders/test.vert"}, &vs);
-    ccoCreateOpenGLShader(
-        &(CcoOpenGLShaderDesc){.shaderType = CCO_SHADER_TYPE_PIXEL, .shaderPath = "shaders/test.frag"}, &ps);
-    ccoCreateOpenGLPipeline(&(CcoOpenGLPipelineDesc){.vertexShader = vs, .pixelShader = ps}, &pip);
+    cco_create_open_gl_shader(
+        &(cco_open_gl_shader_desc){.shader_type = CCO_SHADER_TYPE_VERTEX, .shader_path = "shaders/test.vert"}, &vs);
+    cco_create_open_gl_shader(
+        &(cco_open_gl_shader_desc){.shader_type = CCO_SHADER_TYPE_PIXEL, .shader_path = "shaders/test.frag"}, &ps);
+    cco_create_open_gl_pipeline(&(cco_open_gl_pipeline_desc){.vertex_shader = vs, .pixel_shader = ps}, &pip);
 
-    ccoMapToOpenGLVbo(vbo, &(CcoBufferMapping){.dataSize = 3 * sizeof(CcoVertex), .dataOffset = 0, .data = vertices});
+    cco_map_to_open_gl_vbo(vbo, &(cco_buffer_mapping){.data_size = 3 * sizeof(cco_vertex), .data_offset = 0, .data = vertices});
 
-    ccoMapToOpenGLEbo(ebo, &(CcoBufferMapping){.dataSize = 3 * sizeof(u32), .dataOffset = 0, .data = indices});
+    cco_map_to_open_gl_ebo(ebo, &(cco_buffer_mapping){.data_size = 3 * sizeof(u32), .data_offset = 0, .data = indices});
 
-    ccoMapToOpenGLUbo(
-        ubo, &(CcoBufferMapping){.dataSize = sizeof(CcoModelViewProjection), .dataOffset = 0, .data = &mvpBuffer});
+    cco_map_to_open_gl_ubo(
+        ubo, &(cco_buffer_mapping){.data_size = sizeof(cco_model_view_projection), .data_offset = 0, .data = &mvp_buffer});
 
-    CcoVertexAttribute vertexAttributes[2] = {
-        {.location = 0, .numComponents = 3, .stride = sizeof(CcoVertex), .offset = offsetof(CcoVertex, pos)},
-        {.location = 1, .numComponents = 4, .stride = sizeof(CcoVertex), .offset = offsetof(CcoVertex, col)}};
+    cco_vertex_attribute vertex_attributes[2] = {
+        {.location = 0, .num_components = 3, .stride = sizeof(cco_vertex), .offset = offsetof(cco_vertex, pos)},
+        {.location = 1, .num_components = 4, .stride = sizeof(cco_vertex), .offset = offsetof(cco_vertex, col)}};
 
-    ccoSetOpenGLVaoLayout(vao, vbo, ebo, &(CcoVertexLayout){.attributes = vertexAttributes, .attributeCount = 2});
+    cco_set_open_gl_vao_layout(vao, vbo, ebo, &(cco_vertex_layout){.attributes = vertex_attributes, .attribute_count = 2});
 
-    while (!ccoWindowWillClose(window)) {
-        ccoWindowPumpEvents(window);
-        ccoInputPoll();
+    while (!cco_window_will_close(window)) {
+        cco_window_pump_events(window);
+        cco_input_poll();
 
-        if (ccoInputKeyWasJustPressed(CCO_INPUT_KEY_W)) {
+        if (cco_input_key_was_just_pressed(CCO_INPUT_KEY_W)) {
             CCO_LOG("INPUT");
         }
 
-        ccoMakeCurrentOpenGLContext(glCtx);
+        cco_make_current_open_gl_context(glCtx);
 
-        CcoWindowContentSize windowContentSize = ccoWindowGetContentSize(window);
+        cco_window_content_size window_content_size = cco_window_get_content_size(window);
 
-        projectionMatrix =
-            ccoMat4Perspective(CCO_NO, CCO_NO, ccoDegToRad(80.0f),
-                                          (f32)windowContentSize.width / (f32)windowContentSize.height, 0.001f, 100.0f);
-        mvpBuffer.projection = ccoMat4Transpose(projectionMatrix);
+        projection_matrix =
+            cco_mat4_perspective(CCO_NO, CCO_NO, cco_deg_to_rad(80.0f),
+                                          (f32)window_content_size.width / (f32)window_content_size.height, 0.001f, 100.0f);
+        mvp_buffer.projection = cco_mat4_transpose(projection_matrix);
 
-        ccoMapToOpenGLUbo(ubo, &(CcoBufferMapping){.dataSize = sizeof(CcoModelViewProjection),
-                                                   .dataOffset = offsetof(CcoModelViewProjection, projection),
-                                                   .data = &mvpBuffer.projection});
+        cco_map_to_open_gl_ubo(ubo, &(cco_buffer_mapping){.data_size = sizeof(cco_model_view_projection),
+                                                   .data_offset = offsetof(cco_model_view_projection, projection),
+                                                   .data = &mvp_buffer.projection});
 
-        ccoSetOpenGLViewport((CcoViewport){.x = 0,
+        cco_set_open_gl_viewport((cco_viewport){.x = 0,
                                            .y = 0,
-                                           .w = (i32)windowContentSize.width,
-                                           .h = (i32)windowContentSize.height,
-                                           .minDepth = 0,
-                                           .maxDepth = 1});
-        ccoSetOpenGLClearColor((CcoClearColor){.r = 0.12f, .g = 0.12f, .b = 0.12f, .a = 1.0f});
-        ccoClearOpenGLBuffers(CCO_OPENGL_COLOR_BUFFER_BIT | CCO_OPENGL_DEPTH_BUFFER_BIT);
+                                           .w = (i32)window_content_size.width,
+                                           .h = (i32)window_content_size.height,
+                                           .min_depth = 0,
+                                           .max_depth = 1});
+        cco_set_open_gl_clear_color((cco_clear_color){.r = 0.12f, .g = 0.12f, .b = 0.12f, .a = 1.0f});
+        cco_clear_open_gl_buffers(CCO_OPENGL_COLOR_BUFFER_BIT | CCO_OPENGL_DEPTH_BUFFER_BIT);
 
-        ccoUseOpenGLPipeline(pip);
-        ccoUseOpenGLVao(vao);
-        ccoUseOpenGLUbo(&(CcoOpenGLUboBinding){.type = CCO_OPENGL_UBO_BINDING_BLOCK_NAME, .pip = pip, .name = "MVP"},
+        cco_use_open_gl_pipeline(pip);
+        cco_use_open_gl_vao(vao);
+        cco_use_open_gl_ubo(&(CcoOpenGLUboBinding){.type = CCO_OPENGL_UBO_BINDING_BLOCK_NAME, .pip = pip, .name = "MVP"},
                         ubo);
-        ccoDrawOpenGLElements(CCO_OPENGL_PRIMITIVE_TRIANGLES, 3, CCO_OPENGL_INDEX_TYPE_U32);
+        cco_draw_open_gl_elements(CCO_OPENGL_PRIMITIVE_TRIANGLES, 3, CCO_OPENGL_INDEX_TYPE_U32);
 
-        ccoFlushOpenGLContextBuffer(glCtx);
+        cco_flush_open_gl_context_buffer(glCtx);
 
-        ccoSleep(5);
+        cco_sleep(5);
     }
 
-    ccoDestroyWindow(window);
-    ccoWindowingQuit();
+    cco_destroy_window(window);
+    cco_windowing_quit();
     return 0;
 }

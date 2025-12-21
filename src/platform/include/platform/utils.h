@@ -8,4 +8,4 @@
 
 /// @brief Pauses execution for an amount of time
 /// @param ms Sleep time in milliseconds
-void ccoSleep(u32 ms);
+void cco_sleep(u32 ms);

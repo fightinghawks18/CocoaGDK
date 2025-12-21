@@ -6,7 +6,7 @@
 #include "opengl/gl/opengl_ebo.h"
 
 typedef struct {
-    CcoOpenGLVbo vbo;
-    CcoOpenGLEbo ebo;
+    cco_opengl_vbo vbo;
+    cco_opengl_ebo ebo;
 } CcoOpenGLMesh_T;
 

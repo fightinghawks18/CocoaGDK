@@ -4,4 +4,4 @@
 
 #pragma once
 
-void *ccoGetGLProcAddr(const char *addrName);
+void *cco_get_gl_proc_addr(const char *addr_name);

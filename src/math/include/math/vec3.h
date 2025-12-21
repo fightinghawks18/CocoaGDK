@@ -9,74 +9,74 @@
 
 typedef struct {
     f32 x, y, z;
-} Vec3;
-typedef Vec3 CcoVec3;
+} vec3;
+typedef vec3 CcoVec3;
 
-static Vec3 ccoVec3(const f32 x, const f32 y, const f32 z) {
-    Vec3 vec3;
+static vec3 cco_vec3(const f32 x, const f32 y, const f32 z) {
+    vec3 vec3;
     vec3.x = x;
     vec3.y = y;
     vec3.z = z;
     return vec3;
 }
 
-static Vec3 ccoVec3Up() {
-    return ccoVec3(0, 1, 0);
+static vec3 cco_vec3_up() {
+    return cco_vec3(0, 1, 0);
 }
 
-static Vec3 ccoVec3Right() {
-    return ccoVec3(1, 0, 0);
+static vec3 cco_vec3_right() {
+    return cco_vec3(1, 0, 0);
 }
 
-static Vec3 ccoVec3Forward() {
-    return ccoVec3(0, 0, 1);
+static vec3 cco_vec3_forward() {
+    return cco_vec3(0, 0, 1);
 }
 
-static f32 ccoVec3Magnitude(const Vec3 vec3) {
+static f32 cco_vec3_magnitude(const vec3 vec3) {
     return sqrtf(powf(vec3.x, 2) + powf(vec3.y, 2) + powf(vec3.z, 2));
 }
 
-static Vec3 ccoVec3Normalized(const Vec3 vec3) {
-    const f32 mag = ccoVec3Magnitude(vec3);
-    return ccoVec3(vec3.x/mag, vec3.y/mag, vec3.z/mag);
+static vec3 cco_vec3_normalized(const vec3 vec3) {
+    const f32 mag = cco_vec3_magnitude(vec3);
+    return cco_vec3(vec3.x/mag, vec3.y/mag, vec3.z/mag);
 }
 
-static f32 ccoVec3Dot(const Vec3 vec3_a, const Vec3 vec3_b) {
+static f32 cco_vec3_dot(const vec3 vec3_a, const vec3 vec3_b) {
     return vec3_a.x * vec3_b.x +
         vec3_a.y * vec3_b.y +
         vec3_a.z * vec3_b.z;
 }
 
-static Vec3 ccoVec3Cross(const Vec3 vec3_a, const Vec3 vec3_b) {
+static vec3 cco_vec3_cross(const vec3 vec3_a, const vec3 vec3_b) {
     const f32 x = vec3_a.y * vec3_b.z - vec3_a.z * vec3_b.y;
     const f32 y = vec3_a.z * vec3_b.x - vec3_a.x * vec3_b.z;
     const f32 z = vec3_a.x * vec3_b.y - vec3_a.y * vec3_b.x;
-    return ccoVec3(x, y, z);
+    return cco_vec3(x, y, z);
 }
 
-static Vec3 ccoVec3Add(const Vec3 vec3_a, const Vec3 vec3_b) {
-    return ccoVec3(
+static vec3 cco_vec3_add(const vec3 vec3_a, const vec3 vec3_b) {
+    return cco_vec3(
         vec3_a.x + vec3_b.x,
         vec3_a.y + vec3_b.y,
         vec3_a.z + vec3_b.z);
 }
 
-static Vec3 ccoVec3Sub(const Vec3 vec3_a, const Vec3 vec3_b) {
-    return ccoVec3(
+static vec3 cco_vec3_sub(const vec3 vec3_a, const vec3 vec3_b) {
+    return cco_vec3(
         vec3_a.x - vec3_b.x,
         vec3_a.y - vec3_b.y,
         vec3_a.z - vec3_b.z);
 }
 
-static Vec3 ccoVec3Div(const Vec3 vec3_a, const Vec3 vec3_b) {
-    return ccoVec3(
+static vec3 cco_vec3_div(const vec3 vec3_a, const vec3 vec3_b) {
+    return cco_vec3(
         vec3_a.x / vec3_b.x,
         vec3_a.y / vec3_b.y,
         vec3_a.z / vec3_b.z);
 }
 
-static Vec3 ccoVec3Scale(const Vec3 vec3_a, const f32 scalar) {
-    return ccoVec3(
+static vec3 cco_vec3_scale(const vec3 vec3_a, const f32 scalar) {
+    return cco_vec3(
         vec3_a.x * scalar,
         vec3_a.y * scalar,
         vec3_a.z * scalar);

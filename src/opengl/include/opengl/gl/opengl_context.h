@@ -6,11 +6,11 @@
 
 #include "core/core_types.h"
 
-typedef struct CcoOpenGLContext_T CcoOpenGLContext_T;
-typedef CcoOpenGLContext_T *CcoOpenGLContext;
+typedef struct cco_opengl_context_t cco_opengl_context_t;
+typedef cco_opengl_context_t *cco_opengl_context;
 
-CcoResult ccoCreateOpenGLContext(void *windowHandle, void *displayHandle, CcoOpenGLContext *outOpenGLContext);
-void ccoDestroyOpenGLContext(CcoOpenGLContext openGLContext);
-void ccoFlushOpenGLContextBuffer(CcoOpenGLContext openGLContext);
-void ccoMakeCurrentOpenGLContext(CcoOpenGLContext openGLContext);
-void ccoRemoveCurrentOpenGLContext();
+cco_result cco_create_open_gl_context(void *window_handle, void *display_handle, cco_opengl_context *out_open_gl_context);
+void cco_destroy_open_gl_context(cco_opengl_context open_gl_context);
+void cco_flush_open_gl_context_buffer(cco_opengl_context open_gl_context);
+void cco_make_current_open_gl_context(cco_opengl_context open_gl_context);
+void cco_remove_current_open_gl_context();

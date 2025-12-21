@@ -10,7 +10,7 @@
 
 struct CcoWindow_T {
     NSWindow *window;
-    CcoBool willClose;
+    CcoBool will_close;
     CcoBool focused;
 };
 
@@ -19,46 +19,46 @@ struct CcoWindow_T {
 @end
 
 @implementation CocoaWindow
-- (BOOL)windowShouldClose:(NSWindow *)sender {
-    self.window->willClose = CCO_YES;
+- (BOOL)window_should_close:(NSWindow *)sender {
+    self.window->will_close = CCO_YES;
     return NO;
 }
-- (void)windowDidBecomeKey:(NSNotification *)notification {
+- (void)window_did_become_key:(NSNotification *)notification {
     self.window->focused = CCO_YES;
-    ccoInputGiveWindowFocus(self.window);
+    cco_input_give_window_focus(self.window);
 }
-- (void)windowDidResignKey:(NSNotification *)notification {
+- (void)window_did_resign_key:(NSNotification *)notification {
     self.window->focused = CCO_NO;
-    ccoInputGiveWindowFocus(CCO_NIL);
+    cco_input_give_window_focus(CCO_NIL);
 }
 
 @end
 
-CcoResult ccoWindowingInit() {
+cco_result cco_windowing_init() {
     [NSApplication sharedApplication];
     [NSApp setActivationPolicy:NSApplicationActivationPolicyRegular];
     [NSApp activateIgnoringOtherApps:YES];
     return CCO_SUCCESS;
 }
 
-void ccoWindowingQuit() {}
+void cco_windowing_quit() {}
 
-CcoResult ccoCreateWindow(i32 x, i32 y, i32 width, i32 height, const char *title, CcoWindow *outWindow) {
+cco_result cco_create_window(i32 x, i32 y, i32 width, i32 height, const char *title, CcoWindow *out_window) {
     CcoWindow window = malloc(sizeof(CcoWindow_T));
     if (!window)
         return CCO_FAIL_OUT_OF_MEMORY;
 
     NSRect rect = NSMakeRect(x, y, width, height);
-    NSWindowStyleMask styleMask = NSWindowStyleMaskClosable | NSWindowStyleMaskResizable | NSWindowStyleMaskTitled |
+    NSWindowStyleMask style_mask = NSWindowStyleMaskClosable | NSWindowStyleMaskResizable | NSWindowStyleMaskTitled |
                                   NSWindowStyleMaskMiniaturizable;
     NSWindow *win = [[NSWindow alloc] initWithContentRect:rect
-                                                styleMask:styleMask
+                                                styleMask:style_mask
                                                   backing:NSBackingStoreBuffered
                                                     defer:YES];
 
     window->window = win;
-    window->willClose = false;
-    ccoWindowRename(window, title);
+    window->will_close = false;
+    cco_window_rename(window, title);
 
     CocoaWindow *delg = [[CocoaWindow alloc] init];
     delg.window = window;
@@ -66,11 +66,11 @@ CcoResult ccoCreateWindow(i32 x, i32 y, i32 width, i32 height, const char *title
     [window->window setDelegate:delg];
     [window->window makeKeyAndOrderFront:nil];
 
-    *outWindow = window;
+    *out_window = window;
     return CCO_SUCCESS;
 }
 
-void ccoDestroyWindow(CcoWindow window) {
+void cco_destroy_window(CcoWindow window) {
     if (window->window) {
         [[window->window delegate] release];
         [window->window release];
@@ -79,51 +79,51 @@ void ccoDestroyWindow(CcoWindow window) {
     free(window);
 }
 
-void ccoWindowMove(CcoWindow window, i32 x, i32 y) {
+void cco_window_move(CcoWindow window, i32 x, i32 y) {
     NSPoint point = NSMakePoint(x, y);
     [window->window setFrameOrigin:point];
 }
-void ccoWindowResize(CcoWindow window, i32 width, i32 height) {
-    NSRect windowRect = [window->window frame];
-    NSRect rect = NSMakeRect(windowRect.origin.x, windowRect.origin.y, width, height);
+void cco_window_resize(CcoWindow window, i32 width, i32 height) {
+    NSRect window_rect = [window->window frame];
+    NSRect rect = NSMakeRect(window_rect.origin.x, window_rect.origin.y, width, height);
     [window->window setFrame:rect display:YES];
 }
 
-void ccoWindowRename(CcoWindow window, const char *title) {
+void cco_window_rename(CcoWindow window, const char *title) {
     @autoreleasepool {
         NSString *str = [NSString stringWithUTF8String:title];
         [window->window setTitle:str];
     }
 }
 
-void ccoWindowPumpEvents(CcoWindow window) {
+void cco_window_pump_events(CcoWindow window) {
     NSEvent *event;
     while ((event = [window->window nextEventMatchingMask:NSEventMaskAny
                                                 untilDate:[NSDate distantPast]
                                                    inMode:NSDefaultRunLoopMode
                                                   dequeue:YES])) {
-        CcoCocoaInputEventResult inputResult = ccoInputHandleCocoaEvent(event);
-        if (inputResult == CCO_COCOA_INPUT_EVENT_HANDLED)
+        cco_cocoa_input_event_result input_result = cco_input_handle_cocoa_event(event);
+        if (input_result == CCO_COCOA_INPUT_EVENT_HANDLED)
             continue;
         [NSApp sendEvent:event];
     }
 }
 
-CcoWindowFrame ccoWindowGetFrame(CcoWindow window) {
+cco_window_frame cco_window_get_frame(CcoWindow window) {
     NSRect rect = [window->window frame];
-    return (CcoWindowFrame){rect.origin.x, rect.origin.y, rect.size.width, rect.size.height};
+    return (cco_window_frame){rect.origin.x, rect.origin.y, rect.size.width, rect.size.height};
 }
 
-CcoWindowContentSize ccoWindowGetContentSize(CcoWindow window) {
+cco_window_content_size cco_window_get_content_size(CcoWindow window) {
     NSRect bounds = [[window->window contentView] bounds];
-    CGFloat dpiScale = [window->window backingScaleFactor];
+    CGFloat dpi_scale = [window->window backingScaleFactor];
 
-    CGFloat width = bounds.size.width * dpiScale;
-    CGFloat height = bounds.size.height * dpiScale;
+    CGFloat width = bounds.size.width * dpi_scale;
+    CGFloat height = bounds.size.height * dpi_scale;
 
-    return (CcoWindowContentSize){width, height};
+    return (cco_window_content_size){width, height};
 }
 
-void *ccoWindowGetHandle(CcoWindow window) { return (__bridge void *)window->window; }
-CcoBool ccoWindowWillClose(CcoWindow window) { return window->willClose; }
-CcoBool ccoWindowIsFocus(CcoWindow window) { return window->focused; }
+void *cco_window_get_handle(CcoWindow window) { return (__bridge void *)window->window; }
+CcoBool cco_window_will_close(CcoWindow window) { return window->will_close; }
+CcoBool cco_window_is_focus(CcoWindow window) { return window->focused; }

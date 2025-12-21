@@ -7,7 +7,7 @@
 
 _Thread_local HANDLE SLEEP_TIMER = NULL;
 
-void ccoSleep(const u32 ms) {
+void cco_sleep(const u32 ms) {
     if (!SLEEP_TIMER) {
         SLEEP_TIMER = CreateWaitableTimer(NULL, TRUE, NULL);
     }

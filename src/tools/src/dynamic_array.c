@@ -2,155 +2,155 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-struct CcoDynamicArray {
+struct cco_dynamic_array {
     CcoDynamicArrayObj *objs;
     u32 count;
     u32 capacity;
-    usize arrayTypeSize;
+    usize array_type_size;
     CcoDynamicArrayObjConstructorFun ctor;
     CcoDynamicArrayObjDestructorFun dtor;
 };
 
-void addMember(CcoDynamicArray *dynArray, usize pos, CcoDynamicArrayObj object) {
+void add_member(cco_dynamic_array *dyn_array, usize pos, CcoDynamicArrayObj object) {
     if (object == NULL)
         return;
 
-    if (dynArray->count >= dynArray->capacity) {
-        usize newCapacity = dynArray->capacity == 0 ? 1 : dynArray->capacity * 2;
-        CcoDynamicArrayObj *newObjs = realloc(dynArray->objs, newCapacity * sizeof(CcoDynamicArrayObj));
-        if (newObjs == NULL)
+    if (dyn_array->count >= dyn_array->capacity) {
+        usize new_capacity = dyn_array->capacity == 0 ? 1 : dyn_array->capacity * 2;
+        CcoDynamicArrayObj *new_objs = realloc(dyn_array->objs, new_capacity * sizeof(CcoDynamicArrayObj));
+        if (new_objs == NULL)
             return;
-        dynArray->objs = newObjs;
+        dyn_array->objs = new_objs;
 
-        printf("Resized from %d to %zu\n", dynArray->capacity, newCapacity);
-        dynArray->capacity = newCapacity;
+        printf("Resized from %d to %zu\n", dyn_array->capacity, new_capacity);
+        dyn_array->capacity = new_capacity;
     }
 
-    if (pos > dynArray->count)
-        pos = dynArray->count;
+    if (pos > dyn_array->count)
+        pos = dyn_array->count;
 
     // Move members to the right if they are in or after this position
-    if (pos < dynArray->count) {
-        for (usize i = dynArray->count; i > pos; i--) {
-            dynArray->objs[i] = dynArray->objs[i - 1];
+    if (pos < dyn_array->count) {
+        for (usize i = dyn_array->count; i > pos; i--) {
+            dyn_array->objs[i] = dyn_array->objs[i - 1];
         }
     }
 
-    dynArray->objs[pos] = object;
-    dynArray->count++;
+    dyn_array->objs[pos] = object;
+    dyn_array->count++;
 }
 
-void removeMember(CcoDynamicArray *dynArray, usize pos) {
-    CcoDynamicArrayObj obj = dynArray->objs[pos];
+void remove_member(cco_dynamic_array *dyn_array, usize pos) {
+    CcoDynamicArrayObj obj = dyn_array->objs[pos];
     if (obj == NULL)
         return;
 
-    if (dynArray->dtor != NULL) {
-        dynArray->dtor(obj);
+    if (dyn_array->dtor != NULL) {
+        dyn_array->dtor(obj);
     }
 
     // Move members to the left if they come after this position
-    if (pos < dynArray->count) {
-        for (usize i = pos + 1; i < dynArray->count; i++) {
-            dynArray->objs[i - 1] = dynArray->objs[i];
+    if (pos < dyn_array->count) {
+        for (usize i = pos + 1; i < dyn_array->count; i++) {
+            dyn_array->objs[i - 1] = dyn_array->objs[i];
         }
     }
 
-    dynArray->objs[dynArray->count - 1] = NULL;
-    dynArray->count--;
+    dyn_array->objs[dyn_array->count - 1] = NULL;
+    dyn_array->count--;
 }
 
-CcoDynamicArray *ccoCreateDynamicArray(u32 reserve, usize size, CcoDynamicArrayObjConstructorFun constructor,
+cco_dynamic_array *cco_create_dynamic_array(u32 reserve, usize size, CcoDynamicArrayObjConstructorFun constructor,
                                      CcoDynamicArrayObjDestructorFun destructor) {
-    CcoDynamicArray *dynArray = malloc(1 * sizeof(CcoDynamicArray));
+    cco_dynamic_array *dyn_array = malloc(1 * sizeof(cco_dynamic_array));
 
-    dynArray->capacity = reserve;
-    dynArray->count = 0;
-    dynArray->objs = malloc(reserve * size);
-    dynArray->arrayTypeSize = size;
-    dynArray->ctor = constructor;
-    dynArray->dtor = destructor;
+    dyn_array->capacity = reserve;
+    dyn_array->count = 0;
+    dyn_array->objs = malloc(reserve * size);
+    dyn_array->array_type_size = size;
+    dyn_array->ctor = constructor;
+    dyn_array->dtor = destructor;
 
-    return dynArray;
+    return dyn_array;
 }
 
-CcoDynamicArray *ccoCreateDynamicArrayFromArray(u32 *count, usize size, CcoDynamicArrayObj *array) {
-    CcoDynamicArray *dynArray = malloc(1 * sizeof(CcoDynamicArray));
+cco_dynamic_array *cco_create_dynamic_array_from_array(u32 *count, usize size, CcoDynamicArrayObj *array) {
+    cco_dynamic_array *dyn_array = malloc(1 * sizeof(cco_dynamic_array));
 
-    dynArray->capacity = *count;
-    dynArray->count = *count;
-    dynArray->objs = array;
-    dynArray->arrayTypeSize = size;
-    dynArray->ctor = NULL;
-    dynArray->dtor = NULL;
+    dyn_array->capacity = *count;
+    dyn_array->count = *count;
+    dyn_array->objs = array;
+    dyn_array->array_type_size = size;
+    dyn_array->ctor = NULL;
+    dyn_array->dtor = NULL;
 
-    return dynArray;
+    return dyn_array;
 }
 
-void ccoDestroyDynamicArray(CcoDynamicArray *dynArray) {
-    ccoClearDynamicArray(dynArray);
-    free(dynArray->objs);
-    free(dynArray);
+void cco_destroy_dynamic_array(cco_dynamic_array *dyn_array) {
+    cco_clear_dynamic_array(dyn_array);
+    free(dyn_array->objs);
+    free(dyn_array);
 }
 
-CcoDynamicArrayObj ccoEmplaceBackDynamicArray(CcoDynamicArray *dynArray) {
+CcoDynamicArrayObj cco_emplace_back_dynamic_array(cco_dynamic_array *dyn_array) {
     CcoDynamicArrayObj obj;
-    if (dynArray->ctor != NULL) {
-        obj = dynArray->ctor();
+    if (dyn_array->ctor != NULL) {
+        obj = dyn_array->ctor();
     } else {
-        obj = malloc(dynArray->arrayTypeSize);
+        obj = malloc(dyn_array->array_type_size);
     }
-    addMember(dynArray, ccoGetDynamicArrayCount(dynArray), obj);
+    add_member(dyn_array, cco_get_dynamic_array_count(dyn_array), obj);
     return obj;
 }
 
-void ccoAddToDynamicArray(CcoDynamicArray *dynArray, usize pos, CcoDynamicArrayObj object) {
-    addMember(dynArray, pos, object);
+void cco_add_to_dynamic_array(cco_dynamic_array *dyn_array, usize pos, CcoDynamicArrayObj object) {
+    add_member(dyn_array, pos, object);
 }
-void ccoRemoveFromDynamicArray(CcoDynamicArray *dynArray, usize pos) { removeMember(dynArray, pos); }
+void cco_remove_from_dynamic_array(cco_dynamic_array *dyn_array, usize pos) { remove_member(dyn_array, pos); }
 
-void ccoPushBackArrayDynamicArray(CcoDynamicArray *dynArray, CcoDynamicArrayObj *array, u32 arrayCount) {
-    for (u32 i = 0; i < arrayCount; i++) {
-        ccoPushBackDynamicArray(dynArray, &array[i]);
+void cco_push_back_array_dynamic_array(cco_dynamic_array *dyn_array, CcoDynamicArrayObj *array, u32 array_count) {
+    for (u32 i = 0; i < array_count; i++) {
+        cco_push_back_dynamic_array(dyn_array, &array[i]);
     }
 }
 
-void ccoPushBackDynamicArray(CcoDynamicArray *dynArray, CcoDynamicArrayObj object) {
-    addMember(dynArray, ccoGetDynamicArrayCount(dynArray), object);
+void cco_push_back_dynamic_array(cco_dynamic_array *dyn_array, CcoDynamicArrayObj object) {
+    add_member(dyn_array, cco_get_dynamic_array_count(dyn_array), object);
 }
-void ccoPopBackDynamicArray(CcoDynamicArray *dynArray) { removeMember(dynArray, ccoGetDynamicArrayCount(dynArray) - 1); }
+void cco_pop_back_dynamic_array(cco_dynamic_array *dyn_array) { remove_member(dyn_array, cco_get_dynamic_array_count(dyn_array) - 1); }
 
-void ccoClearDynamicArray(CcoDynamicArray *dynArray) {
-    for (u32 i = 0; i < dynArray->count; i++) {
-        removeMember(dynArray, i);
+void cco_clear_dynamic_array(cco_dynamic_array *dyn_array) {
+    for (u32 i = 0; i < dyn_array->count; i++) {
+        remove_member(dyn_array, i);
     }
-    dynArray->count = 0;
+    dyn_array->count = 0;
 }
 
-CcoBool ccoHasObjectInDynamicArray(CcoDynamicArray *dynArray, CcoDynamicArrayObj obj) {
-    for (u32 i = 0; i < dynArray->count; i++) {
-        if (obj == dynArray->objs[i])
+CcoBool cco_has_object_in_dynamic_array(cco_dynamic_array *dyn_array, CcoDynamicArrayObj obj) {
+    for (u32 i = 0; i < dyn_array->count; i++) {
+        if (obj == dyn_array->objs[i])
             return CCO_YES;
     }
     return CCO_NO;
 }
 
-CcoDynamicArrayObj *ccoGetDynamicArrayObjects(CcoDynamicArray *dynArray) { return dynArray->objs; }
+CcoDynamicArrayObj *cco_get_dynamic_array_objects(cco_dynamic_array *dyn_array) { return dyn_array->objs; }
 
-CcoBool ccoIsDynamicArrayEmpty(CcoDynamicArray *dynArray) {
-    return dynArray->count == 0;
+CcoBool cco_is_dynamic_array_empty(cco_dynamic_array *dyn_array) {
+    return dyn_array->count == 0;
 }
 
-CcoDynamicArrayObj *ccoGetDynamicArrayObject(CcoDynamicArray *dynArray, usize pos) {
-    if (pos >= dynArray->count)
+CcoDynamicArrayObj *cco_get_dynamic_array_object(cco_dynamic_array *dyn_array, usize pos) {
+    if (pos >= dyn_array->count)
         return NULL;
-    return dynArray->objs[pos];
+    return dyn_array->objs[pos];
 }
 
-CcoDynamicArrayObj ccoGetDynamicArrayObjectBack(CcoDynamicArray *dynArray) { return dynArray->objs[dynArray->count - 1]; }
+CcoDynamicArrayObj cco_get_dynamic_array_object_back(cco_dynamic_array *dyn_array) { return dyn_array->objs[dyn_array->count - 1]; }
 
-CcoDynamicArrayObj ccoGetDynamicArrayObjectFront(CcoDynamicArray *dynArray) { return dynArray->objs[0]; }
+CcoDynamicArrayObj cco_get_dynamic_array_object_front(cco_dynamic_array *dyn_array) { return dyn_array->objs[0]; }
 
-u32 ccoGetDynamicArrayCount(CcoDynamicArray *dynArray) { return dynArray->count; }
+u32 cco_get_dynamic_array_count(cco_dynamic_array *dyn_array) { return dyn_array->count; }
 
-u32 ccoGetDynamicArrayCapacity(CcoDynamicArray *dynArray) { return dynArray->capacity; }
+u32 cco_get_dynamic_array_capacity(cco_dynamic_array *dyn_array) { return dyn_array->capacity; }

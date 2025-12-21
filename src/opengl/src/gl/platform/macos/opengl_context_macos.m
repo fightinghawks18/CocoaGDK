@@ -5,45 +5,45 @@
 #include "opengl/gl/opengl_context.h"
 #include <AppKit/AppKit.h>
 
-struct CcoOpenGLContext_T {
+struct cco_opengl_context_t {
     NSOpenGLContext *ctx;
 };
 
-CcoResult ccoCreateOpenGLContext(void *windowHandle, void *displayHandle, CcoOpenGLContext *outOpenGLContext) {
-    CcoOpenGLContext openGLContext = malloc(sizeof(CcoOpenGLContext_T));
-    if (!openGLContext)
+cco_result cco_create_open_gl_context(void *window_handle, void *display_handle, cco_opengl_context *out_open_gl_context) {
+    cco_opengl_context open_gl_context = malloc(sizeof(cco_opengl_context_t));
+    if (!open_gl_context)
         return CCO_FAIL_OUT_OF_MEMORY;
     NSOpenGLPixelFormatAttribute attrs[] = {NSOpenGLPFADoubleBuffer,  NSOpenGLPFADepthSize,          24,
                                             NSOpenGLPFAOpenGLProfile, NSOpenGLProfileVersion4_1Core, 0};
 
-    NSWindow *window = (__bridge NSWindow *)windowHandle;
+    NSWindow *window = (__bridge NSWindow *)window_handle;
     NSRect frame = [window frame];
 
-    NSOpenGLPixelFormat *pxFormat = [[NSOpenGLPixelFormat alloc] initWithAttributes:attrs];
-    NSOpenGLView *glView = [[NSOpenGLView alloc] initWithFrame:frame pixelFormat:pxFormat];
+    NSOpenGLPixelFormat *px_format = [[NSOpenGLPixelFormat alloc] initWithAttributes:attrs];
+    NSOpenGLView *glView = [[NSOpenGLView alloc] initWithFrame:frame pixelFormat:px_format];
     [window setContentView:glView];
-    [pxFormat release];
+    [px_format release];
 
     NSOpenGLContext *glContext = [glView openGLContext];
-    openGLContext->ctx = glContext;
+    open_gl_context->ctx = glContext;
     [glView setWantsBestResolutionOpenGLSurface:YES];
     [glView setAutoresizingMask:NSViewWidthSizable | NSViewHeightSizable];
 
-    *outOpenGLContext = openGLContext;
+    *out_open_gl_context = open_gl_context;
     return CCO_SUCCESS;
 }
 
-void ccoDestroyOpenGLContext(CcoOpenGLContext openGLContext) {
-    if (openGLContext->ctx != nil) {
-        [openGLContext->ctx release];
-        openGLContext->ctx = nil;
+void cco_destroy_open_gl_context(cco_opengl_context open_gl_context) {
+    if (open_gl_context->ctx != nil) {
+        [open_gl_context->ctx release];
+        open_gl_context->ctx = nil;
     }
-    free(openGLContext);
+    free(open_gl_context);
 }
 
-void ccoFlushOpenGLContextBuffer(CcoOpenGLContext openGLContext) {
-    [openGLContext->ctx flushBuffer];
+void cco_flush_open_gl_context_buffer(cco_opengl_context open_gl_context) {
+    [open_gl_context->ctx flushBuffer];
 }
 
-void ccoMakeCurrentOpenGLContext(CcoOpenGLContext openGLContext) { [openGLContext->ctx makeCurrentContext]; }
-void ccoRemoveCurrentOpenGLContext() { [NSOpenGLContext clearCurrentContext]; }
+void cco_make_current_open_gl_context(cco_opengl_context open_gl_context) { [open_gl_context->ctx makeCurrentContext]; }
+void cco_remove_current_open_gl_context() { [NSOpenGLContext clearCurrentContext]; }

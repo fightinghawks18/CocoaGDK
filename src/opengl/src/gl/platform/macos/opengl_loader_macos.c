@@ -6,10 +6,10 @@
 #include "core/core_types.h"
 #include <dlfcn.h>
 
-void *ccoGetGLProcAddr(const char *addrName) {
+void *cco_get_gl_proc_addr(const char *addr_name) {
     static void* opengl_lib = NULL;
     if (!opengl_lib) {
         opengl_lib = dlopen("/System/Library/Frameworks/OpenGL.framework/OpenGL", RTLD_LAZY);
     }
-    return opengl_lib ? dlsym(opengl_lib, addrName) : NULL;
+    return opengl_lib ? dlsym(opengl_lib, addr_name) : NULL;
 }

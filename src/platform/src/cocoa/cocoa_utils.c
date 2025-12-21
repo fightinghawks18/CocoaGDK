@@ -6,7 +6,7 @@
 
 #include <time.h>
 
-void ccoSleep(const u32 ms) {
+void cco_sleep(const u32 ms) {
     struct timespec ts;
     ts.tv_sec = ms / 1000;
     ts.tv_nsec = (ms % 1000) * 1000000;

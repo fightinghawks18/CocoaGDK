@@ -13,5 +13,5 @@
 typedef f64 CcoRadians;
 typedef f32 CcoDegrees;
 
-static CcoRadians ccoDegToRad(const CcoDegrees degrees) { return degrees * (PI / 180.0); }
-static CcoDegrees ccoRadToDeg(const CcoRadians radians) { return (f32)(radians * (180.0 / PI)); }
+static CcoRadians cco_deg_to_rad(const CcoDegrees degrees) { return degrees * (PI / 180.0); }
+static CcoDegrees cco_rad_to_deg(const CcoRadians radians) { return (f32)(radians * (180.0 / PI)); }

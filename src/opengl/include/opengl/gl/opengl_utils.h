@@ -7,7 +7,7 @@
 #include "core/core_types.h"
 #include <glad/glad.h>
 
-void ccoCheckOpenGLError(const char *location) {
+void cco_check_open_gl_error(const char *location) {
     u32 gerr;
     while ((gerr = glGetError()) != GL_NO_ERROR) {
         printf("OpenGL error occurred at %s!\n", location);

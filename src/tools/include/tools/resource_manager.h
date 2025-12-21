@@ -2,13 +2,13 @@
 
 #include "core/core_types.h"
 
-typedef struct CcoResourceHandle CcoResourceHandle;
-typedef struct CcoResourceManager CcoResourceManager;
+typedef struct cco_resource_handle cco_resource_handle;
+typedef struct cco_resource_manager cco_resource_manager;
 
-CcoResourceManager* ccoCreateResourceManager();
-void ccoDestroyResourceManager(CcoResourceManager* resourceManager);
+cco_resource_manager* cco_create_resource_manager();
+void cco_destroy_resource_manager(cco_resource_manager* resource_manager);
 
-CcoResourceHandle ccoAllocateResource(CcoResourceManager* resourceManager, usize size);
-void ccoDestroyResource(CcoResourceManager* resourceManager, CcoResourceHandle* handle);
+cco_resource_handle cco_allocate_resource(cco_resource_manager* resource_manager, usize size);
+void cco_destroy_resource(cco_resource_manager* resource_manager, cco_resource_handle* handle);
 
-void* ccoResolveResource(CcoResourceManager* resourceManager, CcoResourceHandle* handle);
+void* cco_resolve_resource(cco_resource_manager* resource_manager, cco_resource_handle* handle);

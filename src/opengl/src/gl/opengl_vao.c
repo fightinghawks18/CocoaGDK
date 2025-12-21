@@ -7,44 +7,44 @@
 #include <glad/glad.h>
 #include <stdlib.h>
 
-struct CcoOpenGLVao_T {
-    u32 glID;
+struct cco_opengl_vao_t {
+    u32 gl_id;
 };
 
-CcoResult ccoCreateOpenGLVao(CcoOpenGLVao *outVao) {
-    CcoOpenGLVao vao = malloc(sizeof(CcoOpenGLVao_T));
+cco_result cco_create_open_gl_vao(cco_opengl_vao *out_vao) {
+    cco_opengl_vao vao = malloc(sizeof(cco_opengl_vao_t));
     if (!vao)
         return CCO_FAIL_OUT_OF_MEMORY;
-    glGenVertexArrays(1, &vao->glID);
-    *outVao = vao;
+    glGenVertexArrays(1, &vao->gl_id);
+    *out_vao = vao;
     return CCO_SUCCESS;
 }
 
-void ccoDestroyOpenGLVao(CcoOpenGLVao vao) {
-    if (vao->glID != CCO_NULL_GLID) {
-        glDeleteVertexArrays(1, &vao->glID);
-        vao->glID = CCO_NULL_GLID;
+void cco_destroy_open_gl_vao(cco_opengl_vao vao) {
+    if (vao->gl_id != CCO_NULL_GLID) {
+        glDeleteVertexArrays(1, &vao->gl_id);
+        vao->gl_id = CCO_NULL_GLID;
     }
     free(vao);
 }
 
-void ccoUseOpenGLVao(CcoOpenGLVao vao) { glBindVertexArray(vao->glID); }
+void cco_use_open_gl_vao(cco_opengl_vao vao) { glBindVertexArray(vao->gl_id); }
 
-void ccoSetOpenGLVaoLayout(CcoOpenGLVao vao, CcoOpenGLVbo vbo, CcoOpenGLEbo ebo, const CcoVertexLayout *layout) {
-    ccoUseOpenGLVao(vao);
-    ccoUseOpenGLVbo(vbo);
-    for (u32 i = 0; i < layout->attributeCount; i++) {
-        const CcoVertexAttribute attribute = layout->attributes[i];
-        glVertexAttribPointer(attribute.location, (i32)attribute.numComponents, GL_FLOAT, GL_FALSE,
+void cco_set_open_gl_vao_layout(cco_opengl_vao vao, cco_opengl_vbo vbo, cco_opengl_ebo ebo, const cco_vertex_layout *layout) {
+    cco_use_open_gl_vao(vao);
+    cco_use_open_gl_vbo(vbo);
+    for (u32 i = 0; i < layout->attribute_count; i++) {
+        const cco_vertex_attribute attribute = layout->attributes[i];
+        glVertexAttribPointer(attribute.location, (i32)attribute.num_components, GL_FLOAT, GL_FALSE,
                               (i32)attribute.stride, (void *)(uintptr_t)attribute.offset);
         glEnableVertexAttribArray(attribute.location);
     }
 
-    ccoUseOpenGLEbo(ebo);
+    cco_use_open_gl_ebo(ebo);
 
-    ccoRemoveCurrentOpenGLVao();
+    cco_remove_current_open_gl_vao();
 }
 
-void ccoRemoveCurrentOpenGLVao() { glBindVertexArray(0); }
+void cco_remove_current_open_gl_vao() { glBindVertexArray(0); }
 
-u32 ccoGetOpenGLVaoID(CcoOpenGLVao vao) { return vao->glID; }
+u32 cco_get_open_gl_vao_id(cco_opengl_vao vao) { return vao->gl_id; }

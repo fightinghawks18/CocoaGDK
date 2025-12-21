@@ -48,4 +48,4 @@ typedef enum {
     CCO_FAIL_WINDOWING_INIT_ERROR,                ///< @brief Failed to initialize the windowing system
     CCO_FAIL_WINDOWING_CREATE_ERROR,              ///< @brief Failed to create a new window
     CCO_FAIL_INPUT_INIT_ERROR,                    ///< @brief Failed to initialize the input system
-} CcoResult;
+} cco_result;

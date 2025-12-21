@@ -8,73 +8,73 @@
 #include "core/core_types.h"
 
 typedef struct {
-    Mat4 model;
-    Mat4 view;
-    Mat4 projection;
-} CcoModelViewProjection;
+    mat4 model;
+    mat4 view;
+    mat4 projection;
+} cco_model_view_projection;
 
 /// @brief Describes how data will be mapped into a buffer
 typedef struct {
-    usize dataSize;
-    usize dataOffset;
+    usize data_size;
+    usize data_offset;
     void *data;
-} CcoBufferMapping;
+} cco_buffer_mapping;
 
 /// @brief Describes how a vertex attribute will be laid out in memory
 typedef struct {
     u32 location;
-    u32 numComponents;
+    u32 num_components;
     usize stride;
     usize offset;
-} CcoVertexAttribute;
+} cco_vertex_attribute;
 
 /// @brief Describes how vertex data will be laid out in memory
 typedef struct {
-    CcoVertexAttribute *attributes;
-    u32 attributeCount;
-} CcoVertexLayout;
+    cco_vertex_attribute *attributes;
+    u32 attribute_count;
+} cco_vertex_layout;
 
 /// @brief Describes how the rendered output is transformed onto the screen
 typedef struct {
     i32 x, y;
     i32 w, h;
-    f32 minDepth; ///< @brief The smallest depth value allowed (clamps depths smaller than this)
-    f32 maxDepth; ///< @brief The largest depth value allowed (clamps depths larger than this)
-} CcoViewport;
+    f32 min_depth; ///< @brief The smallest depth value allowed (clamps depths smaller than this)
+    f32 max_depth; ///< @brief The largest depth value allowed (clamps depths larger than this)
+} cco_viewport;
 
 /// @brief A definition of a single point in a geometric object
 typedef struct {
     f32 pos[3];
     f32 col[4];
-} CcoVertex;
+} cco_vertex;
 
 typedef struct {
     usize offset;
     usize size;
     void *data;
-} CcoBufferMapper;
+} cco_buffer_mapper;
 
 /// @brief Describes the regions that pixels/fragments are accepted in,
 /// otherwise it'll discard anything outside the region
-/// @note If you want to transform how the rendered output will look, see CcoViewport
-/// @see CcoViewport
+/// @note If you want to transform how the rendered output will look, see cco_viewport
+/// @see cco_viewport
 typedef struct {
     i32 x, y;
     i32 w, h;
-} CcoScissor;
+} cco_scissor;
 
 typedef struct {
     i32 w, h;
-} CcoExtent;
+} cco_extent;
 
 /// @brief The type of operation that a shader uses
-typedef enum CcoShaderType {
+typedef enum cco_shader_type {
     CCO_SHADER_TYPE_VERTEX, ///< @brief Shader operates on per-vertex
     CCO_SHADER_TYPE_PIXEL ///< @brief Shader operates on per-pixel/per-fragment
-} CcoShaderType;
+} cco_shader_type;
 
 /// @brief Thw type of value
-typedef enum CcoUniformType {
+typedef enum cco_uniform_type {
     CCO_UNIFORM_TYPE_FLOAT1,
     CCO_UNIFORM_TYPE_FLOAT2,
     CCO_UNIFORM_TYPE_FLOAT3,
@@ -88,4 +88,4 @@ typedef enum CcoUniformType {
     CCO_UNIFORM_TYPE_UINT3,
     CCO_UNIFORM_TYPE_UINT4,
     CCO_UNIFORM_TYPE_MATRIX4X4,
-} CcoUniformType;
+} cco_uniform_type;

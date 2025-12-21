@@ -6,9 +6,9 @@
 
 #include <windows.h>
 
-void *ccoGetGLProcAddr(const char *addrName) {
+void *cco_get_gl_proc_addr(const char *addr_name) {
     // Test WGL for extensions first
-    void *proc = (void*)wglGetProcAddress(addrName);
+    void *proc = (void*)wglGetProcAddress(addr_name);
     if (proc) {
         return proc;
     }
@@ -19,5 +19,5 @@ void *ccoGetGLProcAddr(const char *addrName) {
         opengl32 = LoadLibraryA("opengl32.dll");
     }
 
-    return (void*)GetProcAddress(opengl32, addrName);
+    return (void*)GetProcAddress(opengl32, addr_name);
 }

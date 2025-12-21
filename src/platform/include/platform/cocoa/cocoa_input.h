@@ -9,12 +9,12 @@
 typedef enum {
     CCO_COCOA_INPUT_EVENT_HANDLED,
     CCO_COCOA_INPUT_EVENT_UNHANDLED
-} CcoCocoaInputEventResult;
+} cco_cocoa_input_event_result;
 
 #ifdef __OBJC__
 
 #include <AppKit/AppKit.h>
-CcoCocoaInputEventResult ccoInputHandleCocoaEvent(NSEvent *event);
+cco_cocoa_input_event_result cco_input_handle_cocoa_event(NSEvent *event);
 
 #endif // __OBJC__
 

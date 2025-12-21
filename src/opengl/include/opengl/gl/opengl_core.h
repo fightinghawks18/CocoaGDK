@@ -11,24 +11,24 @@ typedef enum {
     CCO_OPENGL_NO_BUFFER_BIT = 0,
     CCO_OPENGL_COLOR_BUFFER_BIT = 1 << 0,
     CCO_OPENGL_DEPTH_BUFFER_BIT = 1 << 1
-} CcoOpenGLBufferFlagBits;
+} cco_open_gl_buffer_flag_bits;
 typedef u32 CcoOpenGLBufferFlags;
 
 typedef enum {
     CCO_OPENGL_PRIMITIVE_TRIANGLES,
     CCO_OPENGL_PRIMITIVE_TRIANGLE_LIST
-} CcoOpenGLPrimitiveType;
+} cco_open_gl_primitive_type;
 
 typedef enum {
     CCO_OPENGL_INDEX_TYPE_U32
-} CcoOpenGLIndexType;
+} cco_open_gl_index_type;
 
 typedef struct {
     f32 r, g, b, a;
-} CcoClearColor;
+} cco_clear_color;
 
-CcoResult ccoInitializeOpenGL();
-void ccoSetOpenGLViewport(CcoViewport viewport);
-void ccoClearOpenGLBuffers(CcoOpenGLBufferFlags bufferFlags);
-void ccoSetOpenGLClearColor(CcoClearColor clearColor);
-void ccoDrawOpenGLElements(CcoOpenGLPrimitiveType primitiveType, u32 numIndices, CcoOpenGLIndexType indexType);
+cco_result cco_initialize_open_gl();
+void cco_set_open_gl_viewport(cco_viewport viewport);
+void cco_clear_open_gl_buffers(CcoOpenGLBufferFlags buffer_flags);
+void cco_set_open_gl_clear_color(cco_clear_color clear_color);
+void cco_draw_open_gl_elements(cco_open_gl_primitive_type primitive_type, u32 num_indices, cco_open_gl_index_type index_type);

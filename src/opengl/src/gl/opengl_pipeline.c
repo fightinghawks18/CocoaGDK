@@ -7,43 +7,43 @@
 #include <glad/glad.h>
 #include <stdlib.h>
 
-struct CcoOpenGLPipeline_T {
-    u32 glID;
+struct cco_opengl_pipeline_t {
+    u32 gl_id;
 };
 
-CcoResult ccoCreateOpenGLPipeline(const CcoOpenGLPipelineDesc *description, CcoOpenGLPipeline *outPipeline) {
-    CcoOpenGLPipeline pipeline = malloc(sizeof(CcoOpenGLPipeline));
-    pipeline->glID = glCreateProgram();
+cco_result cco_create_open_gl_pipeline(const cco_open_gl_pipeline_desc *description, cco_opengl_pipeline *out_pipeline) {
+    cco_opengl_pipeline pipeline = malloc(sizeof(cco_opengl_pipeline));
+    pipeline->gl_id = glCreateProgram();
 
-    glAttachShader(pipeline->glID, ccoGetOpenGLShaderID(description->vertexShader));
-    glAttachShader(pipeline->glID, ccoGetOpenGLShaderID(description->pixelShader));
-    glLinkProgram(pipeline->glID);
+    glAttachShader(pipeline->gl_id, cco_get_open_gl_shader_id(description->vertex_shader));
+    glAttachShader(pipeline->gl_id, cco_get_open_gl_shader_id(description->pixel_shader));
+    glLinkProgram(pipeline->gl_id);
 
-    i32 linkSuccess;
-    glGetProgramiv(pipeline->glID, GL_LINK_STATUS, &linkSuccess);
-    if (!linkSuccess) {
-        char infoLog[512];
-        glGetProgramInfoLog(pipeline->glID, 512, NULL, infoLog);
-        CCO_LOG("Failed to link OpenGL pipeline! %s", infoLog);
-        ccoDestroyOpenGLPipeline(pipeline);
+    i32 link_success;
+    glGetProgramiv(pipeline->gl_id, GL_LINK_STATUS, &link_success);
+    if (!link_success) {
+        char info_log[512];
+        glGetProgramInfoLog(pipeline->gl_id, 512, NULL, info_log);
+        CCO_LOG("Failed to link OpenGL pipeline! %s", info_log);
+        cco_destroy_open_gl_pipeline(pipeline);
         return CCO_FAIL_PIPELINE_CREATE_ERROR;
     }
 
-    glDetachShader(pipeline->glID, ccoGetOpenGLShaderID(description->vertexShader));
-    glDetachShader(pipeline->glID, ccoGetOpenGLShaderID(description->pixelShader));
+    glDetachShader(pipeline->gl_id, cco_get_open_gl_shader_id(description->vertex_shader));
+    glDetachShader(pipeline->gl_id, cco_get_open_gl_shader_id(description->pixel_shader));
 
-    *outPipeline = pipeline;
+    *out_pipeline = pipeline;
     return CCO_SUCCESS;
 }
 
-void ccoDestroyOpenGLPipeline(CcoOpenGLPipeline pipeline) {
-    if (pipeline->glID) {
-        glDeleteProgram(pipeline->glID);
-        pipeline->glID = 0;
+void cco_destroy_open_gl_pipeline(cco_opengl_pipeline pipeline) {
+    if (pipeline->gl_id) {
+        glDeleteProgram(pipeline->gl_id);
+        pipeline->gl_id = 0;
     }
     free(pipeline);
 }
 
-void ccoUseOpenGLPipeline(CcoOpenGLPipeline pipeline) { glUseProgram(pipeline->glID); }
+void cco_use_open_gl_pipeline(cco_opengl_pipeline pipeline) { glUseProgram(pipeline->gl_id); }
 
-u32 ccoGetOpenGLPipelineID(CcoOpenGLPipeline pipeline) { return pipeline->glID; }
+u32 cco_get_open_gl_pipeline_id(cco_opengl_pipeline pipeline) { return pipeline->gl_id; }

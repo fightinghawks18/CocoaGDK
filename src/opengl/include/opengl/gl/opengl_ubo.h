@@ -9,27 +9,27 @@
 
 #include "opengl_pipeline.h"
 
-typedef struct CcoOpenGLUbo_T CcoOpenGLUbo_T;
-typedef CcoOpenGLUbo_T *CcoOpenGLUbo;
+typedef struct cco_opengl_ubo_t cco_opengl_ubo_t;
+typedef cco_opengl_ubo_t *cco_opengl_ubo;
 
 typedef enum {
     CCO_OPENGL_UBO_BINDING_BINDING,
     CCO_OPENGL_UBO_BINDING_BLOCK_NAME
-} CcoOpenGLUboBindingType;
+} cco_open_gl_ubo_binding_type;
 
 typedef struct {
-    CcoOpenGLUboBindingType type;
-    CcoOpenGLPipeline pip;
+    cco_open_gl_ubo_binding_type type;
+    cco_opengl_pipeline pip;
     union {
         i32 binding;
         const char *name;
     };
 } CcoOpenGLUboBinding;
 
-CcoResult ccoCreateOpenGLUbo(CcoOpenGLUbo *outUbo);
-void ccoDestroyOpenGLUbo(CcoOpenGLUbo ubo);
+cco_result cco_create_open_gl_ubo(cco_opengl_ubo *out_ubo);
+void cco_destroy_open_gl_ubo(cco_opengl_ubo ubo);
 
-void ccoUseOpenGLUbo(const CcoOpenGLUboBinding *binding, CcoOpenGLUbo ubo);
-void ccoMapToOpenGLUbo(CcoOpenGLUbo ubo, const CcoBufferMapping *mapping);
+void cco_use_open_gl_ubo(const CcoOpenGLUboBinding *binding, cco_opengl_ubo ubo);
+void cco_map_to_open_gl_ubo(cco_opengl_ubo ubo, const cco_buffer_mapping *mapping);
 
-u32 ccoGetOpenGLUboID(CcoOpenGLUbo ubo);
+u32 cco_get_open_gl_ubo_id(cco_opengl_ubo ubo);

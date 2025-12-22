@@ -50,7 +50,7 @@ struct cco_opengl_shader_t {
     u32 gl_id;
 };
 
-cco_result cco_create_open_gl_shader(const cco_open_gl_shader_desc *shader_desc, cco_opengl_shader *out_shader) {
+cco_result cco_create_opengl_shader(const cco_opengl_shader_desc *shader_desc, cco_opengl_shader *out_shader) {
     cco_opengl_shader shader = malloc(sizeof(cco_opengl_shader_t));
     if (!shader)
         return CCO_FAIL_OUT_OF_MEMORY;
@@ -84,7 +84,7 @@ cco_result cco_create_open_gl_shader(const cco_open_gl_shader_desc *shader_desc,
         char info_log[512];
         glGetShaderInfoLog(shader->gl_id, 512, NULL, info_log);
         CCO_LOG("Failed to compile GL shader from path %s! %s", shader_desc->shader_path, info_log);
-        cco_destroy_open_gl_shader(shader);
+        cco_destroy_opengl_shader(shader);
         return CCO_FAIL_COMPILE_ERROR;
     }
 
@@ -92,7 +92,7 @@ cco_result cco_create_open_gl_shader(const cco_open_gl_shader_desc *shader_desc,
     return CCO_SUCCESS;
 }
 
-void cco_destroy_open_gl_shader(cco_opengl_shader shader) {
+void cco_destroy_opengl_shader(cco_opengl_shader shader) {
     if (shader->gl_id != CCO_NULL_GLID) {
         glDeleteShader(shader->gl_id);
         shader->gl_id = CCO_NULL_GLID;
@@ -100,4 +100,4 @@ void cco_destroy_open_gl_shader(cco_opengl_shader shader) {
     free(shader);
 }
 
-u32 cco_get_open_gl_shader_id(cco_opengl_shader shader) { return shader->gl_id; }
+u32 cco_get_opengl_shader_id(cco_opengl_shader shader) { return shader->gl_id; }

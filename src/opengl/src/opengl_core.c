@@ -13,12 +13,12 @@ cco_result cco_initialize_open_gl(void) {
     return CCO_SUCCESS;
 }
 
-void cco_set_open_gl_viewport(cco_viewport viewport) {
+void cco_set_opengl_viewport(cco_viewport viewport) {
     glViewport(viewport.x, viewport.y, viewport.w, viewport.h);
     glDepthRange(viewport.min_depth, viewport.max_depth);
 }
 
-void cco_clear_open_gl_buffers(CcoOpenGLBufferFlags buffer_flags) {
+void cco_clear_opengl_buffers(CcoOpenGLBufferFlags buffer_flags) {
     i32 buffer_bits = 0;
     if (buffer_flags & CCO_OPENGL_COLOR_BUFFER_BIT)
         buffer_bits |= GL_COLOR_BUFFER_BIT;
@@ -27,11 +27,11 @@ void cco_clear_open_gl_buffers(CcoOpenGLBufferFlags buffer_flags) {
     glClear(buffer_bits);
 }
 
-void cco_set_open_gl_clear_color(cco_clear_color clear_color) {
+void cco_set_opengl_clear_color(cco_clear_color clear_color) {
     glClearColor(clear_color.r, clear_color.g, clear_color.b, clear_color.a);
 }
 
-void cco_draw_open_gl_elements(cco_open_gl_primitive_type primitive_type, u32 num_indices, cco_open_gl_index_type index_type) {
+void cco_draw_opengl_elements(cco_opengl_primitive_type primitive_type, u32 num_indices, cco_opengl_index_type index_type) {
     u32 glPrimitive = 0;
     switch (primitive_type) {
     case CCO_OPENGL_PRIMITIVE_TRIANGLES: {

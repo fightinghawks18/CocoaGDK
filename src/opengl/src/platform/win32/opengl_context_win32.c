@@ -13,9 +13,9 @@ struct cco_opengl_context_t {
     HDC hdc;
 };
 
-cco_result cco_create_open_gl_context(void *window_handle, void *display_handle, cco_opengl_context *out_open_gl_context) {
-    cco_opengl_context open_gl_context = malloc(sizeof(cco_opengl_context_t));
-    if (!open_gl_context)
+cco_result cco_create_opengl_context(void *window_handle, void *display_handle, cco_opengl_context *out_opengl_context) {
+    cco_opengl_context opengl_context = malloc(sizeof(cco_opengl_context_t));
+    if (!opengl_context)
         return CCO_FAIL_OUT_OF_MEMORY;
 
     PIXELFORMATDESCRIPTOR pfd = {
@@ -49,7 +49,7 @@ cco_result cco_create_open_gl_context(void *window_handle, void *display_handle,
     HGLRC dum_ctx = wglCreateContext(hdc);
     if (!dum_ctx) {
         CCO_LOG("Windows failed to create an OpenGL context!");
-        free(open_gl_context);
+        free(opengl_context);
         return CCO_FAIL_GRAPHICS_CREATE_ERROR;
     }
     wglMakeCurrent(hdc, dum_ctx);
@@ -57,7 +57,7 @@ cco_result cco_create_open_gl_context(void *window_handle, void *display_handle,
     PFNWGLCREATECONTEXTATTRIBSARBPROC wglCreateContextAttribsARB = (PFNWGLCREATECONTEXTATTRIBSARBPROC)wglGetProcAddress("wglCreateContextAttribsARB");
     if (!wglCreateContextAttribsARB) {
         CCO_LOG("Windows failed to load the wglCreateContextAttribsARB function!");
-        free(open_gl_context);
+        free(opengl_context);
         wglDeleteContext(dum_ctx);
         return CCO_FAIL_GRAPHICS_CREATE_ERROR;
     }
@@ -73,30 +73,30 @@ cco_result cco_create_open_gl_context(void *window_handle, void *display_handle,
     wglMakeCurrent(NULL, NULL);
     wglDeleteContext(dum_ctx);
 
-    open_gl_context->ctx = ctx;
-    open_gl_context->hdc = hdc;
+    opengl_context->ctx = ctx;
+    opengl_context->hdc = hdc;
 
-    *out_open_gl_context = open_gl_context;
+    *out_opengl_context = opengl_context;
     return CCO_SUCCESS;
 }
 
-void cco_destroy_open_gl_context(cco_opengl_context open_gl_context) {
-    if (open_gl_context->ctx) {
-        wglDeleteContext(open_gl_context->ctx);
-        open_gl_context->ctx = NULL;
+void cco_destroy_opengl_context(cco_opengl_context opengl_context) {
+    if (opengl_context->ctx) {
+        wglDeleteContext(opengl_context->ctx);
+        opengl_context->ctx = NULL;
     }
-    open_gl_context->hdc = NULL;
-    free(open_gl_context);
+    opengl_context->hdc = NULL;
+    free(opengl_context);
 }
 
-void cco_flush_open_gl_context_buffer(cco_opengl_context open_gl_context) {
-    wglSwapLayerBuffers(open_gl_context->hdc, WGL_SWAP_MAIN_PLANE);
+void cco_flush_opengl_context_buffer(cco_opengl_context opengl_context) {
+    wglSwapLayerBuffers(opengl_context->hdc, WGL_SWAP_MAIN_PLANE);
 }
 
-void cco_make_current_open_gl_context(cco_opengl_context open_gl_context) {
-    wglMakeCurrent(open_gl_context->hdc, open_gl_context->ctx);
+void cco_make_current_opengl_context(cco_opengl_context opengl_context) {
+    wglMakeCurrent(opengl_context->hdc, opengl_context->ctx);
 }
 
-void cco_remove_current_open_gl_context(void) {
+void cco_remove_current_opengl_context(void) {
     wglMakeCurrent(NULL, NULL);
 }

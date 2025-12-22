@@ -12,7 +12,6 @@ target_include_directories(cocoa_platform PUBLIC
 target_compile_definitions(cocoa_platform PRIVATE
         $<$<CONFIG:Debug>:DEBUG>
         $<$<CONFIG:Release>:NDEBUG>
-        PRIVATE CCO_BUILDING_PLATFORM
 )
 
 if(APPLE)

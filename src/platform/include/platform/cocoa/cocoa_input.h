@@ -16,7 +16,7 @@ typedef enum {
 #ifdef __OBJC__
 
 #include <AppKit/AppKit.h>
-CCO_PLATFORM_API cco_cocoa_input_event_result cco_input_handle_cocoa_event(NSEvent *event);
+cco_cocoa_input_event_result cco_input_handle_cocoa_event(NSEvent *event);
 
 #endif // __OBJC__
 

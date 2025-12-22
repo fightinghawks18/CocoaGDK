@@ -5,7 +5,7 @@
 #pragma once
 
 #include "core/core_types.h"
-#include "exports.h"
+
 
 // Buffers
 
@@ -132,7 +132,7 @@ extern PFNGLGETSHADERINFOLOGPROC glGetShaderInfoLog;
 typedef void (*PFNGLDELETESHADERPROC)(u32 shader);
 extern PFNGLDELETESHADERPROC glDeleteShader;
 
-CCO_OPENGL_API void *cco_get_gl_proc_addr(const char *addr_name);
+void *cco_get_gl_proc_addr(const char *addr_name);
 static cco_bool cco_load_gl_funs() {
     // Buffers
     glGenBuffers = cco_get_gl_proc_addr("glGenBuffers");

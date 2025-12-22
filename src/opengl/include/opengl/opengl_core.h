@@ -4,7 +4,7 @@
 
 #pragma once
 
-#include "exports.h"
+
 #include "core/core_types.h"
 #include "graphics/graphics_types.h"
 
@@ -28,8 +28,8 @@ typedef struct {
     f32 r, g, b, a;
 } cco_clear_color;
 
-CCO_OPENGL_API cco_result cco_initialize_open_gl(void);
-CCO_OPENGL_API void cco_set_open_gl_viewport(cco_viewport viewport);
-CCO_OPENGL_API void cco_clear_open_gl_buffers(CcoOpenGLBufferFlags buffer_flags);
-CCO_OPENGL_API void cco_set_open_gl_clear_color(cco_clear_color clear_color);
-CCO_OPENGL_API void cco_draw_open_gl_elements(cco_open_gl_primitive_type primitive_type, u32 num_indices, cco_open_gl_index_type index_type);
+cco_result cco_initialize_open_gl(void);
+void cco_set_open_gl_viewport(cco_viewport viewport);
+void cco_clear_open_gl_buffers(CcoOpenGLBufferFlags buffer_flags);
+void cco_set_open_gl_clear_color(cco_clear_color clear_color);
+void cco_draw_open_gl_elements(cco_open_gl_primitive_type primitive_type, u32 num_indices, cco_open_gl_index_type index_type);

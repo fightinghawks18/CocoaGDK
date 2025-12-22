@@ -21,10 +21,6 @@ target_link_libraries(cocoa_opengl
         PUBLIC cocoa_graphics
 )
 
-target_compile_definitions(cocoa_opengl
-        PRIVATE CCO_BUILDING_OPENGL
-)
-
 if(APPLE)
     target_sources(cocoa_opengl
             PRIVATE src/platform/macos/opengl_context_macos.m

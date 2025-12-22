@@ -4,7 +4,7 @@
 
 #pragma once
 
-#include "exports.h"
+
 #include "core/core_types.h"
 #include "graphics/graphics_types.h"
 
@@ -27,10 +27,10 @@ typedef struct {
     };
 } CcoOpenGLUboBinding;
 
-CCO_OPENGL_API cco_result cco_create_open_gl_ubo(cco_opengl_ubo *out_ubo);
-CCO_OPENGL_API void cco_destroy_open_gl_ubo(cco_opengl_ubo ubo);
+cco_result cco_create_open_gl_ubo(cco_opengl_ubo *out_ubo);
+void cco_destroy_open_gl_ubo(cco_opengl_ubo ubo);
 
-CCO_OPENGL_API void cco_use_open_gl_ubo(const CcoOpenGLUboBinding *binding, cco_opengl_ubo ubo);
-CCO_OPENGL_API void cco_map_to_open_gl_ubo(cco_opengl_ubo ubo, const cco_buffer_mapping *mapping);
+void cco_use_open_gl_ubo(const CcoOpenGLUboBinding *binding, cco_opengl_ubo ubo);
+void cco_map_to_open_gl_ubo(cco_opengl_ubo ubo, const cco_buffer_mapping *mapping);
 
-CCO_OPENGL_API u32 cco_get_open_gl_ubo_id(cco_opengl_ubo ubo);
+u32 cco_get_open_gl_ubo_id(cco_opengl_ubo ubo);

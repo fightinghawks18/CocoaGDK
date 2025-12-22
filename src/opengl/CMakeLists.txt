@@ -8,6 +8,7 @@ add_library(cocoa_opengl STATIC
         src/opengl_shader.c
         src/opengl_pipeline.c
         src/opengl_core.c
+        src/opengl_loader.c
 
 )
 target_include_directories(cocoa_opengl PUBLIC

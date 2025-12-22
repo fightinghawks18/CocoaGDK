@@ -5,8 +5,8 @@
 #include "opengl/opengl_core.h"
 #include "opengl/opengl_loader.h"
 
-cco_result cco_initialize_open_gl(void) {
-    if (!cco_load_gl_funs()) {
+cco_result cco_initialize_opengl(void) {
+    if (!cco_load_opengl_functions()) {
         CCO_LOG("Failed to load OpenGL methods!");
         return CCO_FAIL_GRAPHICS_INIT_ERROR;
     }

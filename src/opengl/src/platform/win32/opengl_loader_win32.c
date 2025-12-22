@@ -6,7 +6,7 @@
 
 #include <windows.h>
 
-void *cco_get_gl_proc_addr(const char *addr_name) {
+void *cco_get_opengl_proc_addr(const char *addr_name) {
     // Test WGL for extensions first
     void *proc = (void*)wglGetProcAddress(addr_name);
     if (proc) {

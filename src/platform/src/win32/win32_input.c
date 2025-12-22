@@ -20,7 +20,7 @@ static const cco_input_key v_key_to_cco_input_key_map[] = {
 static struct {
     RAWINPUTDEVICE rids[2];
 
-    CcoWindow current_window;
+    cco_window current_window;
     cco_bool enabled;
 
     cco_bool keys_processing[KEY_COUNT];
@@ -119,7 +119,7 @@ void cco_input_clear_hardware_state(void) {
     memset(g_input_state.mouse_buttons_processing, 0, sizeof(g_input_state.mouse_buttons_processing));
 }
 
-void cco_input_give_window_focus(CcoWindow window) {
+void cco_input_give_window_focus(cco_window window) {
     cco_input_clear_frame_state();
     cco_input_clear_hardware_state();
 
@@ -130,7 +130,7 @@ void cco_input_enable(void) { g_input_state.enabled = CCO_YES; }
 
 void cco_input_disable(void) { g_input_state.enabled = CCO_NO; }
 
-CcoWindow cco_input_get_active_window(void) { return g_input_state.current_window; }
+cco_window cco_input_get_active_window(void) { return g_input_state.current_window; }
 
 cco_mouse_delta cco_input_get_mouse_delta(void) { return g_input_state.mouse_delta; }
 

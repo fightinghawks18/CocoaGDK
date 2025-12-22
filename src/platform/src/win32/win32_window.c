@@ -9,7 +9,7 @@
 
 static const i32 BASE_DPI = 96;
 
-struct CcoWindow_T {
+struct cco_window_t {
     HWND hWnd;
     cco_bool will_close;
     cco_bool focused;
@@ -18,13 +18,13 @@ struct CcoWindow_T {
 static i32 scale_from_dpi(const i32 logical_axis, const i32 dpi) { return MulDiv(logical_axis, dpi, BASE_DPI); }
 
 LRESULT CALLBACK Wndproc(HWND hWnd, UINT u_msg, WPARAM wparam, LPARAM lparam) {
-    CcoWindow window = CCO_NIL;
+    cco_window window = CCO_NIL;
     if (u_msg == WM_NCCREATE) {
         CREATESTRUCT *create_struct = (CREATESTRUCT *)lparam;
-        window = (CcoWindow)create_struct->lpCreateParams;
+        window = (cco_window)create_struct->lpCreateParams;
         SetWindowLongPtr(hWnd, GWLP_USERDATA, (LONG_PTR)window);
     } else {
-        window = (CcoWindow)GetWindowLongPtr(hWnd, GWLP_USERDATA);
+        window = (cco_window)GetWindowLongPtr(hWnd, GWLP_USERDATA);
     }
 
     switch (u_msg) {
@@ -95,8 +95,8 @@ void cco_windowing_quit(void) {
         CCO_LOG("Failed to unregister main win32 window class!");
 }
 
-cco_result cco_create_window(i32 x, i32 y, i32 width, i32 height, const char *title, CcoWindow *out_window) {
-    CcoWindow window = malloc(sizeof(CcoWindow_T));
+cco_result cco_create_window(i32 x, i32 y, i32 width, i32 height, const char *title, cco_window *out_window) {
+    cco_window window = malloc(sizeof(cco_window_t));
     if (!window)
         return CCO_FAIL_OUT_OF_MEMORY;
 
@@ -130,7 +130,7 @@ cco_result cco_create_window(i32 x, i32 y, i32 width, i32 height, const char *ti
     return CCO_SUCCESS;
 }
 
-void cco_destroy_window(CcoWindow window) {
+void cco_destroy_window(cco_window window) {
     if (IsWindow(window->hWnd)) {
         DestroyWindow(window->hWnd);
         window->hWnd = NULL;
@@ -138,11 +138,11 @@ void cco_destroy_window(CcoWindow window) {
     free(window);
 }
 
-void cco_window_move(CcoWindow window, i32 x, i32 y) {
+void cco_window_move(cco_window window, i32 x, i32 y) {
     SetWindowPos(window->hWnd, NULL, x, y, 0, 0, SWP_FRAMECHANGED | SWP_NOSIZE | SWP_NOZORDER | SWP_NOACTIVATE);
 }
 
-void cco_window_resize(CcoWindow window, i32 width, i32 height) {
+void cco_window_resize(cco_window window, i32 width, i32 height) {
     const u32 dpi = GetDpiForWindow(window->hWnd);
 
     RECT rect = {0, 0, width, height};
@@ -155,9 +155,9 @@ void cco_window_resize(CcoWindow window, i32 width, i32 height) {
                  SWP_FRAMECHANGED | SWP_NOMOVE | SWP_NOZORDER | SWP_NOACTIVATE);
 }
 
-void cco_window_rename(CcoWindow window, const char *title) { SetWindowText(window->hWnd, title); }
+void cco_window_rename(cco_window window, const char *title) { SetWindowText(window->hWnd, title); }
 
-void cco_window_pump_events(CcoWindow window) {
+void cco_window_pump_events(cco_window window) {
     MSG msg;
     while (PeekMessage(&msg, window->hWnd, 0, 0, PM_REMOVE)) {
         TranslateMessage(&msg);
@@ -165,7 +165,7 @@ void cco_window_pump_events(CcoWindow window) {
     }
 }
 
-cco_window_frame cco_window_get_frame(CcoWindow window) {
+cco_window_frame cco_window_get_frame(cco_window window) {
     RECT rect;
     GetWindowRect(window->hWnd, &rect);
     const i32 width = rect.right - rect.left;
@@ -173,7 +173,7 @@ cco_window_frame cco_window_get_frame(CcoWindow window) {
     return (cco_window_frame){rect.left, rect.top, width, height};
 }
 
-cco_window_content_size cco_window_get_content_size(CcoWindow window) {
+cco_window_content_size cco_window_get_content_size(cco_window window) {
     RECT rect;
     GetClientRect(window->hWnd, &rect);
     const i32 width = rect.right - rect.left;
@@ -181,6 +181,6 @@ cco_window_content_size cco_window_get_content_size(CcoWindow window) {
     return (cco_window_content_size){width, height};
 }
 
-void *cco_window_get_handle(CcoWindow window) { return window->hWnd; }
-cco_bool cco_window_will_close(CcoWindow window) { return window->will_close; }
-cco_bool cco_window_is_focus(CcoWindow window) { return window->focused; }
+void *cco_window_get_handle(cco_window window) { return window->hWnd; }
+cco_bool cco_window_will_close(cco_window window) { return window->will_close; }
+cco_bool cco_window_is_focus(cco_window window) { return window->focused; }

@@ -33,5 +33,10 @@ elseif(WIN32)
             src/win32/win32_utils.c
             src/win32/win32_window.c
     )
+
+    target_compile_definitions(cocoa_platform
+            PRIVATE WINVER=0x0A00
+            PRIVATE _WIN32_WINNT=0x0A00
+    )
 endif()
 install(DIRECTORY include/ DESTINATION include)

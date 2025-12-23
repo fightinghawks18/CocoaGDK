@@ -169,6 +169,8 @@ static cco_bool cco_load_opengl_functions() {
     // Shader
     glCreateShader = cco_get_opengl_proc_addr("glCreateShader");
     glShaderSource = cco_get_opengl_proc_addr("glShaderSource");
+    glAttachShader = cco_get_opengl_proc_addr("glAttachShader");
+    glDetachShader = cco_get_opengl_proc_addr("glDetachShader");
     glCompileShader = cco_get_opengl_proc_addr("glCompileShader");
     glGetShaderiv = cco_get_opengl_proc_addr("glGetShaderiv");
     glGetShaderInfoLog = cco_get_opengl_proc_addr("glGetShaderInfoLog");

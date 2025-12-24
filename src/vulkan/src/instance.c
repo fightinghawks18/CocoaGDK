@@ -7,7 +7,7 @@
 #include "vulkan/instance.h"
 #include "vulkan/instance_vulkan.h"
 
-u32 get_platform_extensions(const char ***outExtensions) {
+u32 get_platform_extensions(const char ***out_extensions) {
     static const char *extensions[] = {
         "VK_KHR_surface",
         "VK_KHR_swapchain",
@@ -16,7 +16,7 @@ u32 get_platform_extensions(const char ***outExtensions) {
 #endif
     };
 
-    *outExtensions = extensions;
+    *out_extensions = extensions;
     return sizeof(extensions) / sizeof(extensions[0]);
 }
 
@@ -47,7 +47,7 @@ cco_result create_vulkan_instance(const cco_vulkan_instance_desc *desc, cco_vulk
     instance_create_info.enabledLayerCount = sizeof(layers) / sizeof(layers[0]);
     instance_create_info.ppEnabledLayerNames = layers;
 
-    const VkResult result = vkCreateInstance(&instance_create_info, NULL, &instance->instance);
+    const VkResult result = vkCreateInstance(&instance_create_info, CCO_NIL, &instance->instance);
     if (result != VK_SUCCESS) {
         CCO_LOG("Vulkan instance creation failed!");
         return CCO_FAIL_GRAPHICS_INIT_ERROR;
@@ -82,7 +82,7 @@ u32 get_device_type_score(VkPhysicalDeviceProperties device_props, cco_vulkan_po
 
 cco_result find_vulkan_physical_device(const cco_vulkan_instance_desc *desc, cco_vulkan_instance instance) {
     u32 physical_device_count = 0;
-    vkEnumeratePhysicalDevices(instance->instance, &physical_device_count, NULL);
+    vkEnumeratePhysicalDevices(instance->instance, &physical_device_count, CCO_NIL);
     if (physical_device_count == 0) {
         CCO_LOG("Failed to find any vulkan physical devices!");
         return CCO_FAIL_GRAPHICS_NO_ADAPTERS_ERROR;
@@ -130,7 +130,7 @@ cco_result discover_vulkan_queues(cco_vulkan_instance instance) {
     instance->compute_family_index = UINT32_MAX;
 
     u32 queue_family_count;
-    vkGetPhysicalDeviceQueueFamilyProperties(instance->physical_device, &queue_family_count, NULL);
+    vkGetPhysicalDeviceQueueFamilyProperties(instance->physical_device, &queue_family_count, CCO_NIL);
 
     VkQueueFamilyProperties *queue_families = malloc(sizeof(VkQueueFamilyProperties) * queue_family_count);
     vkGetPhysicalDeviceQueueFamilyProperties(instance->physical_device, &queue_family_count, queue_families);
@@ -203,14 +203,14 @@ cco_result create_vulkan_device(cco_vulkan_instance instance) {
 
     VkDeviceCreateInfo device_create_info = {};
     device_create_info.sType = VK_STRUCTURE_TYPE_DEVICE_CREATE_INFO;
-    device_create_info.pNext = NULL;
+    device_create_info.pNext = CCO_NIL;
     device_create_info.pQueueCreateInfos = queue_infos;
     device_create_info.queueCreateInfoCount = queue_count;
     device_create_info.pEnabledFeatures = &device_features;
     device_create_info.enabledExtensionCount = 1;
     device_create_info.ppEnabledExtensionNames = device_extensions;
 
-    const VkResult result = vkCreateDevice(instance->physical_device, &device_create_info, NULL, &instance->device);
+    const VkResult result = vkCreateDevice(instance->physical_device, &device_create_info, CCO_NIL, &instance->device);
     if (result != VK_SUCCESS) {
         CCO_LOG("Failed to create vulkan device!");
         return CCO_FAIL_GRAPHICS_INIT_ERROR;
@@ -252,13 +252,13 @@ cco_result cco_create_vulkan_instance(const cco_vulkan_instance_desc *desc, cco_
 
 void cco_destroy_vulkan_instance(cco_vulkan_instance instance) {
     if (instance->device) {
-        vkDestroyDevice(instance->device, NULL);
-        instance->device = NULL;
+        vkDestroyDevice(instance->device, CCO_NIL);
+        instance->device = CCO_NIL;
     }
 
     if (instance->instance) {
-        vkDestroyInstance(instance->instance, NULL);
-        instance->instance = NULL;
+        vkDestroyInstance(instance->instance, CCO_NIL);
+        instance->instance = CCO_NIL;
     }
     free(instance);
 }

@@ -13,6 +13,7 @@ add_subdirectory("src/math")
 add_subdirectory("src/opengl")
 add_subdirectory("src/platform")
 add_subdirectory("src/tests")
+add_subdirectory("src/vulkan")
 
 # Namespace aliases
 add_library(cocoa_gdk::core ALIAS cocoa_core)
@@ -20,6 +21,7 @@ add_library(cocoa_gdk::graphics ALIAS cocoa_graphics)
 add_library(cocoa_gdk::math ALIAS cocoa_math)
 add_library(cocoa_gdk::opengl ALIAS cocoa_opengl)
 add_library(cocoa_gdk::platform ALIAS cocoa_platform)
+add_library(cocoa_gdk::vulkan ALIAS cocoa_vulkan)
 
 include("cmake/content.cmake")
 
@@ -33,6 +35,7 @@ target_link_libraries(cocoa_gdk INTERFACE
         cocoa_gdk::core
         cocoa_gdk::graphics
         cocoa_gdk::math
+        cocoa_gdk::vulkan
 )
 
 if(CMAKE_EXPORT_COMPILE_COMMANDS)

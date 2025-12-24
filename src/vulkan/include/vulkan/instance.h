@@ -1,0 +1,26 @@
+//
+// Created by fightinghawks18 on 12/24/2025.
+//
+
+#pragma once
+
+#include "core/core_types.h"
+
+typedef struct cco_vulkan_instance_t cco_vulkan_instance_t;
+typedef cco_vulkan_instance_t *cco_vulkan_instance;
+
+typedef enum {
+    CCO_VULKAN_POWER_HIGH,
+    CCO_VULKAN_POWER_LOW
+} cco_vulkan_power_preference;
+
+typedef struct {
+    cco_vulkan_power_preference power_preference;
+    const char *appName;
+    const char *engineName;
+    u32 appVersion[3];
+    u32 engineVersion[3];
+} cco_vulkan_instance_desc;
+
+cco_result cco_create_vulkan_instance(const cco_vulkan_instance_desc *desc, cco_vulkan_instance *out_instance);
+void cco_destroy_vulkan_instance(cco_vulkan_instance instance);

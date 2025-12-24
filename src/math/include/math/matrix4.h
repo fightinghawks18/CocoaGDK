@@ -104,7 +104,7 @@ static mat4 cco_mat4_rotation(const vec3 rotation) {
     return cco_mat4_mul(x_rotation, cco_mat4_mul(y_rotation, z_rotation));
 }
 
-static mat4 cco_mat4_quat(const quat& q) {
+static mat4 cco_mat4_quat(const quat q) {
     mat4 result = cco_mat4();
 
     const f32 xx = q.x * q.x;

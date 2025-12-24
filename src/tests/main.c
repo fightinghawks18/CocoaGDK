@@ -126,7 +126,7 @@ int main() {
 
         cco_use_opengl_pipeline(pip);
         cco_use_opengl_vao(vao);
-        cco_use_opengl_ubo(&(CcoOpenGLUboBinding){.type = CCO_OPENGL_UBO_BINDING_BLOCK_NAME, .pip = pip, .name = "MVP"},
+        cco_use_opengl_ubo(&(cco_opengl_ubo_binding){.type = CCO_OPENGL_UBO_BINDING_BLOCK_NAME, .pip = pip, .name = "MVP"},
                         ubo);
         cco_draw_opengl_elements(CCO_OPENGL_PRIMITIVE_TRIANGLES, 3, CCO_OPENGL_INDEX_TYPE_U32);
 

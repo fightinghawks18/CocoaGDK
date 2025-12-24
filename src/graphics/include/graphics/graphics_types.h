@@ -4,8 +4,8 @@
 
 #pragma once
 
-#include "math/mat4.h"
 #include "core/core_types.h"
+#include "math/matrix4.h"
 
 typedef struct {
     mat4 model;

@@ -10,6 +10,7 @@
 
 struct cco_opengl_ubo_t {
     u32 gl_id;
+    usize size;
 };
 
 cco_result cco_create_opengl_ubo(cco_opengl_ubo *out_ubo) {
@@ -17,6 +18,7 @@ cco_result cco_create_opengl_ubo(cco_opengl_ubo *out_ubo) {
     if (!ubo)
         return CCO_FAIL_OUT_OF_MEMORY;
     glGenBuffers(1, &ubo->gl_id);
+    ubo->size = 0;
     *out_ubo = ubo;
     return CCO_SUCCESS;
 }
@@ -29,7 +31,7 @@ void cco_destroy_opengl_ubo(cco_opengl_ubo ubo) {
     free(ubo);
 }
 
-void cco_use_opengl_ubo(const CcoOpenGLUboBinding *binding, cco_opengl_ubo ubo) {
+void cco_use_opengl_ubo(const cco_opengl_ubo_binding *binding, cco_opengl_ubo ubo) {
     glBindBuffer(GL_UNIFORM_BUFFER, ubo->gl_id);
     if (!binding)
         return;
@@ -54,9 +56,10 @@ void cco_use_opengl_ubo(const CcoOpenGLUboBinding *binding, cco_opengl_ubo ubo) 
 
 void cco_map_to_opengl_ubo(cco_opengl_ubo ubo, const cco_buffer_mapping *mapping) {
     cco_use_opengl_ubo(NULL, ubo);
-    if (mapping->data_offset > 0) {
+    if (ubo->size != 0) {
         glBufferSubData(GL_UNIFORM_BUFFER, (long)mapping->data_offset, (long)mapping->data_size, mapping->data);
     } else {
+        ubo->size = mapping->data_size;
         glBufferData(GL_UNIFORM_BUFFER, (long)mapping->data_size, mapping->data, GL_DYNAMIC_DRAW);
     }
 }

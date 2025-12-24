@@ -25,12 +25,12 @@ typedef struct {
         i32 binding;
         const char *name;
     };
-} CcoOpenGLUboBinding;
+} cco_opengl_ubo_binding;
 
 cco_result cco_create_opengl_ubo(cco_opengl_ubo *out_ubo);
 void cco_destroy_opengl_ubo(cco_opengl_ubo ubo);
 
-void cco_use_opengl_ubo(const CcoOpenGLUboBinding *binding, cco_opengl_ubo ubo);
+void cco_use_opengl_ubo(const cco_opengl_ubo_binding *binding, cco_opengl_ubo ubo);
 void cco_map_to_opengl_ubo(cco_opengl_ubo ubo, const cco_buffer_mapping *mapping);
 
 u32 cco_get_opengl_ubo_id(cco_opengl_ubo ubo);

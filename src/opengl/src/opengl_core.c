@@ -42,6 +42,10 @@ void cco_draw_opengl_elements(cco_opengl_primitive_type primitive_type, u32 num_
         glPrimitive = GL_TRIANGLE_STRIP;
         break;
     }
+    case CCO_OPENGL_PRIMITIVE_LINES: {
+        glPrimitive = GL_LINES;
+        break;
+    }
     }
 
     u32 glIndexType = 0;

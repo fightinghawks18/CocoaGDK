@@ -6,12 +6,12 @@
 
 #include "angles.h"
 #include "core/core_types.h"
-#include "vec3.h"
+#include "vector3.h"
 
 typedef struct {
     f32 m[4][4];
 } mat4;
-typedef mat4 CcoMat4;
+typedef mat4 ccomat4;
 
 /**
  * @brief Creates an identity matrix with 4 rows and 4 columns
@@ -69,7 +69,7 @@ static mat4 cco_mat4_translation(const vec3 position) {
     return result;
 }
 
-static mat4 cco_mat4_x_rotation(const CcoRadians radians) {
+static mat4 cco_mat4_x_rotation(const cco_rad radians) {
     mat4 result = cco_mat4();
     result.m[1][1] = (f32)cos(radians);
     result.m[1][2] = (f32)-sin(radians);
@@ -78,7 +78,7 @@ static mat4 cco_mat4_x_rotation(const CcoRadians radians) {
     return result;
 }
 
-static mat4 cco_mat4_y_rotation(const CcoRadians radians) {
+static mat4 cco_mat4_y_rotation(const cco_rad radians) {
     mat4 result = cco_mat4();
     result.m[0][0] = (f32)cos(radians);
     result.m[0][2] = (f32)sin(radians);
@@ -87,7 +87,7 @@ static mat4 cco_mat4_y_rotation(const CcoRadians radians) {
     return result;
 }
 
-static mat4 cco_mat4_z_rotation(const CcoRadians radians) {
+static mat4 cco_mat4_z_rotation(const cco_rad radians) {
     mat4 result = cco_mat4();
     result.m[0][0] = (f32)cos(radians);
     result.m[0][1] = (f32)-sin(radians);
@@ -111,11 +111,11 @@ static mat4 cco_mat4_scale(const vec3 scale) {
     return result;
 }
 
-static mat4 cco_mat4_perspective(const cco_bool flip_y, const cco_bool zero_to_one_depth, const CcoRadians fov, const f32 aspect_ratio,
+static mat4 cco_mat4_perspective(const cco_bool flip_y, const cco_bool zero_to_one_depth, const cco_rad fov, const f32 aspect_ratio,
                                                   const f32 near_clipping_point, const f32 far_clipping_point) {
     mat4 result = cco_mat4();
 
-    const CcoRadians tan_half_fov = tan(fov / 2.0f);
+    const cco_rad tan_half_fov = tan(fov / 2.0f);
     const f32 x_zoom = 1.0f / (aspect_ratio * (f32)tan_half_fov);
     const f32 y_zoom = 1.0f / (f32)tan_half_fov;
 

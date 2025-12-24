@@ -17,7 +17,8 @@ typedef u32 CcoOpenGLBufferFlags;
 
 typedef enum {
     CCO_OPENGL_PRIMITIVE_TRIANGLES,
-    CCO_OPENGL_PRIMITIVE_TRIANGLE_LIST
+    CCO_OPENGL_PRIMITIVE_TRIANGLE_LIST,
+    CCO_OPENGL_PRIMITIVE_LINES
 } cco_opengl_primitive_type;
 
 typedef enum {

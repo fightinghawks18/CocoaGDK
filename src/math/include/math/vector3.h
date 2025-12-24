@@ -10,7 +10,7 @@
 typedef struct {
     f32 x, y, z;
 } vec3;
-typedef vec3 CcoVec3;
+typedef vec3 ccovec3;
 
 static vec3 cco_vec3(const f32 x, const f32 y, const f32 z) {
     vec3 vec3;

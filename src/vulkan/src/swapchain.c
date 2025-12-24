@@ -434,7 +434,7 @@ cco_result cco_vulkan_swapchain_submit(cco_vulkan_swapchain swapchain, VkCommand
 
 cco_result cco_vulkan_swapchain_present(cco_vulkan_swapchain swapchain) {
     if (!swapchain->submitted) {
-        CCO_LOG("Vulkan is attempting to present swapchain (%p), but hasn't submitted yet!\n Hint: Run cco_vulkan_swapchain_submit via swapchain_vulkan.h before presentation!");
+        CCO_LOG("Vulkan is attempting to present swapchain (%p), but hasn't submitted yet!\n Hint: Run cco_vulkan_swapchain_submit via swapchain_vulkan.h before presentation!", swapchain);
         return CCO_FAIL_GRAPHICS_FRAME_PRESENT_ERROR;
     }
 

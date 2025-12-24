@@ -6,6 +6,7 @@
 
 #include "angles.h"
 #include "core/core_types.h"
+#include "quaternion.h"
 #include "vector3.h"
 
 typedef struct {
@@ -101,6 +102,42 @@ static mat4 cco_mat4_rotation(const vec3 rotation) {
     const mat4 y_rotation = cco_mat4_y_rotation(rotation.y);
     const mat4 z_rotation = cco_mat4_z_rotation(rotation.z);
     return cco_mat4_mul(x_rotation, cco_mat4_mul(y_rotation, z_rotation));
+}
+
+static mat4 cco_mat4_quat(const quat& q) {
+    mat4 result = cco_mat4();
+
+    const f32 xx = q.x * q.x;
+    const f32 yy = q.y * q.y;
+    const f32 zz = q.z * q.z;
+    const f32 xy = q.x * q.y;
+    const f32 xz = q.x * q.z;
+    const f32 yz = q.y * q.z;
+    const f32 wx = q.w * q.x;
+    const f32 wy = q.w * q.y;
+    const f32 wz = q.w * q.z;
+
+    result.m[0][0] = 1.0f - 2.0f * (yy + zz);
+    result.m[0][1] = 2.0f * (xy - wz);
+    result.m[0][2] = 2.0f * (xz + wy);
+    result.m[0][3] = 0.0f;
+
+    result.m[1][0] = 2.0f * (xy + wz);
+    result.m[1][1] = 1.0f - 2.0f * (xx + zz);
+    result.m[1][2] = 2.0f * (yz - wx);
+    result.m[1][3] = 0.0f;
+
+    result.m[2][0] = 2.0f * (xz - wy);
+    result.m[2][1] = 2.0f * (yz + wx);
+    result.m[2][2] = 1.0f - 2.0f * (xx + yy);
+    result.m[2][3] = 0.0f;
+
+    result.m[3][0] = 0.0f;
+    result.m[3][1] = 0.0f;
+    result.m[3][2] = 0.0f;
+    result.m[3][3] = 1.0f;
+
+    return result;
 }
 
 static mat4 cco_mat4_scale(const vec3 scale) {

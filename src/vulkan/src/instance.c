@@ -4,8 +4,8 @@
 
 #include <stdlib.h>
 
+#include "../include/vulkan/internal/instance_vulkan.h"
 #include "vulkan/instance.h"
-#include "vulkan/instance_vulkan.h"
 
 u32 get_platform_extensions(const char ***out_extensions) {
     static const char *extensions[] = {
@@ -28,7 +28,7 @@ cco_result create_vulkan_instance(const cco_vulkan_instance_desc *desc, cco_vulk
     app_info.engineVersion =
         VK_MAKE_API_VERSION(0, desc->engineVersion[0], desc->engineVersion[1], desc->engineVersion[2]);
     app_info.pEngineName = desc->engineName;
-    app_info.engineVersion = VK_MAKE_API_VERSION(0, 1, 3, 0);
+    app_info.engineVersion = VK_API_VERSION_1_3;
 
     const char **platform_exts;
     const u32 platform_exts_count = get_platform_extensions(&platform_exts);
@@ -223,6 +223,27 @@ cco_result create_vulkan_device(cco_vulkan_instance instance) {
     return CCO_SUCCESS;
 }
 
+cco_result create_vulkan_allocator(cco_vulkan_instance instance) {
+    VmaVulkanFunctions vulkanFunctions = {};
+    vulkanFunctions.vkGetInstanceProcAddr = &vkGetInstanceProcAddr;
+    vulkanFunctions.vkGetDeviceProcAddr = &vkGetDeviceProcAddr;
+
+    VmaAllocatorCreateInfo allocator_create_info = {};
+    allocator_create_info.flags = 0;
+    allocator_create_info.vulkanApiVersion = VK_API_VERSION_1_3;
+    allocator_create_info.instance = instance->instance;
+    allocator_create_info.physicalDevice = instance->physical_device;
+    allocator_create_info.device = instance->device;
+    allocator_create_info.pVulkanFunctions = &vulkanFunctions;
+
+    const VkResult result = vmaCreateAllocator(&allocator_create_info, &instance->allocator);
+    if (result != VK_SUCCESS) {
+        CCO_LOG("Failed to create vulkan allocator!");
+        return CCO_FAIL_GRAPHICS_INIT_ERROR;
+    }
+    return CCO_SUCCESS;
+}
+
 cco_result cco_create_vulkan_instance(const cco_vulkan_instance_desc *desc, cco_vulkan_instance *out_instance) {
     cco_vulkan_instance instance = malloc(sizeof(cco_vulkan_instance_t));
     if (!instance)
@@ -240,10 +261,16 @@ cco_result cco_create_vulkan_instance(const cco_vulkan_instance_desc *desc, cco_
         return physical_device_result;
     }
 
-    const cco_result device_creation = create_vulkan_device(instance);
-    if (device_creation != CCO_SUCCESS) {
+    const cco_result device_create_result = create_vulkan_device(instance);
+    if (device_create_result != CCO_SUCCESS) {
         cco_destroy_vulkan_instance(instance);
-        return instance_result;
+        return device_create_result;
+    }
+
+    const cco_result allocator_create_result = create_vulkan_allocator(instance);
+    if (allocator_create_result != CCO_SUCCESS) {
+        cco_destroy_vulkan_instance(instance);
+        return allocator_create_result;
     }
 
     *out_instance = instance;

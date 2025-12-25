@@ -7,6 +7,8 @@ enable_testing()
 set(CMAKE_C_STANDARD 17)
 set(CMAKE_C_STANDARD_REQUIRED ON)
 
+add_subdirectory("external/VulkanMemoryAllocator")
+
 add_subdirectory("src/core")
 add_subdirectory("src/graphics")
 add_subdirectory("src/math")

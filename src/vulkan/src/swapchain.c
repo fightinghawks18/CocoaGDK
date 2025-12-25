@@ -6,12 +6,13 @@
 
 #include "math/utilities.h"
 
-#include "vulkan/instance_vulkan.h"
-#include "vulkan/swapchain_vulkan.h"
+#include "../include/vulkan/internal/instance_vulkan.h"
+#include "vulkan/internal/swapchain_vulkan.h"
 
 cco_result create_vulkan_surface(cco_vulkan_instance instance, void *window_handle, cco_vulkan_swapchain swapchain) {
 #ifdef _WIN32
 #include <vulkan/vulkan_win32.h>
+#include <windows.h>
 
     VkWin32SurfaceCreateInfoKHR surface_create_info = {};
     surface_create_info.sType = VK_STRUCTURE_TYPE_WIN32_SURFACE_CREATE_INFO_KHR;

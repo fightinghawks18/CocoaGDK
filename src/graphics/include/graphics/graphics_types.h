@@ -48,12 +48,6 @@ typedef struct {
     f32 col[4];
 } cco_vertex;
 
-typedef struct {
-    usize offset;
-    usize size;
-    void *data;
-} cco_buffer_mapper;
-
 /// @brief Describes the regions that pixels/fragments are accepted in,
 /// otherwise it'll discard anything outside the region
 /// @note If you want to transform how the rendered output will look, see cco_viewport

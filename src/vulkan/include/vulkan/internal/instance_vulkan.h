@@ -6,7 +6,8 @@
 
 #include <vulkan/vulkan.h>
 
-#include "instance.h"
+#include "../tools/vma.h"
+#include "../instance.h"
 
 struct cco_vulkan_instance_t {
     VkInstance instance;
@@ -16,6 +17,8 @@ struct cco_vulkan_instance_t {
     VkPhysicalDeviceFeatures device_features;
 
     VkDevice device;
+
+    VmaAllocator allocator;
 
     VkQueue graphics_queue;
     VkQueue transfer_queue;

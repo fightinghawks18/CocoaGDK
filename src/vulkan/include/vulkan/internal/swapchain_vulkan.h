@@ -6,7 +6,7 @@
 
 #include <vulkan/vulkan.h>
 
-#include "swapchain.h"
+#include "../swapchain.h"
 #include "instance_vulkan.h"
 
 struct cco_vulkan_swapchain_t {

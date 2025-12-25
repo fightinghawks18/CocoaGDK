@@ -37,5 +37,3 @@ elseif(WIN32)
             PRIVATE src/platform/win32/opengl_loader_win32.c
     )
 endif()
-
-install(DIRECTORY include/ DESTINATION include)

@@ -6,4 +6,3 @@ target_include_directories(cocoa_graphics INTERFACE
 target_link_libraries(cocoa_graphics
         INTERFACE cocoa_math
 )
-install(DIRECTORY include/ DESTINATION include)

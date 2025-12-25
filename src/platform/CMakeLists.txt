@@ -38,4 +38,3 @@ elseif(WIN32)
             PRIVATE _WIN32_WINNT=0x0A00
     )
 endif()
-install(DIRECTORY include/ DESTINATION include)

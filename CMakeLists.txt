@@ -14,19 +14,16 @@ add_subdirectory("external/VulkanMemoryAllocator")
 add_subdirectory("src/core")
 add_subdirectory("src/graphics")
 add_subdirectory("src/math")
-add_subdirectory("src/opengl")
 add_subdirectory("src/platform")
-#add_subdirectory("src/tests/opengl")
-add_subdirectory("src/tests/vulkan")
-add_subdirectory("src/vulkan")
+
+option(BUILD_OPENGL "Allow cocoa_gdk::cocoa_gdk to include opengl, and add opengl tests" OFF)
+option(BUILD_VULKAN "Allow cocoa_gdk::cocoa_gdk to include vulkan, and add vulkan tests" ON)
 
 # Namespace aliases
 add_library(cocoa_gdk::core ALIAS cocoa_core)
 add_library(cocoa_gdk::graphics ALIAS cocoa_graphics)
 add_library(cocoa_gdk::math ALIAS cocoa_math)
-add_library(cocoa_gdk::opengl ALIAS cocoa_opengl)
 add_library(cocoa_gdk::platform ALIAS cocoa_platform)
-add_library(cocoa_gdk::vulkan ALIAS cocoa_vulkan)
 
 include("cmake/content.cmake")
 
@@ -36,12 +33,28 @@ add_library(cocoa_gdk::cocoa_gdk ALIAS cocoa_gdk)
 
 target_link_libraries(cocoa_gdk INTERFACE
         cocoa_gdk::platform
-        cocoa_gdk::opengl
         cocoa_gdk::core
         cocoa_gdk::graphics
         cocoa_gdk::math
-        cocoa_gdk::vulkan
 )
+
+if(BUILD_OPENGL)
+    add_subdirectory("src/opengl")
+    add_library(cocoa_gdk::opengl ALIAS cocoa_opengl)
+    target_link_libraries(cocoa_gdk
+            INTERFACE cocoa_gdk::opengl
+    )
+    add_subdirectory("src/tests/opengl")
+endif()
+
+if(BUILD_VULKAN)
+    add_subdirectory("src/vulkan")
+    add_library(cocoa_gdk::vulkan ALIAS cocoa_vulkan)
+    target_link_libraries(cocoa_gdk
+            INTERFACE cocoa_gdk::vulkan
+    )
+    add_subdirectory("src/tests/vulkan")
+endif()
 
 if(CMAKE_EXPORT_COMPILE_COMMANDS)
     add_custom_target(cocoa_move_compiled_commands ALL
@@ -54,16 +67,3 @@ endif()
 if(WIN32)
     add_compile_definitions(WIN32_LEAN_AND_MEAN)
 endif()
-
-install(TARGETS cocoa_core cocoa_graphics cocoa_math cocoa_opengl cocoa_platform
-        EXPORT cocoa_gdk-targets
-        LIBRARY DESTINATION lib
-        ARCHIVE DESTINATION lib
-        RUNTIME DESTINATION bin
-)
-
-install(EXPORT cocoa_gdk-targets
-        FILE cocoa_gdk-targets.cmake
-        NAMESPACE cocoa_gdk::
-        DESTINATION lib/cmake/cocoa_gdk
-)

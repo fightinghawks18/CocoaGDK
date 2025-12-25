@@ -6,8 +6,8 @@
 
 #include <vulkan/vulkan.h>
 
-#include "../tools/vma.h"
 #include "../instance.h"
+#include "../tools/vma.h"
 
 struct cco_vulkan_instance_t {
     VkInstance instance;

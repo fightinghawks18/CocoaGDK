@@ -4,7 +4,7 @@ add_library(cocoa_vulkan STATIC
         src/instance.c
         src/swapchain.c
         src/buffer.c
-        src/tools/vma.c
+        src/tools/vma.cpp
 )
 target_include_directories(cocoa_vulkan
         PUBLIC include

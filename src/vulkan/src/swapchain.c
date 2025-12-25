@@ -9,11 +9,13 @@
 #include "../include/vulkan/internal/instance_vulkan.h"
 #include "vulkan/internal/swapchain_vulkan.h"
 
+#ifdef _WIN32
+#include <windows.h>
+#include <vulkan/vulkan_win32.h>
+#endif
+
 cco_result create_vulkan_surface(cco_vulkan_instance instance, void *window_handle, cco_vulkan_swapchain swapchain) {
 #ifdef _WIN32
-#include <vulkan/vulkan_win32.h>
-#include <windows.h>
-
     VkWin32SurfaceCreateInfoKHR surface_create_info = {};
     surface_create_info.sType = VK_STRUCTURE_TYPE_WIN32_SURFACE_CREATE_INFO_KHR;
     surface_create_info.hwnd = window_handle;
@@ -44,7 +46,7 @@ cco_result find_best_vulkan_surface_format(cco_vulkan_swapchain swapchain, VkSur
     for (u32 i = 0; i < surface_format_count; i++) {
         if (surface_formats[i].format == VK_FORMAT_B8G8R8A8_SRGB &&
             surface_formats[i].colorSpace == VK_COLOR_SPACE_SRGB_NONLINEAR_KHR) {
-            out_surface_format = surface_formats;
+            *out_surface_format = surface_formats[i];
             free(surface_formats);
             return CCO_SUCCESS;
         }
@@ -174,6 +176,7 @@ cco_result create_vulkan_swapchain_images(cco_vulkan_swapchain swapchain) {
     }
 
     VkImage *swapchain_images = malloc(sizeof(VkImage) * image_count);
+    vkGetSwapchainImagesKHR(swapchain->instance->device, swapchain->swapchain, &image_count, swapchain_images);
 
     swapchain->swapchain_images = swapchain_images;
     swapchain->swapchain_images_count = image_count;
@@ -317,7 +320,7 @@ void destroy_vulkan_sync_objects(cco_vulkan_swapchain swapchain) {
     }
 
     if (swapchain->image_available_semaphores) {
-        for (u32 i = 0; i < swapchain->swapchain_images_count; i++) {
+        for (u32 i = 0; i < swapchain->semaphore_count; i++) {
             vkDestroySemaphore(swapchain->instance->device, swapchain->image_available_semaphores[i], CCO_NIL);
         }
         free(swapchain->image_available_semaphores);
@@ -325,7 +328,7 @@ void destroy_vulkan_sync_objects(cco_vulkan_swapchain swapchain) {
     }
 
     if (swapchain->render_finished_semaphores) {
-        for (u32 i = 0; i < swapchain->swapchain_images_count; i++) {
+        for (u32 i = 0; i < swapchain->semaphore_count; i++) {
             vkDestroySemaphore(swapchain->instance->device, swapchain->render_finished_semaphores[i], CCO_NIL);
         }
         free(swapchain->render_finished_semaphores);

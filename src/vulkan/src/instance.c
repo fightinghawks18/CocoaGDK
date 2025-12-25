@@ -7,49 +7,56 @@
 #include "../include/vulkan/internal/instance_vulkan.h"
 #include "vulkan/instance.h"
 
-u32 get_platform_extensions(const char ***out_extensions) {
-    static const char *extensions[] = {
-        "VK_KHR_surface",
-        "VK_KHR_swapchain",
-#ifdef _WIN32
-        "VK_KHR_win32_surface",
-#endif
-    };
+#ifdef DEBUG
+static cco_bool use_validation = CCO_YES;
 
-    *out_extensions = extensions;
-    return sizeof(extensions) / sizeof(extensions[0]);
-}
+static const char * validation_layers[] = {
+    "VK_LAYER_KHRONOS_validation"
+};
+
+#else
+static cco_bool use_validation = CCO_NO;
+#endif
 
 cco_result create_vulkan_instance(const cco_vulkan_instance_desc *desc, cco_vulkan_instance instance) {
-    VkApplicationInfo app_info = {};
+    VkApplicationInfo app_info = {0};
     app_info.sType = VK_STRUCTURE_TYPE_APPLICATION_INFO;
-    app_info.applicationVersion = VK_MAKE_API_VERSION(0, desc->appVersion[0], desc->appVersion[1], desc->appVersion[2]);
-    app_info.pApplicationName = desc->appName;
+    app_info.applicationVersion = VK_MAKE_API_VERSION(0, desc->app_version[0], desc->app_version[1], desc->app_version[2]);
+    app_info.pApplicationName = desc->app_name;
     app_info.engineVersion =
-        VK_MAKE_API_VERSION(0, desc->engineVersion[0], desc->engineVersion[1], desc->engineVersion[2]);
-    app_info.pEngineName = desc->engineName;
-    app_info.engineVersion = VK_API_VERSION_1_3;
+        VK_MAKE_API_VERSION(0, desc->engine_version[0], desc->engine_version[1], desc->engine_version[2]);
+    app_info.pEngineName = desc->engine_name;
+    app_info.apiVersion = VK_API_VERSION_1_3;
 
-    const char **platform_exts;
-    const u32 platform_exts_count = get_platform_extensions(&platform_exts);
+    const char *instance_extensions[3];
+    u32 instance_count = 0;
 
-    const char *const layers[] = {
-#ifdef DEBUG
-        "VK_LAYER_KHRONOS_validation"
+    instance_extensions[instance_count++] = "VK_KHR_surface";
+#ifdef _WIN32
+    instance_extensions[instance_count++] = "VK_KHR_win32_surface";
 #endif
-    };
+#ifdef DEBUG
+    instance_extensions[instance_count++] = "VK_EXT_debug_utils";
+#endif
 
-    VkInstanceCreateInfo instance_create_info = {};
+    VkInstanceCreateInfo instance_create_info = {0};
     instance_create_info.sType = VK_STRUCTURE_TYPE_INSTANCE_CREATE_INFO;
     instance_create_info.pApplicationInfo = &app_info;
-    instance_create_info.enabledExtensionCount = platform_exts_count;
-    instance_create_info.ppEnabledExtensionNames = platform_exts;
-    instance_create_info.enabledLayerCount = sizeof(layers) / sizeof(layers[0]);
-    instance_create_info.ppEnabledLayerNames = layers;
+    instance_create_info.enabledExtensionCount = instance_count;
+    instance_create_info.ppEnabledExtensionNames = instance_extensions;
+
+    if (use_validation) {
+        instance_create_info.enabledLayerCount = 1;
+        instance_create_info.ppEnabledLayerNames = validation_layers;
+    } else {
+        instance_create_info.enabledLayerCount = 0;
+        instance_create_info.ppEnabledLayerNames = NULL;
+    }
+
 
     const VkResult result = vkCreateInstance(&instance_create_info, CCO_NIL, &instance->instance);
     if (result != VK_SUCCESS) {
-        CCO_LOG("Vulkan instance creation failed!");
+        CCO_LOG("Vulkan instance creation failed! VKRESULT : %d", result);
         return CCO_FAIL_GRAPHICS_INIT_ERROR;
     }
     return CCO_SUCCESS;
@@ -80,7 +87,7 @@ u32 get_device_type_score(VkPhysicalDeviceProperties device_props, cco_vulkan_po
     }
 }
 
-cco_result find_vulkan_physical_device(const cco_vulkan_instance_desc *desc, cco_vulkan_instance instance) {
+cco_result find_vulkan_physical_device(cco_vulkan_instance instance) {
     u32 physical_device_count = 0;
     vkEnumeratePhysicalDevices(instance->instance, &physical_device_count, CCO_NIL);
     if (physical_device_count == 0) {
@@ -163,6 +170,7 @@ void add_queue_family(VkDeviceQueueCreateInfo *queue_infos, u32 *queue_count, co
         if (queue_create_info->queueFamilyIndex != family_index)
             continue;
         queue_create_info->queueCount++;
+        return;
     }
 
     VkDeviceQueueCreateInfo *device_queue_create_info = &queue_infos[*queue_count];
@@ -180,15 +188,18 @@ cco_result create_vulkan_device(cco_vulkan_instance instance) {
     if (discover_queues_result != CCO_SUCCESS)
         return discover_queues_result;
 
-    const f32 priority = 1.0f;
-    VkDeviceQueueCreateInfo queue_infos[3];
+    static const f32 priority = 1.0f;
+    VkDeviceQueueCreateInfo queue_infos[3] = {0};
     u32 queue_count = 0;
 
     queue_infos[0].sType = VK_STRUCTURE_TYPE_DEVICE_QUEUE_CREATE_INFO;
+    queue_infos[0].queueFamilyIndex = UINT32_MAX;
     queue_infos[0].pQueuePriorities = &priority;
     queue_infos[1].sType = VK_STRUCTURE_TYPE_DEVICE_QUEUE_CREATE_INFO;
+    queue_infos[1].queueFamilyIndex = UINT32_MAX;
     queue_infos[1].pQueuePriorities = &priority;
     queue_infos[2].sType = VK_STRUCTURE_TYPE_DEVICE_QUEUE_CREATE_INFO;
+    queue_infos[2].queueFamilyIndex = UINT32_MAX;
     queue_infos[2].pQueuePriorities = &priority;
 
     add_queue_family(queue_infos, &queue_count, instance->graphics_family_index);
@@ -201,7 +212,7 @@ cco_result create_vulkan_device(cco_vulkan_instance instance) {
 
     VkPhysicalDeviceFeatures device_features = {0};
 
-    VkDeviceCreateInfo device_create_info = {};
+    VkDeviceCreateInfo device_create_info = {0};
     device_create_info.sType = VK_STRUCTURE_TYPE_DEVICE_CREATE_INFO;
     device_create_info.pNext = CCO_NIL;
     device_create_info.pQueueCreateInfos = queue_infos;
@@ -224,11 +235,11 @@ cco_result create_vulkan_device(cco_vulkan_instance instance) {
 }
 
 cco_result create_vulkan_allocator(cco_vulkan_instance instance) {
-    VmaVulkanFunctions vulkanFunctions = {};
+    VmaVulkanFunctions vulkanFunctions = {0};
     vulkanFunctions.vkGetInstanceProcAddr = &vkGetInstanceProcAddr;
     vulkanFunctions.vkGetDeviceProcAddr = &vkGetDeviceProcAddr;
 
-    VmaAllocatorCreateInfo allocator_create_info = {};
+    VmaAllocatorCreateInfo allocator_create_info = {0};
     allocator_create_info.flags = 0;
     allocator_create_info.vulkanApiVersion = VK_API_VERSION_1_3;
     allocator_create_info.instance = instance->instance;
@@ -249,13 +260,24 @@ cco_result cco_create_vulkan_instance(const cco_vulkan_instance_desc *desc, cco_
     if (!instance)
         return CCO_FAIL_OUT_OF_MEMORY;
 
+    instance->instance = CCO_NIL;
+    instance->physical_device = CCO_NIL;
+    instance->device = CCO_NIL;
+    instance->allocator = CCO_NIL;
+    instance->graphics_family_index = UINT32_MAX;
+    instance->compute_family_index = UINT32_MAX;
+    instance->transfer_family_index = UINT32_MAX;
+    instance->compute_queue = CCO_NIL;
+    instance->graphics_queue = CCO_NIL;
+    instance->transfer_queue = CCO_NIL;
+
     const cco_result instance_result = create_vulkan_instance(desc, instance);
     if (instance_result != CCO_SUCCESS) {
         cco_destroy_vulkan_instance(instance);
         return instance_result;
     }
 
-    const cco_result physical_device_result = find_vulkan_physical_device(desc, instance);
+    const cco_result physical_device_result = find_vulkan_physical_device(instance);
     if (physical_device_result != CCO_SUCCESS) {
         cco_destroy_vulkan_instance(instance);
         return physical_device_result;

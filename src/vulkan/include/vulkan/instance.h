@@ -16,10 +16,10 @@ typedef enum {
 
 typedef struct {
     cco_vulkan_power_preference power_preference;
-    const char *appName;
-    const char *engineName;
-    u32 appVersion[3];
-    u32 engineVersion[3];
+    const char *app_name;
+    const char *engine_name;
+    u32 app_version[3];
+    u32 engine_version[3];
 } cco_vulkan_instance_desc;
 
 cco_result cco_create_vulkan_instance(const cco_vulkan_instance_desc *desc, cco_vulkan_instance *out_instance);

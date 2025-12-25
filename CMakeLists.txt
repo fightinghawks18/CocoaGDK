@@ -1,6 +1,8 @@
 cmake_minimum_required(VERSION 3.20)
 
-project(cocoa_gdk C)
+project(cocoa_gdk
+        LANGUAGES C CXX
+)
 
 enable_testing()
 
@@ -14,7 +16,8 @@ add_subdirectory("src/graphics")
 add_subdirectory("src/math")
 add_subdirectory("src/opengl")
 add_subdirectory("src/platform")
-add_subdirectory("src/tests")
+#add_subdirectory("src/tests/opengl")
+add_subdirectory("src/tests/vulkan")
 add_subdirectory("src/vulkan")
 
 # Namespace aliases

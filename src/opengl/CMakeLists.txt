@@ -1,6 +1,6 @@
 find_package(OpenGL REQUIRED)
 
-add_library(cocoa_opengl STATIC
+add_library(cocoa_opengl
         src/opengl_vao.c
         src/opengl_vbo.c
         src/opengl_ebo.c
@@ -38,4 +38,11 @@ elseif(WIN32)
     )
 endif()
 
-install(DIRECTORY include/ DESTINATION include)
+target_compile_definitions(cocoa_opengl PRIVATE BUILD_OPENGL)
+
+install(
+        TARGETS cocoa_opengl
+        RUNTIME DESTINATION bin
+        LIBRARY DESTINATION lib
+        ARCHIVE DESTINATION lib
+)

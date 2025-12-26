@@ -7,6 +7,7 @@
 
 #include "core/core_types.h"
 #include "graphics/graphics_types.h"
+#include "export.h"
 
 typedef enum {
     CCO_OPENGL_NO_BUFFER_BIT = 0,
@@ -29,8 +30,8 @@ typedef struct {
     f32 r, g, b, a;
 } cco_clear_color;
 
-cco_result cco_initialize_opengl(void);
-void cco_set_opengl_viewport(cco_viewport viewport);
-void cco_clear_opengl_buffers(CcoOpenGLBufferFlags buffer_flags);
-void cco_set_opengl_clear_color(cco_clear_color clear_color);
-void cco_draw_opengl_elements(cco_opengl_primitive_type primitive_type, u32 num_indices, cco_opengl_index_type index_type);
+CCO_OPENGL_API cco_result cco_initialize_opengl(void);
+CCO_OPENGL_API void cco_set_opengl_viewport(cco_viewport viewport);
+CCO_OPENGL_API void cco_clear_opengl_buffers(CcoOpenGLBufferFlags buffer_flags);
+CCO_OPENGL_API void cco_set_opengl_clear_color(cco_clear_color clear_color);
+CCO_OPENGL_API void cco_draw_opengl_elements(cco_opengl_primitive_type primitive_type, u32 num_indices, cco_opengl_index_type index_type);

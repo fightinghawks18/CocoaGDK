@@ -7,6 +7,7 @@
 
 #include "core/core_types.h"
 #include "graphics/graphics_types.h"
+#include "export.h"
 
 typedef struct cco_opengl_shader_t cco_opengl_shader_t;
 typedef cco_opengl_shader_t* cco_opengl_shader;
@@ -16,7 +17,7 @@ typedef struct {
     const char *shader_path;
 } cco_opengl_shader_desc;
 
-cco_result cco_create_opengl_shader(const cco_opengl_shader_desc *description, cco_opengl_shader *out_shader);
-void cco_destroy_opengl_shader(cco_opengl_shader shader);
+CCO_OPENGL_API cco_result cco_create_opengl_shader(const cco_opengl_shader_desc *description, cco_opengl_shader *out_shader);
+CCO_OPENGL_API void cco_destroy_opengl_shader(cco_opengl_shader shader);
 
-u32 cco_get_opengl_shader_id(cco_opengl_shader shader);
+CCO_OPENGL_API u32 cco_get_opengl_shader_id(cco_opengl_shader shader);

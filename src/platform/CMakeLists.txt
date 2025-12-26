@@ -1,4 +1,4 @@
-add_library(cocoa_platform STATIC)
+add_library(cocoa_platform)
 
 target_link_libraries(cocoa_platform
         PUBLIC cocoa_core
@@ -12,6 +12,7 @@ target_include_directories(cocoa_platform PUBLIC
 target_compile_definitions(cocoa_platform PRIVATE
         $<$<CONFIG:Debug>:DEBUG>
         $<$<CONFIG:Release>:NDEBUG>
+        PRIVATE BUILD_PLATFORM
 )
 
 if(APPLE)
@@ -38,4 +39,10 @@ elseif(WIN32)
             PRIVATE _WIN32_WINNT=0x0A00
     )
 endif()
-install(DIRECTORY include/ DESTINATION include)
+
+install(
+        TARGETS cocoa_platform
+        RUNTIME DESTINATION bin
+        LIBRARY DESTINATION lib
+        ARCHIVE DESTINATION lib
+)

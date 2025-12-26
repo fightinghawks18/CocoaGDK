@@ -7,7 +7,7 @@
 
 #include "core/core_types.h"
 #include "graphics/graphics_types.h"
-
+#include "export.h"
 #include "opengl_pipeline.h"
 
 typedef struct cco_opengl_ubo_t cco_opengl_ubo_t;
@@ -27,10 +27,10 @@ typedef struct {
     };
 } cco_opengl_ubo_binding;
 
-cco_result cco_create_opengl_ubo(cco_opengl_ubo *out_ubo);
-void cco_destroy_opengl_ubo(cco_opengl_ubo ubo);
+CCO_OPENGL_API cco_result cco_create_opengl_ubo(cco_opengl_ubo *out_ubo);
+CCO_OPENGL_API void cco_destroy_opengl_ubo(cco_opengl_ubo ubo);
 
-void cco_use_opengl_ubo(const cco_opengl_ubo_binding *binding, cco_opengl_ubo ubo);
-void cco_map_to_opengl_ubo(cco_opengl_ubo ubo, const cco_buffer_mapping *mapping);
+CCO_OPENGL_API void cco_use_opengl_ubo(const cco_opengl_ubo_binding *binding, cco_opengl_ubo ubo);
+CCO_OPENGL_API void cco_map_to_opengl_ubo(cco_opengl_ubo ubo, const cco_buffer_mapping *mapping);
 
-u32 cco_get_opengl_ubo_id(cco_opengl_ubo ubo);
+CCO_OPENGL_API u32 cco_get_opengl_ubo_id(cco_opengl_ubo ubo);

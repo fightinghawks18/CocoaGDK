@@ -9,15 +9,20 @@ enable_testing()
 set(CMAKE_C_STANDARD 17)
 set(CMAKE_C_STANDARD_REQUIRED ON)
 
+option(BUILD_OPENGL "Allow cocoa_gdk::cocoa_gdk to include opengl, and add opengl tests" OFF)
+option(BUILD_VULKAN "Allow cocoa_gdk::cocoa_gdk to include vulkan, and add vulkan tests" ON)
+option(BUILD_SHARED_LIBS "Build project dynamically" OFF)
+
+if(BUILD_SHARED_LIBS)
+    add_compile_definitions(BUILD_SHARED)
+endif()
+
 add_subdirectory("external/VulkanMemoryAllocator")
 
 add_subdirectory("src/core")
 add_subdirectory("src/graphics")
 add_subdirectory("src/math")
 add_subdirectory("src/platform")
-
-option(BUILD_OPENGL "Allow cocoa_gdk::cocoa_gdk to include opengl, and add opengl tests" OFF)
-option(BUILD_VULKAN "Allow cocoa_gdk::cocoa_gdk to include vulkan, and add vulkan tests" ON)
 
 # Namespace aliases
 add_library(cocoa_gdk::core ALIAS cocoa_core)
@@ -37,6 +42,7 @@ target_link_libraries(cocoa_gdk INTERFACE
         cocoa_gdk::graphics
         cocoa_gdk::math
 )
+
 
 if(BUILD_OPENGL)
     add_subdirectory("src/opengl")

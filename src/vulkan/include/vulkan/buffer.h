@@ -7,6 +7,7 @@
 #include "core/core_types.h"
 #include "graphics/graphics_types.h"
 #include "instance.h"
+#include "export.h"
 
 typedef struct cco_vulkan_buffer_t cco_vulkan_buffer_t;
 typedef cco_vulkan_buffer_t *cco_vulkan_buffer;
@@ -24,7 +25,7 @@ typedef struct {
     cco_vulkan_buffer_usage_flags usage;
 } cco_vulkan_buffer_desc;
 
-cco_result cco_create_vulkan_buffer(cco_vulkan_instance instance, const cco_vulkan_buffer_desc *desc, cco_vulkan_buffer *out_buffer);
-void cco_destroy_vulkan_buffer(cco_vulkan_buffer buffer);
+CCO_VULKAN_API cco_result cco_create_vulkan_buffer(cco_vulkan_instance instance, const cco_vulkan_buffer_desc *desc, cco_vulkan_buffer *out_buffer);
+CCO_VULKAN_API void cco_destroy_vulkan_buffer(cco_vulkan_buffer buffer);
 
-void cco_vulkan_buffer_map_data(cco_vulkan_buffer buffer, const cco_buffer_mapping *data);
+CCO_VULKAN_API void cco_vulkan_buffer_map_data(cco_vulkan_buffer buffer, const cco_buffer_mapping *data);

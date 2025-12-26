@@ -6,8 +6,6 @@
 
 #ifdef __APPLE__
 
-#include "platform/exports.h"
-
 typedef enum {
     CCO_COCOA_INPUT_EVENT_HANDLED,
     CCO_COCOA_INPUT_EVENT_UNHANDLED

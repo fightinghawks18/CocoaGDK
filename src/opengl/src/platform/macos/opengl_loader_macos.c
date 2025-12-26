@@ -6,7 +6,7 @@
 #include "core/core_types.h"
 #include <dlfcn.h>
 
-void *cco_get_gl_proc_addr(const char *addr_name) {
+void *cco_get_opengl_proc_addr(const char *addr_name) {
     static void* opengl_lib = NULL;
     if (!opengl_lib) {
         opengl_lib = dlopen("/System/Library/Frameworks/OpenGL.framework/OpenGL", RTLD_LAZY);

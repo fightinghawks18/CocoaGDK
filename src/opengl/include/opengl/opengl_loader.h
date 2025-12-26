@@ -152,7 +152,7 @@ typedef void (*PFNGLDELETESHADERPROC)(u32 shader);
 extern PFNGLDELETESHADERPROC glDeleteShader;
 
 CCO_OPENGL_API void *cco_get_opengl_proc_addr(const char *addr_name);
-static cco_bool cco_load_opengl_functions() {
+CCO_OPENGL_API static cco_bool cco_load_opengl_functions() {
     // Buffers
     glGenBuffers = (PFNGLGENBUFFERSPROC)cco_get_opengl_proc_addr("glGenBuffers");
     glDeleteBuffers = (PFNGLDELETEBUFFERSPROC)cco_get_opengl_proc_addr("glDeleteBuffers");

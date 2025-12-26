@@ -19,14 +19,13 @@ target_link_libraries(cocoa_vulkan
 
 target_compile_definitions(cocoa_vulkan PRIVATE
         $<$<CONFIG:Debug>:DEBUG>
-        $<$<CONFIG:Release>:NDEBUG>
-        PRIVATE BUILD_VULKAN
+        BUILD_VULKAN
 )
 
 
 install(
         TARGETS cocoa_vulkan
-        RUNTIME DESTINATION bin
-        LIBRARY DESTINATION lib
-        ARCHIVE DESTINATION lib
+        RUNTIME DESTINATION ${INSTALL_BINARY_DIR}
+        LIBRARY DESTINATION ${INSTALL_LIBRARY_DIR}
+        ARCHIVE DESTINATION ${INSTALL_LIBRARY_DIR}
 )

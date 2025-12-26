@@ -12,8 +12,7 @@ add_library(cocoa_opengl
 
 )
 target_include_directories(cocoa_opengl PUBLIC
-        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
-        $<INSTALL_INTERFACE:include>
+        ${CMAKE_CURRENT_SOURCE_DIR}/include
 )
 
 target_link_libraries(cocoa_opengl
@@ -42,7 +41,7 @@ target_compile_definitions(cocoa_opengl PRIVATE BUILD_OPENGL)
 
 install(
         TARGETS cocoa_opengl
-        RUNTIME DESTINATION bin
-        LIBRARY DESTINATION lib
-        ARCHIVE DESTINATION lib
+        RUNTIME DESTINATION ${INSTALL_BINARY_DIR}
+        LIBRARY DESTINATION ${INSTALL_LIBRARY_DIR}
+        ARCHIVE DESTINATION ${INSTALL_LIBRARY_DIR}
 )

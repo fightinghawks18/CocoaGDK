@@ -12,6 +12,8 @@ set(CMAKE_C_STANDARD_REQUIRED ON)
 option(BUILD_OPENGL "Allow cocoa_gdk::cocoa_gdk to include opengl, and add opengl tests" OFF)
 option(BUILD_VULKAN "Allow cocoa_gdk::cocoa_gdk to include vulkan, and add vulkan tests" ON)
 option(BUILD_SHARED_LIBS "Build project dynamically" OFF)
+option(INSTALL_BINARY_DIR "Where binaries are installed" bin)
+option(INSTALL_LIBRARY_DIR "Where libraries are installed" lib)
 
 if(BUILD_SHARED_LIBS)
     add_compile_definitions(BUILD_SHARED)

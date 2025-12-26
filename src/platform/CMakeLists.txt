@@ -5,8 +5,7 @@ target_link_libraries(cocoa_platform
 )
 
 target_include_directories(cocoa_platform PUBLIC
-        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
-        $<INSTALL_INTERFACE:include>
+        ${CMAKE_CURRENT_SOURCE_DIR}/include
 )
 
 target_compile_definitions(cocoa_platform PRIVATE
@@ -42,7 +41,7 @@ endif()
 
 install(
         TARGETS cocoa_platform
-        RUNTIME DESTINATION bin
-        LIBRARY DESTINATION lib
-        ARCHIVE DESTINATION lib
+        RUNTIME DESTINATION ${INSTALL_BINARY_DIR}
+        LIBRARY DESTINATION ${INSTALL_LIBRARY_DIR}
+        ARCHIVE DESTINATION ${INSTALL_LIBRARY_DIR}
 )

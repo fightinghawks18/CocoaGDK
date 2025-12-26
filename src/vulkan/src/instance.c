@@ -7,12 +7,12 @@
 #include "../include/vulkan/internal/instance_vulkan.h"
 #include "vulkan/instance.h"
 
-#ifdef DEBUG
-static cco_bool use_validation = CCO_YES;
-
 static const char * validation_layers[] = {
     "VK_LAYER_KHRONOS_validation"
 };
+
+#ifdef DEBUG
+static cco_bool use_validation = CCO_YES;
 
 #else
 static cco_bool use_validation = CCO_NO;

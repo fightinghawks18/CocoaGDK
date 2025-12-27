@@ -6,7 +6,7 @@
 
 #include <windows.h>
 #include <gl/GL.h>
-#include <gl/wglext.h>
+#include "opengl/GL/wglext.h"
 
 struct cco_opengl_context_t {
     HGLRC ctx;

@@ -5,6 +5,7 @@
 #pragma once
 
 #include "core/core_types.h"
+#include "core/log.h"
 #include "export.h"
 
 /// @brief Pauses execution for an amount of time

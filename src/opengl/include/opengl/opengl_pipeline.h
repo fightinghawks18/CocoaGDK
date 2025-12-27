@@ -6,6 +6,7 @@
 
 
 #include "core/core_types.h"
+#include "core/log.h"
 #include "opengl_shader.h"
 #include "export.h"
 

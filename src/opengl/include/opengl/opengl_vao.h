@@ -6,6 +6,7 @@
 
 
 #include "core/core_types.h"
+#include "core/log.h"
 #include "opengl_vbo.h"
 #include "graphics/graphics_types.h"
 #include "opengl_ebo.h"

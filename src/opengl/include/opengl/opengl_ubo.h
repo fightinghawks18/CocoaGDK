@@ -6,6 +6,7 @@
 
 
 #include "core/core_types.h"
+#include "core/log.h"
 #include "graphics/graphics_types.h"
 #include "export.h"
 #include "opengl_pipeline.h"

@@ -5,6 +5,7 @@
 #pragma once
 
 #include "core/core_types.h"
+#include "core/log.h"
 #include "graphics/graphics_types.h"
 #include "instance.h"
 #include "export.h"

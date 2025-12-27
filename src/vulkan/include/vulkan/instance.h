@@ -5,6 +5,7 @@
 #pragma once
 
 #include "core/core_types.h"
+#include "core/log.h"
 #include "export.h"
 
 typedef struct cco_vulkan_instance_t cco_vulkan_instance_t;

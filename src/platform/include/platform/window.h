@@ -5,6 +5,7 @@
 #pragma once
 
 #include "core/core_types.h"
+#include "core/log.h"
 #include "export.h"
 
 typedef struct cco_window_t cco_window_t;

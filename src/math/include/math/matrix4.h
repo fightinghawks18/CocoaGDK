@@ -6,6 +6,7 @@
 
 #include "angles.h"
 #include "core/core_types.h"
+#include "core/log.h"
 #include "quaternion.h"
 #include "vector3.h"
 

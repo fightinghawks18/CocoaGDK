@@ -4,6 +4,7 @@
 
 #include "opengl/opengl_loader.h"
 #include "core/core_types.h"
+#include "core/log.h"
 #include <dlfcn.h>
 
 void *cco_get_opengl_proc_addr(const char *addr_name) {

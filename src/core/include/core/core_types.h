@@ -4,19 +4,11 @@
 
 #pragma once
 
-#include <stddef.h>
 #include <stdint.h>
-#include <stdio.h>
 
 #define CCO_NIL NULL
 #define CCO_YES 1
 #define CCO_NO 0
-
-#ifdef DEBUG
-#define CCO_LOG(str, ...) printf(str "\n", ##__VA_ARGS__);
-#else
-#define CCO_LOG(str, ...)
-#endif
 
 typedef size_t usize;
 typedef uint8_t u8;

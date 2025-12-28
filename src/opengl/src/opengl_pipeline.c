@@ -5,6 +5,7 @@
 #include "opengl/opengl_pipeline.h"
 #include "opengl/opengl_loader.h"
 #include "opengl/opengl_shader.h"
+#include "opengl/opengl_types.h"
 
 #include <stdlib.h>
 
@@ -16,8 +17,8 @@ cco_result cco_create_opengl_pipeline(const cco_opengl_pipeline_desc *descriptio
     cco_opengl_pipeline pipeline = malloc(sizeof(cco_opengl_pipeline));
     pipeline->gl_id = glCreateProgram();
 
-    glAttachShader(pipeline->gl_id, cco_get_opengl_shader_id(description->vertex_shader));
-    glAttachShader(pipeline->gl_id, cco_get_opengl_shader_id(description->pixel_shader));
+    glAttachShader(pipeline->gl_id, cco_opengl_shader_get_id(description->vertex_shader));
+    glAttachShader(pipeline->gl_id, cco_opengl_shader_get_id(description->pixel_shader));
     glLinkProgram(pipeline->gl_id);
 
     i32 link_success;
@@ -30,8 +31,8 @@ cco_result cco_create_opengl_pipeline(const cco_opengl_pipeline_desc *descriptio
         return CCO_FAIL_PIPELINE_CREATE_ERROR;
     }
 
-    glDetachShader(pipeline->gl_id, cco_get_opengl_shader_id(description->vertex_shader));
-    glDetachShader(pipeline->gl_id, cco_get_opengl_shader_id(description->pixel_shader));
+    glDetachShader(pipeline->gl_id, cco_opengl_shader_get_id(description->vertex_shader));
+    glDetachShader(pipeline->gl_id, cco_opengl_shader_get_id(description->pixel_shader));
 
     *out_pipeline = pipeline;
     return CCO_SUCCESS;
@@ -45,6 +46,12 @@ void cco_destroy_opengl_pipeline(cco_opengl_pipeline pipeline) {
     free(pipeline);
 }
 
-void cco_use_opengl_pipeline(cco_opengl_pipeline pipeline) { glUseProgram(pipeline->gl_id); }
+void cco_opengl_pipeline_use(cco_opengl_pipeline pipeline) {
+    if (pipeline) {
+        glUseProgram(pipeline->gl_id);
+        return;
+    }
+    glUseProgram(CCO_NULL_GLID);
+}
 
-u32 cco_get_opengl_pipeline_id(cco_opengl_pipeline pipeline) { return pipeline->gl_id; }
+u32 cco_opengl_pipeline_get_id(cco_opengl_pipeline pipeline) { return pipeline->gl_id; }

@@ -31,8 +31,9 @@ void cco_set_opengl_clear_color(cco_clear_color clear_color) {
     glClearColor(clear_color.r, clear_color.g, clear_color.b, clear_color.a);
 }
 
-void cco_draw_opengl_elements(cco_opengl_primitive_type primitive_type, u32 num_indices, cco_opengl_index_type index_type) {
-    u32 glPrimitive = 0;
+void cco_draw_opengl_elements(cco_opengl_primitive_type primitive_type, const u32 num_indices,
+                              cco_opengl_index_type index_type) {
+    i32 glPrimitive = 0;
     switch (primitive_type) {
     case CCO_OPENGL_PRIMITIVE_TRIANGLES: {
         glPrimitive = GL_TRIANGLES;
@@ -48,7 +49,7 @@ void cco_draw_opengl_elements(cco_opengl_primitive_type primitive_type, u32 num_
     }
     }
 
-    u32 glIndexType = 0;
+    i32 glIndexType = 0;
     switch (index_type) {
     case CCO_OPENGL_INDEX_TYPE_U32: {
         glIndexType = GL_UNSIGNED_INT;

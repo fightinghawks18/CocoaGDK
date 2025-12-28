@@ -19,7 +19,7 @@ extern PFNGLDELETEBUFFERSPROC glDeleteBuffers;
 #define GL_ARRAY_BUFFER 0x8892
 #define GL_ELEMENT_ARRAY_BUFFER 0x8893
 #define GL_UNIFORM_BUFFER 0x8A11
-typedef void (*PFNGLBINDBUFFERPROC)(i32 bufferType, i32 buffer);
+typedef void (*PFNGLBINDBUFFERPROC)(i32 bufferType, u32 buffer);
 extern PFNGLBINDBUFFERPROC glBindBuffer;
 
 typedef void (*PFNGLBUFFERSUBDATAPROC)(i32 bufferType, i64 offset, i64 size, void *data);
@@ -30,7 +30,7 @@ extern PFNGLBUFFERSUBDATAPROC glBufferSubData;
 typedef void (*PFNGLBUFFERDATAPROC)(i32 bufferType, i64 size, void *data, i32 drawType);
 extern PFNGLBUFFERDATAPROC glBufferData;
 
-typedef void (*PFNGLBINDBUFFERBASEPROC)(i32 bufferType, i32 binding, u32 buffer);
+typedef void (*PFNGLBINDBUFFERBASEPROC)(i32 bufferType, u32 binding, u32 buffer);
 extern PFNGLBINDBUFFERBASEPROC glBindBufferBase;
 
 typedef u32 (*PFNGLGETUNIFORMBLOCKINDEXPROC)(u32 program, const char *blockName);
@@ -99,7 +99,7 @@ extern PFNGLCLEARCOLORPROC glClearColor;
 #define GL_LINES 0x0001
 #define GL_FLOAT 0x1406
 #define GL_UNSIGNED_INT 0x1405
-typedef void (*PFNGLDRAWELEMENTSPROC)(i32 prim, i32 numIndices, i32 indexType, void *indices);
+typedef void (*PFNGLDRAWELEMENTSPROC)(i32 prim, u32 numIndices, i32 indexType, void *indices);
 extern PFNGLDRAWELEMENTSPROC glDrawElements;
 
 // Program

@@ -32,7 +32,7 @@ typedef struct {
 } cco_clear_color;
 
 CCO_OPENGL_API cco_result cco_initialize_opengl(void);
-CCO_OPENGL_API void cco_set_opengl_viewport(cco_viewport viewport);
-CCO_OPENGL_API void cco_clear_opengl_buffers(CcoOpenGLBufferFlags buffer_flags);
-CCO_OPENGL_API void cco_set_opengl_clear_color(cco_clear_color clear_color);
-CCO_OPENGL_API void cco_draw_opengl_elements(cco_opengl_primitive_type primitive_type, u32 num_indices, cco_opengl_index_type index_type);
+CCO_OPENGL_API void cco_opengl_set_viewport(cco_viewport viewport);
+CCO_OPENGL_API void cco_opengl_clear_buffers(CcoOpenGLBufferFlags buffer_flags);
+CCO_OPENGL_API void cco_opengl_set_clear_color(cco_clear_color clear_color);
+CCO_OPENGL_API void cco_opengl_draw_elements(cco_opengl_primitive_type primitive_type, u32 num_indices, cco_opengl_index_type index_type);

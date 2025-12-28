@@ -10,6 +10,7 @@
 
 struct cco_opengl_vbo_t {
     u32 gl_id;
+    usize size;
 };
 
 cco_result cco_create_opengl_vbo(cco_opengl_vbo *out_vbo) {
@@ -17,6 +18,7 @@ cco_result cco_create_opengl_vbo(cco_opengl_vbo *out_vbo) {
     if (!vbo)
         return CCO_FAIL_OUT_OF_MEMORY;
     glGenBuffers(1, &vbo->gl_id);
+    vbo->size = 0;
     *out_vbo = vbo;
     return CCO_SUCCESS;
 }
@@ -29,15 +31,24 @@ void cco_destroy_opengl_vbo(cco_opengl_vbo vbo) {
     free(vbo);
 }
 
-void cco_use_opengl_vbo(cco_opengl_vbo vbo) { glBindBuffer(GL_ARRAY_BUFFER, vbo->gl_id); }
-
-void cco_map_to_opengl_vbo(cco_opengl_vbo vbo, const cco_buffer_mapping *mapping) {
-    cco_use_opengl_vbo(vbo);
-    if (mapping->data) {
-        glBufferSubData(GL_ARRAY_BUFFER, (long)mapping->data_offset, (long)mapping->data_size, mapping->data);
-    } else {
-        glBufferData(GL_ARRAY_BUFFER, (long)mapping->data_size, mapping->data, GL_STATIC_DRAW);
-    }
+void cco_opengl_vbo_allocate(cco_opengl_vbo vbo, const usize vbo_size) {
+    cco_opengl_vbo_use(vbo);
+    glBufferData(GL_ARRAY_BUFFER, (long)vbo_size, CCO_NIL, GL_STATIC_DRAW);
 }
 
-u32 cco_get_opengl_vbo_id(cco_opengl_vbo vbo) { return vbo->gl_id; }
+void cco_opengl_vbo_use(cco_opengl_vbo vbo) {
+    if (vbo) {
+        glBindBuffer(GL_ARRAY_BUFFER, vbo->gl_id);
+        return;
+    }
+    glBindBuffer(GL_ARRAY_BUFFER, CCO_NULL_GLID);
+}
+
+void cco_opengl_vbo_upload(cco_opengl_vbo vbo, const cco_buffer_mapping *mapping) {
+    if (vbo->size == 0)
+        return;
+    cco_opengl_vbo_use(vbo);
+    glBufferSubData(GL_ARRAY_BUFFER, (long)mapping->data_offset, (long)mapping->data_size, mapping->data);
+}
+
+u32 cco_opengl_vbo_get_id(cco_opengl_vbo vbo) { return vbo->gl_id; }

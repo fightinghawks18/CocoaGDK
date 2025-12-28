@@ -17,11 +17,7 @@
     #pragma warning(push, 0)
 #endif
 
-#ifdef _WIN32
-#include <vma/vk_mem_alloc.h>
-#else
 #include <vk_mem_alloc.h>
-#endif
 
 #if defined(__clang__)
     #pragma clang diagnostic pop

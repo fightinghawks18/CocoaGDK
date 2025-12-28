@@ -33,6 +33,7 @@ void cco_destroy_opengl_vbo(cco_opengl_vbo vbo) {
 
 void cco_opengl_vbo_allocate(cco_opengl_vbo vbo, const usize vbo_size) {
     cco_opengl_vbo_use(vbo);
+    vbo->size = vbo_size;
     glBufferData(GL_ARRAY_BUFFER, (long)vbo_size, CCO_NIL, GL_STATIC_DRAW);
 }
 

@@ -89,11 +89,11 @@ void cco_destroy_opengl_context(cco_opengl_context opengl_context) {
     free(opengl_context);
 }
 
-void cco_opengl_flush_context_buffer(cco_opengl_context opengl_context) {
+void cco_opengl_context_flush(cco_opengl_context opengl_context) {
     wglSwapLayerBuffers(opengl_context->hdc, WGL_SWAP_MAIN_PLANE);
 }
 
-void cco_opengl_make_current_context(cco_opengl_context opengl_context) {
+void cco_opengl_context_make_current(cco_opengl_context opengl_context) {
     if (opengl_context) {
         wglMakeCurrent(opengl_context->hdc, opengl_context->ctx);
         return;

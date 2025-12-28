@@ -4,6 +4,7 @@
 
 #pragma once
 
+#include <stddef.h>
 #include <stdint.h>
 
 #define CCO_NIL NULL

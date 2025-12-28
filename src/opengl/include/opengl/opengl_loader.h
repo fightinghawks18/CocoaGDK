@@ -47,8 +47,8 @@ extern PFNGLGENVERTEXARRAYSPROC glGenVertexArrays;
 typedef void (*PFNGLDELETEVERTEXARRAYSPROC)(usize n, u32 *arrays);
 extern PFNGLDELETEVERTEXARRAYSPROC glDeleteVertexArrays;
 
-typedef void (*PFNGLBINDVERTEXARRAY)(u32 array);
-extern PFNGLBINDVERTEXARRAY glBindVertexArray;
+typedef void (*PFNGLBINDVERTEXARRAYPROC)(u32 array);
+extern PFNGLBINDVERTEXARRAYPROC glBindVertexArray;
 
 #define GL_FALSE 0
 #define GL_TRUE 1

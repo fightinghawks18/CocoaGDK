@@ -33,7 +33,7 @@ void cco_use_opengl_vbo(cco_opengl_vbo vbo) { glBindBuffer(GL_ARRAY_BUFFER, vbo-
 
 void cco_map_to_opengl_vbo(cco_opengl_vbo vbo, const cco_buffer_mapping *mapping) {
     cco_use_opengl_vbo(vbo);
-    if (mapping->data_offset > 0) {
+    if (mapping->data) {
         glBufferSubData(GL_ARRAY_BUFFER, (long)mapping->data_offset, (long)mapping->data_size, mapping->data);
     } else {
         glBufferData(GL_ARRAY_BUFFER, (long)mapping->data_size, mapping->data, GL_STATIC_DRAW);

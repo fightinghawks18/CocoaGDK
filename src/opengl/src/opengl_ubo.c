@@ -56,7 +56,7 @@ void cco_use_opengl_ubo(const cco_opengl_ubo_binding *binding, cco_opengl_ubo ub
 
 void cco_map_to_opengl_ubo(cco_opengl_ubo ubo, const cco_buffer_mapping *mapping) {
     cco_use_opengl_ubo(NULL, ubo);
-    if (ubo->size != 0) {
+    if (mapping->data) {
         glBufferSubData(GL_UNIFORM_BUFFER, (long)mapping->data_offset, (long)mapping->data_size, mapping->data);
     } else {
         ubo->size = mapping->data_size;

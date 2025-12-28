@@ -44,7 +44,7 @@ jobs:
     - name: Install Vulkan headers via vcpkg (macOS)
       if: runner.os == 'macOS'
       run: |
-        ./vcpkg/vcpkg install vulkan-headers vulkan-loader
+        ./vcpkg/vcpkg install vulkan-headers moltenvk
       shell: bash
     
     - name: Set reusable strings

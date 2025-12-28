@@ -40,6 +40,22 @@ jobs:
             c_compiler: cl
 
     steps:
+    - name: Setup Vulkan SDK (Windows)
+      if: runner.os == 'Windows'
+      uses: humbletim/setup-vulkan-sdk@v1.2.0
+      with:
+        vulkan-query-version: latest
+        vulkan-components: Vulkan-Headers, Vulkan-Loader
+        vulkan-use-cache: true
+
+    - name: Setup Vulkan SDK (macOS)
+      if: runner.os == 'macOS'
+      uses: humbletim/setup-vulkan-sdk@v1.2.0
+      with:
+        vulkan-query-version: latest
+        vulkan-components: Vulkan-Headers, Vulkan-Loader
+        vulkan-use-cache: true
+    
     - uses: actions/checkout@v4
       with:
         submodules: 'recursive'

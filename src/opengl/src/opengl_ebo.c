@@ -29,15 +29,22 @@ void cco_destroy_opengl_ebo(cco_opengl_ebo ebo) {
     free(ebo);
 }
 
-void cco_use_opengl_ebo(cco_opengl_ebo ebo) { glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo->gl_id); }
-
-void cco_map_to_opengl_ebo(cco_opengl_ebo ebo, const cco_buffer_mapping *mapping) {
-    cco_use_opengl_ebo(ebo);
-    if (mapping->data) {
-        glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, (long)mapping->data_offset, (long)mapping->data_size, mapping->data);
-    } else {
-        glBufferData(GL_ELEMENT_ARRAY_BUFFER, mapping->data_size, mapping->data, GL_STATIC_DRAW);
-    }
+void cco_opengl_ebo_allocate(cco_opengl_ebo ebo, const usize ebo_size) {
+    cco_opengl_ebo_use(ebo);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, (long)ebo_size, CCO_NIL, GL_STATIC_DRAW);
 }
 
-u32 cco_get_opengl_ebo_id(cco_opengl_ebo ebo) { return ebo->gl_id; }
+void cco_opengl_ebo_use(cco_opengl_ebo ebo) {
+    if (ebo) {
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo->gl_id);
+        return;
+    }
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, CCO_NULL_GLID);
+}
+
+void cco_opengl_ebo_upload(cco_opengl_ebo ebo, const cco_buffer_mapping *mapping) {
+    cco_opengl_ebo_use(ebo);
+    glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, (long)mapping->data_offset, (long)mapping->data_size, mapping->data);
+}
+
+u32 cco_opengl_ebo_get_id(cco_opengl_ebo ebo) { return ebo->gl_id; }

@@ -21,4 +21,4 @@ typedef struct {
 CCO_OPENGL_API cco_result cco_create_opengl_shader(const cco_opengl_shader_desc *description, cco_opengl_shader *out_shader);
 CCO_OPENGL_API void cco_destroy_opengl_shader(cco_opengl_shader shader);
 
-CCO_OPENGL_API u32 cco_get_opengl_shader_id(cco_opengl_shader shader);
+CCO_OPENGL_API u32 cco_opengl_shader_get_id(cco_opengl_shader shader);

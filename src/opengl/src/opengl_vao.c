@@ -29,11 +29,17 @@ void cco_destroy_opengl_vao(cco_opengl_vao vao) {
     free(vao);
 }
 
-void cco_use_opengl_vao(cco_opengl_vao vao) { glBindVertexArray(vao->gl_id); }
+void cco_opengl_vao_use(cco_opengl_vao vao) {
+    if (vao) {
+        glBindVertexArray(vao->gl_id);
+        return;
+    }
+    glBindVertexArray(CCO_NULL_GLID);
+}
 
-void cco_set_opengl_vao_layout(cco_opengl_vao vao, cco_opengl_vbo vbo, cco_opengl_ebo ebo, const cco_vertex_layout *layout) {
-    cco_use_opengl_vao(vao);
-    cco_use_opengl_vbo(vbo);
+void cco_opengl_vao_set_layout(cco_opengl_vao vao, cco_opengl_vbo vbo, cco_opengl_ebo ebo, const cco_vertex_layout *layout) {
+    cco_opengl_vao_use(vao);
+    cco_opengl_vbo_use(vbo);
     for (u32 i = 0; i < layout->attribute_count; i++) {
         const cco_vertex_attribute attribute = layout->attributes[i];
         glVertexAttribPointer(attribute.location, (i32)attribute.num_components, GL_FLOAT, GL_FALSE,
@@ -41,11 +47,8 @@ void cco_set_opengl_vao_layout(cco_opengl_vao vao, cco_opengl_vbo vbo, cco_openg
         glEnableVertexAttribArray(attribute.location);
     }
 
-    cco_use_opengl_ebo(ebo);
-
-    cco_remove_current_opengl_vao();
+    cco_opengl_ebo_use(ebo);
+    cco_opengl_vao_use(CCO_NIL);
 }
 
-void cco_remove_current_opengl_vao(void) { glBindVertexArray(0); }
-
-u32 cco_get_opengl_vao_id(cco_opengl_vao vao) { return vao->gl_id; }
+u32 cco_opengl_vao_get_id(cco_opengl_vao vao) { return vao->gl_id; }

@@ -381,7 +381,7 @@ cco_result cco_vulkan_swapchain_rebuild(cco_vulkan_swapchain swapchain) {
 cco_result cco_vulkan_swapchain_prepare(cco_vulkan_swapchain swapchain) {
     const VkResult wait_for_frame_result = vkWaitForFences(swapchain->instance->device, 1, &swapchain->in_flight_fences[swapchain->frame_count], VK_TRUE, UINT64_MAX);
     if (wait_for_frame_result != VK_SUCCESS) {
-        CCO_LOG("Vulkan failed to wait for this frame's fence")
+        CCO_LOG("Vulkan failed to wait for this frame's fence");
         return CCO_FAIL_GRAPHICS_FRAME_START_ERROR;
     }
 
@@ -394,7 +394,7 @@ cco_result cco_vulkan_swapchain_prepare(cco_vulkan_swapchain swapchain) {
             CCO_LOG("Vulkan failed to rebuild swapchain for this frame!");
             return rebuild_swapchain_result;
         }
-        CCO_LOG("Vulkan swapchain is out of date on frame %d, rebuilding resources...");
+        CCO_LOG("Vulkan swapchain is out of date on frame %d, rebuilding resources...", swapchain->frame_count);
         return CCO_GRAPHICS_REBUILD_SWAPCHAIN;
     } else if (get_next_image_index_result != VK_SUCCESS) {
         CCO_LOG("Vulkan failed to acquire next image index");

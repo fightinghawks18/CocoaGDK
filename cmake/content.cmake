@@ -1,7 +1,9 @@
-function(copy_content_directory CONTENT_DIR)
-    add_custom_target(copy_content_${CONTENT_DIR} ALL
+function(copy_content_directory TARGET CONTENT_DIR)
+    get_target_property(TARGET_NAME ${TARGET} NAME)
+    add_custom_command(TARGET ${TARGET} POST_BUILD
             COMMAND ${CMAKE_COMMAND} -E copy_directory
             ${CMAKE_CURRENT_SOURCE_DIR}/${CONTENT_DIR}
-            ${CMAKE_CURRENT_BINARY_DIR}/$<CONFIG>/${CONTENT_DIR}
+            $<TARGET_FILE_DIR:${TARGET}>/${CONTENT_DIR}
+            COMMENT "Copying ${TARGET_NAME}'s content to output"
     )
-endfunction(copy_content_directory CONTENT_DIR)
+endfunction(copy_content_directory TARGET CONTENT_DIR)

@@ -100,4 +100,4 @@ void cco_destroy_opengl_shader(cco_opengl_shader shader) {
     free(shader);
 }
 
-u32 cco_get_opengl_shader_id(cco_opengl_shader shader) { return shader->gl_id; }
+u32 cco_opengl_shader_get_id(cco_opengl_shader shader) { return shader->gl_id; }

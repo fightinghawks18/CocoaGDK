@@ -4,9 +4,11 @@
 
 #include "opengl/opengl_context.h"
 
+#include <stdlib.h>
 #include <windows.h>
 #include <gl/GL.h>
-#include "opengl/GL/wglext.h"
+
+#include "wglext.h"
 
 struct cco_opengl_context_t {
     HGLRC ctx;

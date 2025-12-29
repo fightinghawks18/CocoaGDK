@@ -2,10 +2,12 @@
 
 #include <stdio.h>
 
-#include "opengl/opengl_core.h"
-#include "opengl/opengl_pipeline.h"
 #include "opengl/opengl_context.h"
+#include "opengl/opengl_core.h"
 #include "opengl/opengl_ebo.h"
+#include "opengl/opengl_image.h"
+#include "opengl/opengl_loader.h"
+#include "opengl/opengl_pipeline.h"
 #include "opengl/opengl_shader.h"
 #include "opengl/opengl_ubo.h"
 #include "opengl/opengl_vao.h"
@@ -41,9 +43,9 @@ int main() {
     cco_initialize_opengl();
 
     cco_vertex vertices[3] = {
-        {{0.0f, 0.5f, 0.0f}, {1.0f, 0.0f, 0.0f, 1.0f}},
-        {{0.5f, -0.5f, 0.0f}, {0.0f, 1.0f, 0.0f, 1.0f}},
-        {{-0.5f, -0.5f, 0.0f}, {0.0f, 0.0f, 1.0f, 1.0f}},
+        {{0.0f, 0.5f, 0.0f}, {0.0f, 1.0f}, {1.0f, 0.0f, 0.0f, 1.0f}},
+        {{0.5f, -0.5f, 0.0f}, {1.0f, 0.0f}, {0.0f, 1.0f, 0.0f, 1.0f}},
+        {{-0.5f, -0.5f, 0.0f}, {0.0f, 0.0f}, {0.0f, 0.0f, 1.0f, 1.0f}},
     };
 
     u32 indices[3] = {0, 1, 2};
@@ -71,11 +73,13 @@ int main() {
     cco_opengl_shader vs = CCO_NIL;
     cco_opengl_shader ps = CCO_NIL;
     cco_opengl_pipeline pip = CCO_NIL;
+    cco_opengl_image img = CCO_NIL;
 
     cco_create_opengl_vbo(&vbo);
     cco_create_opengl_vao(&vao);
     cco_create_opengl_ebo(&ebo);
     cco_create_opengl_ubo(&ubo);
+    cco_create_opengl_image(&img);
 
     cco_opengl_vbo_allocate(vbo, 3 * sizeof(cco_vertex));
     cco_opengl_ebo_allocate(ebo, 3 * sizeof(u32));
@@ -86,6 +90,8 @@ int main() {
     cco_create_opengl_shader(
         &(cco_opengl_shader_desc){.shader_type = CCO_SHADER_TYPE_PIXEL, .shader_path = "assets/shaders/test.frag"}, &ps);
     cco_create_opengl_pipeline(&(cco_opengl_pipeline_desc){.vertex_shader = vs, .pixel_shader = ps}, &pip);
+    cco_opengl_pipeline_use(pip);
+    cco_opengl_pipeline_set_uniform_image_slot(pip, "tex", 0);
 
     cco_opengl_vbo_upload(vbo, &(cco_buffer_mapping){.data_size = 3 * sizeof(cco_vertex), .data_offset = 0, .data = &vertices});
 
@@ -94,9 +100,21 @@ int main() {
     cco_opengl_ubo_upload(
         ubo, &(cco_buffer_mapping){.data_size = sizeof(cco_model_view_projection), .data_offset = 0, .data = &mvp_buffer});
 
-    cco_vertex_attribute vertex_attributes[2] = {
+    cco_image image_data;
+    cco_load_image_from_file("assets/texture/checkers.jpg", &image_data);
+
+    cco_opengl_image_upload(GL_TEXTURE_2D, img, &image_data);
+    cco_opengl_image_set_wrapping(img, GL_REPEAT, GL_REPEAT);
+    cco_opengl_image_set_filtering(img, GL_LINEAR_MIPMAP_LINEAR, GL_LINEAR);
+
+    cco_opengl_image_use(GL_TEXTURE_2D, img);
+    cco_opengl_image_bind(0, img);
+
+    cco_vertex_attribute vertex_attributes[3] = {
         {.location = 0, .num_components = 3, .stride = sizeof(cco_vertex), .offset = offsetof(cco_vertex, pos)},
-        {.location = 1, .num_components = 4, .stride = sizeof(cco_vertex), .offset = offsetof(cco_vertex, col)}};
+        {.location = 1, .num_components = 2, .stride = sizeof(cco_vertex), .offset = offsetof(cco_vertex, uv)},
+        {.location = 2, .num_components = 4, .stride = sizeof(cco_vertex), .offset = offsetof(cco_vertex, col)}
+    };
 
     cco_opengl_vao_set_layout(vao, vbo, ebo, &(cco_vertex_layout){.attributes = vertex_attributes, .attribute_count = 2});
 
@@ -142,7 +160,6 @@ int main() {
         cco_opengl_set_clear_color((cco_clear_color){.r = 0.12f, .g = 0.12f, .b = 0.12f, .a = 1.0f});
         cco_opengl_clear_buffers(CCO_OPENGL_COLOR_BUFFER_BIT | CCO_OPENGL_DEPTH_BUFFER_BIT);
 
-        cco_opengl_pipeline_use(pip);
         cco_opengl_vao_use(vao);
         cco_opengl_ubo_use(&(cco_opengl_ubo_binding){.type = CCO_OPENGL_UBO_BINDING_BLOCK_NAME, .pip = pip, .name = "MVP"},
                         ubo);

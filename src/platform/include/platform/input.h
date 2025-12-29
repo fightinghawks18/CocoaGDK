@@ -152,7 +152,7 @@ typedef struct {
     i32 x, y;
 } cco_mouse_point;
 
-inline const char *cco_input_key_as_text(cco_input_key key) {
+static const char *cco_input_key_as_text(cco_input_key key) {
     static const char *cco_input_key_to_string[] = {
         [CCO_INPUT_KEY_UNKNOWN] = "UNKNOWN",
 

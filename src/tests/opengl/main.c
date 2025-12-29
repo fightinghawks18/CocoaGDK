@@ -1,3 +1,5 @@
+#include "math/utilities.h"
+
 #include <stdio.h>
 
 #include "opengl/opengl_core.h"
@@ -98,24 +100,38 @@ int main() {
 
     cco_opengl_vao_set_layout(vao, vbo, ebo, &(cco_vertex_layout){.attributes = vertex_attributes, .attribute_count = 2});
 
+    f32 fov = 90.0f;
+    vec3 look_dir = cco_vec3(0, 0, 0);
+
     while (!cco_window_will_close(window)) {
         cco_window_pump_events(window);
         cco_input_poll();
 
-        if (cco_input_key_was_just_pressed(CCO_INPUT_KEY_W)) {
-            CCO_LOG("INPUT");
-        }
+        if (cco_input_key_was_just_pressed(CCO_INPUT_KEY_ESC))
+            cco_window_request_close(window); // After the loop runs it'll close
 
         cco_window_content_size window_content_size = cco_window_get_content_size(window);
 
+        const cco_mouse_delta delta = cco_input_get_mouse_delta();
+        const cco_mouse_point point = cco_input_get_mouse_point();
+        fov = CCO_CLAMP(fov + delta.wheel * 3.5, 10.0f, 150.0f);
+
+        if (cco_input_get_active_window() == window)
+            look_dir = cco_vec3((f32)point.x / 10000.0f, -(f32)point.y / 10000.0f, 0.0f);
+
         projection_matrix =
-            cco_mat4_perspective(CCO_NO, CCO_NO, cco_deg_to_rad(80.0f),
+            cco_mat4_perspective(CCO_NO, CCO_NO, cco_deg_to_rad(fov),
                                           (f32)window_content_size.width / (f32)window_content_size.height, 0.001f, 100.0f);
+        view_matrix = cco_mat4_eye(camera_position, look_dir, cco_vec3_up());
         mvp_buffer.projection = cco_mat4_transpose(projection_matrix);
+        mvp_buffer.view = cco_mat4_transpose(view_matrix);
 
         cco_opengl_ubo_upload(ubo, &(cco_buffer_mapping){.data_size = sizeof(mat4),
                                                    .data_offset = offsetof(cco_model_view_projection, projection),
                                                    .data = &mvp_buffer.projection});
+        cco_opengl_ubo_upload(ubo, &(cco_buffer_mapping){.data_size = sizeof(mat4),
+                                                   .data_offset = offsetof(cco_model_view_projection, view),
+                                                   .data = &mvp_buffer.view});
 
         cco_opengl_set_viewport((cco_viewport){.x = 0,
                                            .y = 0,

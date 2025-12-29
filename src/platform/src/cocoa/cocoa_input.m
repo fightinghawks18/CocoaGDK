@@ -333,7 +333,7 @@ cco_cocoa_input_event_result cco_input_handle_cocoa_event(NSEvent *event) {
         bool using_trackpad = [event hasPreciseScrollingDeltas] == YES;
         CGFloat scroll_delta = [event scrollingDeltaY];
         g_input_state.mouse_delta_processing.wheel = using_trackpad ? scroll_delta / 10.0f : scroll_delta;
-        return;
+        return CCO_COCOA_INPUT_EVENT_HANDLED;
     }
     case NSEventTypeMouseMoved: {
         g_input_state.mouse_delta_processing.x += [event deltaX];

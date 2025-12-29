@@ -114,8 +114,8 @@ cco_result cco_create_window(i32 x, i32 y, i32 width, i32 height, const char *ti
     window->will_close = CCO_NO;
     window->focused = CCO_YES;
 
-    HWND hWnd = CreateWindowEx(0, "CGDKWindow", title, WS_OVERLAPPEDWINDOW, x, y, dpi_adjusted_width, dpi_adjusted_height,
-                               NULL, NULL, GetModuleHandle(NULL), window);
+    HWND hWnd = CreateWindowEx(0, "CGDKWindow", title, WS_OVERLAPPEDWINDOW, x, y, dpi_adjusted_width,
+                               dpi_adjusted_height, NULL, NULL, GetModuleHandle(NULL), window);
     if (!hWnd) {
         CCO_LOG("Failed to create win32 window!");
         free(window);
@@ -164,6 +164,8 @@ void cco_window_pump_events(cco_window window) {
         DispatchMessage(&msg);
     }
 }
+
+void cco_window_request_close(cco_window window) { window->will_close = CCO_YES; }
 
 cco_window_frame cco_window_get_frame(cco_window window) {
     RECT rect;

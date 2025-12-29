@@ -61,6 +61,12 @@ CCO_PLATFORM_API void cco_window_rename(cco_window window, const char *title);
 /// @param window The window to process events for
 CCO_PLATFORM_API void cco_window_pump_events(cco_window window);
 
+/// @brief Requests that this window closes
+/// @param window The window to request closure
+/// @note This must be handled externally, check with cco_window_will_close and close the window
+/// @see cco_window_will_close
+CCO_PLATFORM_API void cco_window_request_close(cco_window window);
+
 /// @brief Gets the dimensions of the entire window
 /// @param window The window to retrieve the frame dimensions from
 /// @return The window's dimensions

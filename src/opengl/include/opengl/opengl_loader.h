@@ -102,6 +102,87 @@ extern PFNGLCLEARCOLORPROC glClearColor;
 typedef void (*PFNGLDRAWELEMENTSPROC)(i32 prim, u32 numIndices, i32 indexType, void *indices);
 extern PFNGLDRAWELEMENTSPROC glDrawElements;
 
+// Images
+
+typedef void (*PFNGLGENTEXTURESPROC)(usize n, u32 *textures);
+extern PFNGLGENTEXTURESPROC glGenTextures;
+
+#define GL_TEXTURE_1D 0x0DE0
+#define GL_TEXTURE_2D 0x0DE1
+#define GL_TEXTURE_3D 0x806F
+#define GL_TEXTURE_1D_ARRAY 0x8C18
+#define GL_TEXTURE_2D_ARRAY 0x8C1A
+#define GL_TEXTURE_RECTANGLE 0x84F5
+#define GL_TEXTURE_CUBE_MAP 0x8513
+#define GL_TEXTURE_CUBE_MAP_ARRAY 0x9009
+#define GL_TEXTURE_BUFFER 0x8C2A
+#define GL_TEXTURE_2D_MULTISAMPLE 0x9100
+#define GL_TEXTURE_2D_MULTISAMPLE_ARRAY 0x9102
+#define GL_TEXTURE_CUBE_MAP_POSITIVE_X 0x8515
+#define GL_TEXTURE_CUBE_MAP_NEGATIVE_X 0x8516
+#define GL_TEXTURE_CUBE_MAP_POSITIVE_Y 0x8517
+#define GL_TEXTURE_CUBE_MAP_NEGATIVE_Y 0x8518
+#define GL_TEXTURE_CUBE_MAP_POSITIVE_Z 0x8519
+#define GL_TEXTURE_CUBE_MAP_NEGATIVE_Z 0x851A
+typedef void (*PFNGLBINDTEXTUREPROC)(i32 target, u32 texture);
+extern PFNGLBINDTEXTUREPROC glBindTexture;
+
+#define GL_TEXTURE_MAG_FILTER 0x2800
+#define GL_TEXTURE_MIN_FILTER 0x2801
+#define GL_TEXTURE_WRAP_S 0x2802
+#define GL_TEXTURE_WRAP_T 0x2803
+#define GL_TEXTURE_WRAP_R 0x8072
+#define GL_TEXTURE_BORDER_COLOR 0x1004
+#define GL_TEXTURE_MIN_LOD 0x813A
+#define GL_TEXTURE_MAX_LOD 0x813B
+#define GL_TEXTURE_BASE_LEVEL 0x813C
+#define GL_TEXTURE_MAX_LEVEL 0x813D
+#define GL_TEXTURE_LOD_BIAS 0x8501
+#define GL_TEXTURE_COMPARE_MODE 0x884C
+#define GL_TEXTURE_COMPARE_FUNC 0x884D
+#define GL_TEXTURE_SWIZZLE_R 0x8E42
+#define GL_TEXTURE_SWIZZLE_G 0x8E43
+#define GL_TEXTURE_SWIZZLE_B 0x8E44
+#define GL_TEXTURE_SWIZZLE_A 0x8E45
+#define GL_TEXTURE_SWIZZLE_RGBA 0x8E46
+#define GL_NEAREST 0x2600
+#define GL_LINEAR 0x2601
+#define GL_NEAREST_MIPMAP_NEAREST 0x2700
+#define GL_LINEAR_MIPMAP_NEAREST 0x2701
+#define GL_NEAREST_MIPMAP_LINEAR 0x2702
+#define GL_LINEAR_MIPMAP_LINEAR 0x2703
+#define GL_REPEAT 0x2901
+#define GL_CLAMP_TO_EDGE 0x812F
+#define GL_CLAMP_TO_BORDER 0x812D
+#define GL_MIRRORED_REPEAT 0x8370
+#define GL_MIRROR_CLAMP_TO_EDGE 0x8743
+#define GL_COMPARE_REF_TO_TEXTURE 0x884E
+#define GL_NONE 0
+#define GL_LEQUAL 0x0203
+#define GL_GEQUAL 0x0206
+#define GL_LESS 0x0201
+#define GL_GREATER 0x0204
+#define GL_EQUAL 0x0202
+#define GL_NOTEQUAL 0x0205
+#define GL_ALWAYS 0x0207
+#define GL_NEVER 0x0200
+#define GL_RED 0x1903
+#define GL_RG 0x8227
+#define GL_RGB 0x1907
+#define GL_RGBA 0x1908
+#define GL_DEPTH_COMPONENT 0x1902
+#define GL_DEPTH_STENCIL 0x84F9
+#define GL_STENCIL_INDEX 0x1901
+typedef void (*PFNGLTEXPARAMETERIPROC)(i32 target, i32 parameter, i32 value);
+extern PFNGLTEXPARAMETERIPROC glTexParameteri;
+
+typedef void (*PFNGLTEXIMAGE2DPROC)(i32 target, i32 mipMapLevel, i32 internalFormat, usize width, usize height,
+                                    i32 borderWidth, i32 format, i32 pixelType, const void *pixelData);
+extern PFNGLTEXIMAGE2DPROC glTexImage2D;
+
+typedef void (*PFNGLGENERATEMIPMAPPROC)(i32 target);
+extern PFNGLGENERATEMIPMAPPROC glGenerateMipmap;
+
 // Program
 
 typedef u32 (*PFNGLCREATEPROGRAMPROC)(void);
@@ -156,113 +237,169 @@ CCO_OPENGL_API void *cco_get_opengl_proc_addr(const char *addr_name);
 static cco_bool cco_load_opengl_functions() {
     // Buffers
     glGenBuffers = (PFNGLGENBUFFERSPROC)cco_get_opengl_proc_addr("glGenBuffers");
-    if (!glGenBuffers) return CCO_NO;
+    if (!glGenBuffers)
+        return CCO_NO;
 
     glDeleteBuffers = (PFNGLDELETEBUFFERSPROC)cco_get_opengl_proc_addr("glDeleteBuffers");
-    if (!glDeleteBuffers) return CCO_NO;
+    if (!glDeleteBuffers)
+        return CCO_NO;
 
     glBindBuffer = (PFNGLBINDBUFFERPROC)cco_get_opengl_proc_addr("glBindBuffer");
-    if (!glBindBuffer) return CCO_NO;
+    if (!glBindBuffer)
+        return CCO_NO;
 
     glBufferSubData = (PFNGLBUFFERSUBDATAPROC)cco_get_opengl_proc_addr("glBufferSubData");
-    if (!glBufferSubData) return CCO_NO;
+    if (!glBufferSubData)
+        return CCO_NO;
 
     glBufferData = (PFNGLBUFFERDATAPROC)cco_get_opengl_proc_addr("glBufferData");
-    if (!glBufferData) return CCO_NO;
+    if (!glBufferData)
+        return CCO_NO;
 
     glBindBufferBase = (PFNGLBINDBUFFERBASEPROC)cco_get_opengl_proc_addr("glBindBufferBase");
-    if (!glBindBufferBase) return CCO_NO;
+    if (!glBindBufferBase)
+        return CCO_NO;
 
     glGetUniformBlockIndex = (PFNGLGETUNIFORMBLOCKINDEXPROC)cco_get_opengl_proc_addr("glGetUniformBlockIndex");
-    if (!glGetUniformBlockIndex) return CCO_NO;
+    if (!glGetUniformBlockIndex)
+        return CCO_NO;
 
     glUniformBlockBinding = (PFNGLUNIFORMBLOCKBINDINGPROC)cco_get_opengl_proc_addr("glUniformBlockBinding");
-    if (!glUniformBlockBinding) return CCO_NO;
+    if (!glUniformBlockBinding)
+        return CCO_NO;
 
     // Vertex Array Object
     glGenVertexArrays = (PFNGLGENVERTEXARRAYSPROC)cco_get_opengl_proc_addr("glGenVertexArrays");
-    if (!glGenVertexArrays) return CCO_NO;
+    if (!glGenVertexArrays)
+        return CCO_NO;
 
     glDeleteVertexArrays = (PFNGLDELETEVERTEXARRAYSPROC)cco_get_opengl_proc_addr("glDeleteVertexArrays");
-    if (!glDeleteVertexArrays) return CCO_NO;
+    if (!glDeleteVertexArrays)
+        return CCO_NO;
 
     glBindVertexArray = (PFNGLBINDVERTEXARRAYPROC)cco_get_opengl_proc_addr("glBindVertexArray");
-    if (!glBindVertexArray) return CCO_NO;
+    if (!glBindVertexArray)
+        return CCO_NO;
 
     glVertexAttribPointer = (PFNGLVERTEXATTRIBPOINTERPROC)cco_get_opengl_proc_addr("glVertexAttribPointer");
-    if (!glVertexAttribPointer) return CCO_NO;
+    if (!glVertexAttribPointer)
+        return CCO_NO;
 
     glEnableVertexAttribArray = (PFNGLENABLEVERTEXATTRIBARRAYPROC)cco_get_opengl_proc_addr("glEnableVertexAttribArray");
-    if (!glEnableVertexAttribArray) return CCO_NO;
+    if (!glEnableVertexAttribArray)
+        return CCO_NO;
 
     // Main
     glEnable = (PFNGLENABLEPROC)cco_get_opengl_proc_addr("glEnable");
-    if (!glEnable) return CCO_NO;
+    if (!glEnable)
+        return CCO_NO;
 
     glDisable = (PFNGLDISABLEPROC)cco_get_opengl_proc_addr("glDisable");
-    if (!glDisable) return CCO_NO;
+    if (!glDisable)
+        return CCO_NO;
 
     glDepthFunc = (PFNGLDEPTHFUNCPROC)cco_get_opengl_proc_addr("glDepthFunc");
-    if (!glDepthFunc) return CCO_NO;
+    if (!glDepthFunc)
+        return CCO_NO;
 
     glViewport = (PFNGLVIEWPORTPROC)cco_get_opengl_proc_addr("glViewport");
-    if (!glViewport) return CCO_NO;
+    if (!glViewport)
+        return CCO_NO;
 
     glDepthRange = (PFNGLDEPTHRANGEPROC)cco_get_opengl_proc_addr("glDepthRange");
-    if (!glDepthRange) return CCO_NO;
+    if (!glDepthRange)
+        return CCO_NO;
 
     glClear = (PFNGLCLEARPROC)cco_get_opengl_proc_addr("glClear");
-    if (!glClear) return CCO_NO;
+    if (!glClear)
+        return CCO_NO;
 
     glClearColor = (PFNGLCLEARCOLORPROC)cco_get_opengl_proc_addr("glClearColor");
-    if (!glClearColor) return CCO_NO;
+    if (!glClearColor)
+        return CCO_NO;
 
     glDrawElements = (PFNGLDRAWELEMENTSPROC)cco_get_opengl_proc_addr("glDrawElements");
-    if (!glDrawElements) return CCO_NO;
+    if (!glDrawElements)
+        return CCO_NO;
+
+    // Images
+    glGenTextures = (PFNGLGENTEXTURESPROC)cco_get_opengl_proc_addr("glGenTextures");
+    if (!glGenTextures)
+        return CCO_NO;
+
+    glBindTexture = (PFNGLBINDTEXTUREPROC)cco_get_opengl_proc_addr("glBindTexture");
+    if (!glBindTexture)
+        return CCO_NO;
+
+    glTexParameteri = (PFNGLTEXPARAMETERIPROC)cco_get_opengl_proc_addr("glTexParameteri");
+    if (!glTexParameteri)
+        return CCO_NO;
+
+    glTexImage2D = (PFNGLTEXIMAGE2DPROC)cco_get_opengl_proc_addr("glTexImage2D");
+    if (!glTexImage2D)
+        return CCO_NO;
+
+    glGenerateMipmap = (PFNGLGENERATEMIPMAPPROC)cco_get_opengl_proc_addr("glGenerateMipmap");
+    if (!glGenerateMipmap)
+        return CCO_NO;
 
     // Program
     glCreateProgram = (PFNGLCREATEPROGRAMPROC)cco_get_opengl_proc_addr("glCreateProgram");
-    if (!glCreateProgram) return CCO_NO;
+    if (!glCreateProgram)
+        return CCO_NO;
 
     glDeleteProgram = (PFNGLDELETEPROGRAMPROC)cco_get_opengl_proc_addr("glDeleteProgram");
-    if (!glDeleteProgram) return CCO_NO;
+    if (!glDeleteProgram)
+        return CCO_NO;
 
     glLinkProgram = (PFNGLLINKPROGRAMPROC)cco_get_opengl_proc_addr("glLinkProgram");
-    if (!glLinkProgram) return CCO_NO;
+    if (!glLinkProgram)
+        return CCO_NO;
 
     glGetProgramiv = (PFNGLGETPROGRAMIVPROC)cco_get_opengl_proc_addr("glGetProgramiv");
-    if (!glGetProgramiv) return CCO_NO;
+    if (!glGetProgramiv)
+        return CCO_NO;
 
     glGetProgramInfoLog = (PFNGLGETPROGRAMINFOLOGPROC)cco_get_opengl_proc_addr("glGetProgramInfoLog");
-    if (!glGetProgramInfoLog) return CCO_NO;
+    if (!glGetProgramInfoLog)
+        return CCO_NO;
 
     glUseProgram = (PFNGLUSEPROGRAMPROC)cco_get_opengl_proc_addr("glUseProgram");
-    if (!glUseProgram) return CCO_NO;
+    if (!glUseProgram)
+        return CCO_NO;
 
     // Shader
     glCreateShader = (PFNGLCREATESHADERPROC)cco_get_opengl_proc_addr("glCreateShader");
-    if (!glCreateShader) return CCO_NO;
+    if (!glCreateShader)
+        return CCO_NO;
 
     glShaderSource = (PFNGLSHADERSOURCEPROC)cco_get_opengl_proc_addr("glShaderSource");
-    if (!glShaderSource) return CCO_NO;
+    if (!glShaderSource)
+        return CCO_NO;
 
     glAttachShader = (PFNGLATTACHSHADERPROC)cco_get_opengl_proc_addr("glAttachShader");
-    if (!glAttachShader) return CCO_NO;
+    if (!glAttachShader)
+        return CCO_NO;
 
     glDetachShader = (PFNGLDETACHSHADERPROC)cco_get_opengl_proc_addr("glDetachShader");
-    if (!glDetachShader) return CCO_NO;
+    if (!glDetachShader)
+        return CCO_NO;
 
     glCompileShader = (PFNGLCOMPILESHADERPROC)cco_get_opengl_proc_addr("glCompileShader");
-    if (!glCompileShader) return CCO_NO;
+    if (!glCompileShader)
+        return CCO_NO;
 
     glGetShaderiv = (PFNGLGETSHADERIVPROC)cco_get_opengl_proc_addr("glGetShaderiv");
-    if (!glGetShaderiv) return CCO_NO;
+    if (!glGetShaderiv)
+        return CCO_NO;
 
     glGetShaderInfoLog = (PFNGLGETSHADERINFOLOGPROC)cco_get_opengl_proc_addr("glGetShaderInfoLog");
-    if (!glGetShaderInfoLog) return CCO_NO;
+    if (!glGetShaderInfoLog)
+        return CCO_NO;
 
     glDeleteShader = (PFNGLDELETESHADERPROC)cco_get_opengl_proc_addr("glDeleteShader");
-    if (!glDeleteShader) return CCO_NO;
+    if (!glDeleteShader)
+        return CCO_NO;
 
     CCO_LOG("All OpenGL functions loaded successfully");
     return CCO_YES;

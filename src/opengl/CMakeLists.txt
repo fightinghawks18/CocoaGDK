@@ -11,8 +11,9 @@ add_library(cocoa_opengl
         src/opengl_loader.c
 
 )
-target_include_directories(cocoa_opengl PUBLIC
-        ${CMAKE_CURRENT_SOURCE_DIR}/include
+target_include_directories(cocoa_opengl
+        PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include
+        PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/third_party
 )
 
 target_link_libraries(cocoa_opengl

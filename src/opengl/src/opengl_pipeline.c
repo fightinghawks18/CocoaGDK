@@ -54,4 +54,9 @@ void cco_opengl_pipeline_use(cco_opengl_pipeline pipeline) {
     glUseProgram(CCO_NULL_GLID);
 }
 
+CCO_OPENGL_API void cco_opengl_pipeline_set_uniform_image_slot(cco_opengl_pipeline pipeline, const char *uniform_name, i32 slot) {
+    const i32 uniform_location = glGetUniformLocation(pipeline->gl_id, uniform_name);
+    glUniform1i(uniform_location, slot);
+}
+
 u32 cco_opengl_pipeline_get_id(cco_opengl_pipeline pipeline) { return pipeline->gl_id; }

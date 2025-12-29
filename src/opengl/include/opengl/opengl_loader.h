@@ -33,12 +33,6 @@ extern PFNGLBUFFERDATAPROC glBufferData;
 typedef void (*PFNGLBINDBUFFERBASEPROC)(i32 bufferType, u32 binding, u32 buffer);
 extern PFNGLBINDBUFFERBASEPROC glBindBufferBase;
 
-typedef u32 (*PFNGLGETUNIFORMBLOCKINDEXPROC)(u32 program, const char *blockName);
-extern PFNGLGETUNIFORMBLOCKINDEXPROC glGetUniformBlockIndex;
-
-typedef void (*PFNGLUNIFORMBLOCKBINDINGPROC)(u32 program, u32 blockIndex, u32 bindingPoint);
-extern PFNGLUNIFORMBLOCKBINDINGPROC glUniformBlockBinding;
-
 // Vertex Array Object
 
 typedef void (*PFNGLGENVERTEXARRAYSPROC)(usize n, u32 *arrays);
@@ -97,15 +91,70 @@ extern PFNGLCLEARCOLORPROC glClearColor;
 #define GL_TRIANGLE_STRIP 0x0005
 #define GL_TRIANGLE_FAN 0x0006
 #define GL_LINES 0x0001
-#define GL_FLOAT 0x1406
+#define GL_UNSIGNED_BYTE 0x1401
+#define GL_BYTE 0x1400
+#define GL_UNSIGNED_SHORT 0x1403
+#define GL_SHORT 0x1402
 #define GL_UNSIGNED_INT 0x1405
+#define GL_INT 0x1404
+#define GL_HALF_FLOAT 0x140B
+#define GL_FLOAT 0x1406
 typedef void (*PFNGLDRAWELEMENTSPROC)(i32 prim, u32 numIndices, i32 indexType, void *indices);
 extern PFNGLDRAWELEMENTSPROC glDrawElements;
+
+// Uniforms
+
+typedef void (*PFNGLUNIFORM1IPROC)(i32 location, i32 value);
+extern PFNGLUNIFORM1IPROC glUniform1i;
+
+typedef u32 (*PFNGLGETUNIFORMBLOCKINDEXPROC)(u32 program, const char *blockName);
+extern PFNGLGETUNIFORMBLOCKINDEXPROC glGetUniformBlockIndex;
+
+typedef void (*PFNGLUNIFORMBLOCKBINDINGPROC)(u32 program, u32 blockIndex, u32 bindingPoint);
+extern PFNGLUNIFORMBLOCKBINDINGPROC glUniformBlockBinding;
+
+typedef i32 (*PFNGLGETUNIFORMLOCATIONPROC)(u32 program, const char *uniformName);
+extern PFNGLGETUNIFORMLOCATIONPROC glGetUniformLocation;
 
 // Images
 
 typedef void (*PFNGLGENTEXTURESPROC)(usize n, u32 *textures);
 extern PFNGLGENTEXTURESPROC glGenTextures;
+
+#define GL_TEXTURE0 0x84C0
+#define GL_TEXTURE1 0x84C1
+#define GL_TEXTURE2 0x84C2
+#define GL_TEXTURE3 0x84C3
+#define GL_TEXTURE4 0x84C4
+#define GL_TEXTURE5 0x84C5
+#define GL_TEXTURE6 0x84C6
+#define GL_TEXTURE7 0x84C7
+#define GL_TEXTURE8 0x84C8
+#define GL_TEXTURE9 0x84C9
+#define GL_TEXTURE10 0x84CA
+#define GL_TEXTURE11 0x84CB
+#define GL_TEXTURE12 0x84CC
+#define GL_TEXTURE13 0x84CD
+#define GL_TEXTURE14 0x84CE
+#define GL_TEXTURE15 0x84CF
+#define GL_TEXTURE16 0x84D0
+#define GL_TEXTURE17 0x84D1
+#define GL_TEXTURE18 0x84D2
+#define GL_TEXTURE19 0x84D3
+#define GL_TEXTURE20 0x84D4
+#define GL_TEXTURE21 0x84D5
+#define GL_TEXTURE22 0x84D6
+#define GL_TEXTURE23 0x84D7
+#define GL_TEXTURE24 0x84D8
+#define GL_TEXTURE25 0x84D9
+#define GL_TEXTURE26 0x84DA
+#define GL_TEXTURE27 0x84DB
+#define GL_TEXTURE28 0x84DC
+#define GL_TEXTURE29 0x84DD
+#define GL_TEXTURE30 0x84DE
+#define GL_TEXTURE31 0x84DF
+typedef void (*PFNGLACTIVETEXTUREPROC)(i32 textureUnit);
+extern PFNGLACTIVETEXTUREPROC glActiveTexture;
 
 #define GL_TEXTURE_1D 0x0DE0
 #define GL_TEXTURE_2D 0x0DE1
@@ -166,22 +215,39 @@ extern PFNGLBINDTEXTUREPROC glBindTexture;
 #define GL_NOTEQUAL 0x0205
 #define GL_ALWAYS 0x0207
 #define GL_NEVER 0x0200
-#define GL_RED 0x1903
-#define GL_RG 0x8227
-#define GL_RGB 0x1907
-#define GL_RGBA 0x1908
-#define GL_DEPTH_COMPONENT 0x1902
-#define GL_DEPTH_STENCIL 0x84F9
-#define GL_STENCIL_INDEX 0x1901
 typedef void (*PFNGLTEXPARAMETERIPROC)(i32 target, i32 parameter, i32 value);
 extern PFNGLTEXPARAMETERIPROC glTexParameteri;
 
+#define GL_UNPACK_ALIGNMENT 0x0CF5
+typedef void (*PFNGLPIXELSTOREIPROC)(i32 parameter, i32 value);
+extern PFNGLPIXELSTOREIPROC glPixelStorei;
+
+#define GL_R8 0x8229
+#define GL_RG8 0x822B
+#define GL_RGB8 0x8051
+#define GL_RGBA8 0x8058
+#define GL_R16 0x822A
+#define GL_RG16 0x822C
+#define GL_RGB16 0x8054
+#define GL_RGBA16 0x805B
+#define GL_RED 0x1903
+#define GL_RG 0x8227
+#define GL_RGB 0x1907
+#define GL_BGR 0x80E0
+#define GL_RGBA 0x1908
+#define GL_BGRA 0x80E1
+#define GL_STENCIL_INDEX 0x1901
+#define GL_DEPTH_COMPONENT 0x1902
+#define GL_DEPTH_STENCIL 0x84F9
 typedef void (*PFNGLTEXIMAGE2DPROC)(i32 target, i32 mipMapLevel, i32 internalFormat, usize width, usize height,
                                     i32 borderWidth, i32 format, i32 pixelType, const void *pixelData);
 extern PFNGLTEXIMAGE2DPROC glTexImage2D;
 
 typedef void (*PFNGLGENERATEMIPMAPPROC)(i32 target);
 extern PFNGLGENERATEMIPMAPPROC glGenerateMipmap;
+
+typedef void (*PFNGLDELETETEXTURESPROC)(usize n, u32 *images);
+extern PFNGLDELETETEXTURESPROC glDeleteTextures;
 
 // Program
 
@@ -260,14 +326,6 @@ static cco_bool cco_load_opengl_functions() {
     if (!glBindBufferBase)
         return CCO_NO;
 
-    glGetUniformBlockIndex = (PFNGLGETUNIFORMBLOCKINDEXPROC)cco_get_opengl_proc_addr("glGetUniformBlockIndex");
-    if (!glGetUniformBlockIndex)
-        return CCO_NO;
-
-    glUniformBlockBinding = (PFNGLUNIFORMBLOCKBINDINGPROC)cco_get_opengl_proc_addr("glUniformBlockBinding");
-    if (!glUniformBlockBinding)
-        return CCO_NO;
-
     // Vertex Array Object
     glGenVertexArrays = (PFNGLGENVERTEXARRAYSPROC)cco_get_opengl_proc_addr("glGenVertexArrays");
     if (!glGenVertexArrays)
@@ -322,9 +380,31 @@ static cco_bool cco_load_opengl_functions() {
     if (!glDrawElements)
         return CCO_NO;
 
+    // Uniforms
+
+    glUniform1i = (PFNGLUNIFORM1IPROC)cco_get_opengl_proc_addr("glUniform1i");
+    if (!glUniform1i)
+        return CCO_NO;
+
+    glGetUniformBlockIndex = (PFNGLGETUNIFORMBLOCKINDEXPROC)cco_get_opengl_proc_addr("glGetUniformBlockIndex");
+    if (!glGetUniformBlockIndex)
+        return CCO_NO;
+
+    glUniformBlockBinding = (PFNGLUNIFORMBLOCKBINDINGPROC)cco_get_opengl_proc_addr("glUniformBlockBinding");
+    if (!glUniformBlockBinding)
+        return CCO_NO;
+
+    glGetUniformLocation = (PFNGLGETUNIFORMLOCATIONPROC)cco_get_opengl_proc_addr("glGetUniformLocation");
+    if (!glGetUniformLocation)
+        return CCO_NO;
+
     // Images
     glGenTextures = (PFNGLGENTEXTURESPROC)cco_get_opengl_proc_addr("glGenTextures");
     if (!glGenTextures)
+        return CCO_NO;
+
+    glActiveTexture = (PFNGLACTIVETEXTUREPROC)cco_get_opengl_proc_addr("glActiveTexture");
+    if (!glActiveTexture)
         return CCO_NO;
 
     glBindTexture = (PFNGLBINDTEXTUREPROC)cco_get_opengl_proc_addr("glBindTexture");
@@ -335,12 +415,20 @@ static cco_bool cco_load_opengl_functions() {
     if (!glTexParameteri)
         return CCO_NO;
 
+    glPixelStorei = (PFNGLPIXELSTOREIPROC)cco_get_opengl_proc_addr("glPixelStorei");
+    if (!glPixelStorei)
+        return CCO_NO;
+
     glTexImage2D = (PFNGLTEXIMAGE2DPROC)cco_get_opengl_proc_addr("glTexImage2D");
     if (!glTexImage2D)
         return CCO_NO;
 
     glGenerateMipmap = (PFNGLGENERATEMIPMAPPROC)cco_get_opengl_proc_addr("glGenerateMipmap");
     if (!glGenerateMipmap)
+        return CCO_NO;
+
+    glDeleteTextures = (PFNGLDELETETEXTURESPROC)cco_get_opengl_proc_addr("glDeleteTextures");
+    if (!glDeleteTextures)
         return CCO_NO;
 
     // Program

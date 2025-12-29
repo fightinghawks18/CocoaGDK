@@ -9,6 +9,7 @@ add_library(cocoa_opengl
         src/opengl_pipeline.c
         src/opengl_core.c
         src/opengl_loader.c
+        src/opengl_image.c
 
 )
 target_include_directories(cocoa_opengl

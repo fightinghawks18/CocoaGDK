@@ -8,6 +8,7 @@
 #include "core/core_types.h"
 
 typedef enum {
+    CCO_IMAGE_CHANNEL_UNKNOWN,
     CCO_IMAGE_CHANNEL_GRAYSCALE,
     CCO_IMAGE_CHANNEL_GRAYSCALE_ALPHA,
     CCO_IMAGE_CHANNEL_RGB,
@@ -21,5 +22,5 @@ typedef struct {
     void *pixels;
 } cco_image;
 
-CCO_GRAPHICS_API cco_result cco_load_image_from_file(const char *path, cco_image **out_image);
-CCO_GRAPHICS_API void cco_free_image(cco_image *image);
+CCO_GRAPHICS_API cco_result cco_load_image_from_file(const char *path, cco_image *out_image);
+CCO_GRAPHICS_API void cco_free_image(cco_image image);

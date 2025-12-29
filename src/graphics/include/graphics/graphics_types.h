@@ -46,6 +46,7 @@ typedef struct {
 /// @brief A definition of a single point in a geometric object
 typedef struct {
     f32 pos[3];
+    f32 uv[2];
     f32 col[4];
 } cco_vertex;
 

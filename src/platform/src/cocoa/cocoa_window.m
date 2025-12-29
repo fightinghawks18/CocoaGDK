@@ -19,15 +19,15 @@ struct cco_window_t {
 @end
 
 @implementation CocoaWindow
-- (BOOL)window_should_close:(NSWindow *)sender {
+- (BOOL)windowShouldClose:(NSWindow *)sender {
     self.window->will_close = CCO_YES;
     return NO;
 }
-- (void)window_did_become_key:(NSNotification *)notification {
+- (void)windowDidBecomeKey:(NSNotification *)notification {
     self.window->focused = CCO_YES;
     cco_input_give_window_focus(self.window);
 }
-- (void)window_did_resign_key:(NSNotification *)notification {
+- (void)windowDidResignKey:(NSNotification *)notification {
     self.window->focused = CCO_NO;
     cco_input_give_window_focus(CCO_NIL);
 }
@@ -95,6 +95,8 @@ void cco_window_rename(cco_window window, const char *title) {
         [window->window setTitle:str];
     }
 }
+
+void cco_window_request_close(cco_window window) { window->will_close = CCO_YES; }
 
 void cco_window_pump_events(cco_window window) {
     NSEvent *event;

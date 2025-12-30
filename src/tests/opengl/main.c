@@ -57,10 +57,12 @@ void update_camera(f32 delta_time) {
     f32 rotation_x = mouse.x * mouse_sensitivity;
     f32 rotation_y = mouse.y * mouse_sensitivity;
     
-    cco_gamepad_stick_pos right_stick;
-    if (cco_input_read_gamepad_stick_pos(0, CCO_GAMEPAD_STICK_RIGHT, &right_stick)) {
-        rotation_x += right_stick.x * gamepad_sensitivity * delta_time;
-        rotation_y -= right_stick.y * gamepad_sensitivity * delta_time;
+    if (cco_input_has_gamepad(0)) {
+        cco_gamepad_stick_pos right_stick;
+        if (cco_input_read_gamepad_stick_pos(0, CCO_GAMEPAD_STICK_RIGHT, &right_stick)) {
+            rotation_x += right_stick.x * gamepad_sensitivity * delta_time;
+            rotation_y -= right_stick.y * gamepad_sensitivity * delta_time;
+        }
     }
 
     cam.yaw += rotation_x;
@@ -98,20 +100,22 @@ void update_camera(f32 delta_time) {
         move_input.y -= 1.0f;
     }
 
-    cco_gamepad_stick_pos left_stick;
-    if (cco_input_read_gamepad_stick_pos(0, CCO_GAMEPAD_STICK_LEFT, &left_stick)) {
-        vec3 stick_forward = cco_vec3_scale(forward, left_stick.y);
-        move_input = cco_vec3_add(move_input, stick_forward);
+    if (cco_input_has_gamepad(0)) {
+        cco_gamepad_stick_pos left_stick;
+        if (cco_input_read_gamepad_stick_pos(0, CCO_GAMEPAD_STICK_LEFT, &left_stick)) {
+            vec3 stick_forward = cco_vec3_scale(forward, left_stick.y);
+            move_input = cco_vec3_add(move_input, stick_forward);
 
-        vec3 stick_right = cco_vec3_scale(right, left_stick.x);
-        move_input = cco_vec3_add(move_input, stick_right);
+            vec3 stick_right = cco_vec3_scale(right, left_stick.x);
+            move_input = cco_vec3_add(move_input, stick_right);
 
-        f32 left_trigger, right_trigger;
-        if (cco_input_read_gamepad_trigger_pressure(0, CCO_GAMEPAD_TRIGGER_LEFT, &left_trigger)) {
-            move_input.y -= left_trigger;
-        }
-        if (cco_input_read_gamepad_trigger_pressure(0, CCO_GAMEPAD_TRIGGER_RIGHT, &right_trigger)) {
-            move_input.y += right_trigger;
+            f32 left_trigger, right_trigger;
+            if (cco_input_read_gamepad_trigger_pressure(0, CCO_GAMEPAD_TRIGGER_LEFT, &left_trigger)) {
+                move_input.y -= left_trigger;
+            }
+            if (cco_input_read_gamepad_trigger_pressure(0, CCO_GAMEPAD_TRIGGER_RIGHT, &right_trigger)) {
+                move_input.y += right_trigger;
+            }
         }
     }
 

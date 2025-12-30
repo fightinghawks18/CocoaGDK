@@ -16,6 +16,14 @@ win32_gamepad *get_gamepad_from_input_device(IGameInputDevice *device) {
     return CCO_NIL;
 }
 
+cco_gamepad_id get_gamepad_id_from_input_device(IGameInputDevice *device) {
+    for (u8 g = 0; g < MAX_GAMEPAD_COUNT; ++g) {
+        if (g_gamepad.gamepads[g].input_device == device)
+            return g;
+    }
+    return UINT8_MAX;
+}
+
 void handle_gamepad_connection(IGameInputDevice *device) {
     for (u8 g = 0; g < MAX_GAMEPAD_COUNT; ++g) {
         win32_gamepad *gamepad = &g_gamepad.gamepads[g];
@@ -36,6 +44,7 @@ void handle_gamepad_disconnection(IGameInputDevice *device) {
         CCO_LOG("A gamepad was attempting to disconnect, but it isn't registered? This may be a bug.");
         return;
     }
+    CCO_LOG("Disconnected gamepad from slot %d!", get_gamepad_id_from_input_device(device));
     gamepad->input_device = CCO_NIL;
     g_gamepad.gamepad_count--;
 }

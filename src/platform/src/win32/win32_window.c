@@ -51,7 +51,7 @@ LRESULT CALLBACK Wndproc(HWND hWnd, UINT u_msg, WPARAM wparam, LPARAM lparam) {
         break;
     }
     case WM_INPUT: {
-        cco_input_handle_raw_input(hWnd, lparam);
+        cco_win32_handle_raw_input(lparam);
         return 0;
     }
     case WM_SETFOCUS: {

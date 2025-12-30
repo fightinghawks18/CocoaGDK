@@ -13,6 +13,8 @@
 #include "opengl/opengl_vao.h"
 #include "platform/audio.h"
 #include "platform/input.h"
+#include "platform/input_keyboard.h"
+#include "platform/input_mouse.h"
 #include "platform/platform.h"
 #include "platform/utils.h"
 #include "platform/window.h"
@@ -157,18 +159,6 @@ int main() {
         const cco_mouse_point point = cco_input_get_mouse_point();
         fov = CCO_CLAMP(fov + delta.wheel * 3.5, 10.0f, 150.0f);
 
-        if (cco_input_get_active_window() == window) {
-            yaw -= delta.x / 100.0f;
-            pitch -= delta.y / 100.0f;
-
-            pitch = CCO_CLAMP(pitch, -PI / 2.0f + 0.01f, PI / 2.0f - 0.01f);
-        }
-
-        look_dir.x = cosf(pitch) * sinf(yaw);
-        look_dir.y = sinf(pitch);
-        look_dir.z = cosf(pitch) * cosf(yaw);
-        look_dir = cco_vec3_normalized(look_dir);
-
         rotation = cco_vec3_add(rotation, cco_vec3(0, 0.05, 0));
 
         model_matrix =
@@ -177,7 +167,7 @@ int main() {
         projection_matrix =
             cco_mat4_perspective(CCO_NO, CCO_NO, cco_deg_to_rad(fov),
                                  (f32)window_content_size.width / (f32)window_content_size.height, 0.001f, 100.0f);
-        view_matrix = cco_mat4_eye(camera_position, cco_vec3_add(camera_position, look_dir), cco_vec3_up());
+        view_matrix = cco_mat4_eye(camera_position, look_dir, cco_vec3_up());
         mvp_buffer.projection = cco_mat4_transpose(projection_matrix);
         mvp_buffer.view = cco_mat4_transpose(view_matrix);
         mvp_buffer.model = cco_mat4_transpose(model_matrix);

@@ -8,6 +8,7 @@ target_link_libraries(cocoa_platform
 target_include_directories(cocoa_platform
         PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include
         PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/third_party
+        PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/internal
 )
 
 target_compile_definitions(cocoa_platform PRIVATE
@@ -35,6 +36,8 @@ if(APPLE)
 elseif(WIN32)
     target_sources(cocoa_platform PRIVATE
             src/win32/win32_input.c
+            src/win32/win32_keyboard.c
+            src/win32/win32_mouse.c
             src/win32/win32_utils.c
             src/win32/win32_window.c
             src/win32/win32_audio.c

@@ -1,8 +1,8 @@
 #version 330 core
 
 layout(location = 0) in vec3 inPos;
-layout(location = 0) in vec2 inUv;
-layout(location = 1) in vec4 inCol;
+layout(location = 1) in vec2 inUv;
+layout(location = 2) in vec4 inCol;
 
 layout(std140) uniform MVP {
     mat4 model;

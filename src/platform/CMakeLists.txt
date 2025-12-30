@@ -21,12 +21,16 @@ if(APPLE)
             src/cocoa/cocoa_input.m
             src/cocoa/cocoa_window.m
             src/cocoa/cocoa_utils.c
+            src/cocoa/cocoa_audio.m
+            src/cocoa/cocoa_platform.m
     )
 
     target_link_libraries(cocoa_platform
             PRIVATE "-framework Cocoa"
             PRIVATE "-framework CoreFoundation"
             PRIVATE "-framework QuartzCore"
+            PRIVATE "-framework CoreAudio"
+            PRIVATE "-framework AudioToolbox"
     )
 elseif(WIN32)
     target_sources(cocoa_platform PRIVATE

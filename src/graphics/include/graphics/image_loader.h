@@ -6,6 +6,7 @@
 
 #include "export.h"
 #include "core/core_types.h"
+#include "core/results.h"
 
 typedef enum {
     CCO_IMAGE_CHANNEL_UNKNOWN,

@@ -11,6 +11,7 @@
 #include "wglext.h"
 
 struct cco_opengl_context_t {
+    HWND hWnd;
     HGLRC ctx;
     HDC hdc;
 };
@@ -36,31 +37,47 @@ cco_result cco_create_opengl_context(void *window_handle, void *display_handle, 
         0, 0, 0, 0
     };
 
+    opengl_context->hWnd = window_handle;
+
     HDC hdc = GetDC(window_handle);
+    if (!hdc) {
+        CCO_LOG("Windows failed to get HDC!");
+        free(opengl_context);
+        return CCO_FAIL_GRAPHICS_CREATE_ERROR;
+    }
+
     const i32 px_format = ChoosePixelFormat(hdc, &pfd);
     if (!px_format) {
         CCO_LOG("Windows failed to select a pixel format for HDC!");
+        ReleaseDC(window_handle, hdc);
+        free(opengl_context);
         return CCO_FAIL_GRAPHICS_CREATE_ERROR;
     }
 
     if (!SetPixelFormat(hdc, px_format, &pfd)) {
         CCO_LOG("Windows failed to set pixel format for HDC!");
+        ReleaseDC(window_handle, hdc);
+        free(opengl_context);
         return CCO_FAIL_GRAPHICS_CREATE_ERROR;
     }
 
     HGLRC dum_ctx = wglCreateContext(hdc);
     if (!dum_ctx) {
         CCO_LOG("Windows failed to create an OpenGL context!");
+        ReleaseDC(window_handle, hdc);
         free(opengl_context);
         return CCO_FAIL_GRAPHICS_CREATE_ERROR;
     }
     wglMakeCurrent(hdc, dum_ctx);
 
-    PFNWGLCREATECONTEXTATTRIBSARBPROC wglCreateContextAttribsARB = (PFNWGLCREATECONTEXTATTRIBSARBPROC)wglGetProcAddress("wglCreateContextAttribsARB");
+    PFNWGLCREATECONTEXTATTRIBSARBPROC wglCreateContextAttribsARB =
+        (PFNWGLCREATECONTEXTATTRIBSARBPROC)wglGetProcAddress("wglCreateContextAttribsARB");
     if (!wglCreateContextAttribsARB) {
         CCO_LOG("Windows failed to load the wglCreateContextAttribsARB function!");
-        free(opengl_context);
+        wglMakeCurrent(NULL, NULL);
         wglDeleteContext(dum_ctx);
+        ReleaseDC(window_handle, hdc);
+        free(opengl_context);
         return CCO_FAIL_GRAPHICS_CREATE_ERROR;
     }
 
@@ -75,6 +92,13 @@ cco_result cco_create_opengl_context(void *window_handle, void *display_handle, 
     wglMakeCurrent(NULL, NULL);
     wglDeleteContext(dum_ctx);
 
+    if (!ctx) {
+        CCO_LOG("Windows failed to create OpenGL 3.3 core context!");
+        ReleaseDC(window_handle, hdc);
+        free(opengl_context);
+        return CCO_FAIL_GRAPHICS_CREATE_ERROR;
+    }
+
     opengl_context->ctx = ctx;
     opengl_context->hdc = hdc;
 
@@ -84,15 +108,24 @@ cco_result cco_create_opengl_context(void *window_handle, void *display_handle, 
 
 void cco_destroy_opengl_context(cco_opengl_context opengl_context) {
     if (opengl_context->ctx) {
+        if (wglGetCurrentContext() == opengl_context->ctx) {
+            wglMakeCurrent(NULL, NULL);
+        }
+
         wglDeleteContext(opengl_context->ctx);
         opengl_context->ctx = NULL;
     }
-    opengl_context->hdc = NULL;
+
+    if (opengl_context->hdc && opengl_context->hWnd) {
+        ReleaseDC(opengl_context->hWnd, opengl_context->hdc);
+        opengl_context->hdc = NULL;
+    }
+
     free(opengl_context);
 }
 
 void cco_opengl_context_flush(cco_opengl_context opengl_context) {
-    wglSwapLayerBuffers(opengl_context->hdc, WGL_SWAP_MAIN_PLANE);
+    SwapBuffers(opengl_context->hdc);
 }
 
 void cco_opengl_context_make_current(cco_opengl_context opengl_context) {

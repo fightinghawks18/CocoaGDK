@@ -35,14 +35,17 @@ LRESULT CALLBACK Wndproc(HWND hWnd, UINT u_msg, WPARAM wparam, LPARAM lparam) {
         const i32 width = new_rect->right - new_rect->left;
         const i32 height = new_rect->bottom - new_rect->top;
 
-        SetWindowPos(hWnd, NULL, new_rect->left, new_rect->top, width, height, SWP_NOZORDER | SWP_NOACTIVATE);
+        SetWindowPos(hWnd, CCO_NIL, new_rect->left, new_rect->top, width, height, SWP_NOZORDER | SWP_NOACTIVATE);
 
-        InvalidateRect(hWnd, NULL, TRUE);
+        InvalidateRect(hWnd, CCO_NIL, TRUE);
+        return 0;
+    }
+    case WM_DESTROY: {
         return 0;
     }
     case WM_SETCURSOR: {
         if (LOWORD(lparam) == HTCLIENT) {
-            SetCursor(LoadCursor(NULL, IDC_ARROW));
+            SetCursor(LoadCursor(CCO_NIL, IDC_ARROW));
             return TRUE;
         }
         break;
@@ -78,7 +81,7 @@ cco_result cco_windowing_init(void) {
 
     WNDCLASSEX wc = {0};
     wc.cbSize = sizeof(WNDCLASSEX);
-    wc.hInstance = GetModuleHandle(NULL);
+    wc.hInstance = GetModuleHandle(CCO_NIL);
     wc.lpfnWndProc = &Wndproc;
     wc.lpszClassName = "CGDKWindow";
 
@@ -91,7 +94,7 @@ cco_result cco_windowing_init(void) {
 
 void cco_windowing_quit(void) {
     PostQuitMessage(0);
-    if (!UnregisterClass("CGDKWindow", GetModuleHandle(NULL)))
+    if (!UnregisterClass("CGDKWindow", GetModuleHandle(CCO_NIL)))
         CCO_LOG("Failed to unregister main win32 window class!");
 }
 
@@ -110,12 +113,12 @@ cco_result cco_create_window(i32 x, i32 y, i32 width, i32 height, const char *ti
     const i32 dpi_adjusted_width = rect.right - rect.left;
     const i32 dpi_adjusted_height = rect.bottom - rect.top;
 
-    window->hWnd = NULL;
+    window->hWnd = CCO_NIL;
     window->will_close = CCO_NO;
     window->focused = CCO_YES;
 
     HWND hWnd = CreateWindowEx(0, "CGDKWindow", title, WS_OVERLAPPEDWINDOW, x, y, dpi_adjusted_width,
-                               dpi_adjusted_height, NULL, NULL, GetModuleHandle(NULL), window);
+                               dpi_adjusted_height, CCO_NIL, CCO_NIL, GetModuleHandle(CCO_NIL), window);
     if (!hWnd) {
         CCO_LOG("Failed to create win32 window!");
         free(window);
@@ -125,21 +128,28 @@ cco_result cco_create_window(i32 x, i32 y, i32 width, i32 height, const char *ti
     window->hWnd = hWnd;
 
     ShowWindow(hWnd, SW_SHOW);
+    UpdateWindow(hWnd);
+
+    MSG msg;
+    while (PeekMessage(&msg, hWnd, 0, 0, PM_REMOVE)) {
+        TranslateMessage(&msg);
+        DispatchMessage(&msg);
+    }
 
     *out_window = window;
     return CCO_SUCCESS;
 }
 
 void cco_destroy_window(cco_window window) {
-    if (IsWindow(window->hWnd)) {
+    if (window->hWnd != CCO_NIL) {
         DestroyWindow(window->hWnd);
-        window->hWnd = NULL;
+        window->hWnd = CCO_NIL;
     }
     free(window);
 }
 
 void cco_window_move(cco_window window, i32 x, i32 y) {
-    SetWindowPos(window->hWnd, NULL, x, y, 0, 0, SWP_FRAMECHANGED | SWP_NOSIZE | SWP_NOZORDER | SWP_NOACTIVATE);
+    SetWindowPos(window->hWnd, CCO_NIL, x, y, 0, 0, SWP_FRAMECHANGED | SWP_NOSIZE | SWP_NOZORDER | SWP_NOACTIVATE);
 }
 
 void cco_window_resize(cco_window window, i32 width, i32 height) {
@@ -151,7 +161,7 @@ void cco_window_resize(cco_window window, i32 width, i32 height) {
     const i32 dpi_adjusted_width = rect.right - rect.left;
     const i32 dpi_adjusted_height = rect.bottom - rect.top;
 
-    SetWindowPos(window->hWnd, NULL, 0, 0, dpi_adjusted_width, dpi_adjusted_height,
+    SetWindowPos(window->hWnd, CCO_NIL, 0, 0, dpi_adjusted_width, dpi_adjusted_height,
                  SWP_FRAMECHANGED | SWP_NOMOVE | SWP_NOZORDER | SWP_NOACTIVATE);
 }
 

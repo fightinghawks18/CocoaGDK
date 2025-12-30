@@ -6,6 +6,7 @@
 
 #include "export.h"
 #include "core/core_types.h"
+#include "core/results.h"
 #include "graphics/image_loader.h"
 
 typedef struct cco_opengl_image_t cco_opengl_image_t;

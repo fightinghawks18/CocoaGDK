@@ -14,7 +14,7 @@ struct cco_opengl_pipeline_t {
 };
 
 cco_result cco_create_opengl_pipeline(const cco_opengl_pipeline_desc *description, cco_opengl_pipeline *out_pipeline) {
-    cco_opengl_pipeline pipeline = malloc(sizeof(cco_opengl_pipeline));
+    cco_opengl_pipeline pipeline = malloc(sizeof(cco_opengl_pipeline_t));
     pipeline->gl_id = glCreateProgram();
 
     glAttachShader(pipeline->gl_id, cco_opengl_shader_get_id(description->vertex_shader));

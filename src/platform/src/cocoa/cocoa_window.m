@@ -35,9 +35,6 @@ struct cco_window_t {
 @end
 
 cco_result cco_windowing_init() {
-    [NSApplication sharedApplication];
-    [NSApp setActivationPolicy:NSApplicationActivationPolicyRegular];
-    [NSApp activateIgnoringOtherApps:YES];
     return CCO_SUCCESS;
 }
 

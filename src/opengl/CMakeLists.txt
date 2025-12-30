@@ -17,6 +17,7 @@ target_include_directories(cocoa_opengl
         PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/third_party
 )
 
+
 target_link_libraries(cocoa_opengl
         PUBLIC OpenGL::GL
         PUBLIC cocoa_core

@@ -2,10 +2,12 @@ add_library(cocoa_platform)
 
 target_link_libraries(cocoa_platform
         PUBLIC cocoa_core
+        PUBLIC cocoa_math
 )
 
-target_include_directories(cocoa_platform PUBLIC
-        ${CMAKE_CURRENT_SOURCE_DIR}/include
+target_include_directories(cocoa_platform
+        PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include
+        PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/third_party
 )
 
 target_compile_definitions(cocoa_platform PRIVATE
@@ -31,11 +33,17 @@ elseif(WIN32)
             src/win32/win32_input.c
             src/win32/win32_utils.c
             src/win32/win32_window.c
+            src/win32/win32_audio.c
+            src/win32/win32_platform.c
     )
 
     target_compile_definitions(cocoa_platform
             PRIVATE WINVER=0x0A00
             PRIVATE _WIN32_WINNT=0x0A00
+    )
+
+    target_link_libraries(cocoa_platform
+            PRIVATE xaudio2.lib
     )
 endif()
 

@@ -26,6 +26,11 @@ if(BUILD_SHARED_LIBS)
     add_compile_definitions(BUILD_SHARED)
 endif()
 
+add_compile_definitions(
+        $<$<CONFIG:Debug>:DEBUG>
+        $<$<CONFIG:Release>:NDEBUG>
+)
+
 add_subdirectory("external/VulkanMemoryAllocator")
 
 add_subdirectory("src/core")

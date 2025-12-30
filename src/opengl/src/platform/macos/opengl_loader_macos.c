@@ -4,6 +4,7 @@
 
 #include "opengl/opengl_loader.h"
 #include "core/core_types.h"
+#include "core/results.h"
 #include "core/log.h"
 #include <dlfcn.h>
 

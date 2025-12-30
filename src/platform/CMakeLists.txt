@@ -38,6 +38,7 @@ elseif(WIN32)
             src/win32/win32_input.c
             src/win32/win32_keyboard.c
             src/win32/win32_mouse.c
+            src/win32/win32_gamepad.c
             src/win32/win32_utils.c
             src/win32/win32_window.c
             src/win32/win32_audio.c
@@ -51,6 +52,7 @@ elseif(WIN32)
 
     target_link_libraries(cocoa_platform
             PRIVATE xaudio2.lib
+            PRIVATE GameInput.lib
     )
 endif()
 

@@ -5,6 +5,8 @@
 #include "platform/input.h"
 
 #include "platform/win32/win32_input.h"
+
+#include "platform/win32/win32_gamepad.h"
 #include "platform/win32/win32_keyboard.h"
 #include "platform/win32/win32_mouse.h"
 
@@ -31,6 +33,13 @@ cco_result cco_input_init(const cco_input_init_flags init_flags) {
             return mouse_init_result;
         }
     }
+    if (init_flags & CCO_INPUT_INIT_GAMEPAD_BIT) {
+        const cco_result gamepad_init_result = win32_gamepad_init();
+        if (gamepad_init_result != CCO_SUCCESS) {
+            CCO_LOG("Failed to initialize gamepad input!");
+            return gamepad_init_result;
+        }
+    }
 
     g_input.init_flags = init_flags;
     return CCO_SUCCESS;
@@ -41,13 +50,17 @@ void cco_input_quit(void) {
         win32_keyboard_quit();
     if (g_input.init_flags & CCO_INPUT_INIT_MOUSE_BIT)
         win32_mouse_quit();
+    if (g_input.init_flags & CCO_INPUT_INIT_GAMEPAD_BIT)
+        win32_gamepad_quit();
 }
 
 void cco_input_poll(void) {
     if (g_input.init_flags & CCO_INPUT_INIT_KEYBOARD_BIT)
-        win32_poll_keyboard_input();
+        win32_keyboard_poll();
     if (g_input.init_flags & CCO_INPUT_INIT_MOUSE_BIT)
-        win32_poll_mouse_input();
+        win32_mouse_poll();
+    if (g_input.init_flags & CCO_INPUT_INIT_GAMEPAD_BIT)
+        win32_gamepad_poll();
 }
 
 void cco_input_clear_hardware_state(void) {
@@ -89,7 +102,7 @@ void cco_win32_handle_raw_input(LPARAM lparam) {
     RAWINPUT *raw_input = (RAWINPUT *)raw_input_buffer;
 
     if (raw_input->header.dwType == RIM_TYPEMOUSE && g_input.init_flags & CCO_INPUT_INIT_MOUSE_BIT)
-        win32_handle_raw_mouse_input(&raw_input->data.mouse);
+        win32_mouse_handle_raw_input(&raw_input->data.mouse);
     else if (raw_input->header.dwType == RIM_TYPEKEYBOARD && g_input.init_flags & CCO_INPUT_INIT_KEYBOARD_BIT)
         win32_handle_raw_keyboard_input(&raw_input->data.keyboard);
 }

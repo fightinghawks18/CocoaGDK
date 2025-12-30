@@ -25,8 +25,8 @@ typedef struct {
 cco_result win32_mouse_init(void);
 void win32_mouse_quit(void);
 
-void win32_handle_raw_mouse_input(RAWMOUSE *m);
-void win32_poll_mouse_input(void);
+void win32_mouse_handle_raw_input(RAWMOUSE *m);
+void win32_mouse_poll(void);
 void win32_mouse_clear_hardware_state(void);
 
 win32_mouse_state *win32_get_mouse_state(void);

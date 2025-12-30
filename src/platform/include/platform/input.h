@@ -13,7 +13,8 @@
 typedef enum {
     CCO_INPUT_INIT_UNKNOWN_BIT,
     CCO_INPUT_INIT_KEYBOARD_BIT,
-    CCO_INPUT_INIT_MOUSE_BIT
+    CCO_INPUT_INIT_MOUSE_BIT,
+    CCO_INPUT_INIT_GAMEPAD_BIT
 } cco_input_init_flag_bits;
 typedef u32 cco_input_init_flags;
 

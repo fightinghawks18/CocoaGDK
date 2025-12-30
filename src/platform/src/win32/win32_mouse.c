@@ -20,7 +20,7 @@ cco_result win32_mouse_init(void) {
 
     if (!RegisterRawInputDevices(&g_mouse.m, 1, sizeof(RAWINPUTDEVICE))) {
         CCO_LOG("Failed to register mouse input for win32!");
-        return CCO_FAIL_INPUT_INIT_ERROR;
+        return CCO_FAIL_INPUT_MOUSE_INIT_ERROR;
     }
 
     CCO_LOG("Initialized mouse input!");
@@ -52,7 +52,7 @@ cco_bool cco_input_mouse_button_was_just_released(const cco_input_mouse_button b
     return g_mouse.now[button] == CCO_NO && g_mouse.last[button] == CCO_YES;
 }
 
-void win32_handle_raw_mouse_input(RAWMOUSE *m) {
+void win32_mouse_handle_raw_input(RAWMOUSE *m) {
     if (m->usFlags == MOUSE_MOVE_RELATIVE) {
         const i32 delta_x = m->lLastX;
         const i32 delta_y = m->lLastY;
@@ -90,7 +90,7 @@ void win32_handle_raw_mouse_input(RAWMOUSE *m) {
     }
 }
 
-void win32_poll_mouse_input(void) {
+void win32_mouse_poll(void) {
     memcpy(g_mouse.last, g_mouse.now, sizeof(g_mouse.now));
     memcpy(g_mouse.now, g_mouse.processing, sizeof(g_mouse.processing));
 

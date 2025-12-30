@@ -24,6 +24,9 @@ typedef enum {
     CCO_FAIL_WINDOWING_INIT_ERROR,                ///< @brief Failed to initialize the windowing system
     CCO_FAIL_WINDOWING_CREATE_ERROR,              ///< @brief Failed to create a new window
     CCO_FAIL_INPUT_INIT_ERROR,                    ///< @brief Failed to initialize the input system
+    CCO_FAIL_INPUT_KEYBOARD_INIT_ERROR,           ///< @brief Failed to initialize the keyboard
+    CCO_FAIL_INPUT_MOUSE_INIT_ERROR,              ///< @brief Failed to initialize the mouse
+    CCO_FAIL_INPUT_GAMEPAD_INIT_ERROR,            ///< @brief Failed to initialize the gamepad
     CCO_FAIL_AUDIO_INIT_ERROR,                    ///< @brief Failed to initialize the audio system
     CCO_FAIL_AUDIO_STREAM_CREATE_ERROR,           ///< @brief Failed to create an audio stream
     CCO_FAIL_AUDIO_CREATE_PCM_ERROR,              ///< @brief Failed to create PCM data from an audio file

@@ -9,6 +9,8 @@
 #include "platform/socket.h"
 #include "platform/utils.h"
 
+#include <stdlib.h>
+
 cco_socket host_socket = CCO_NIL;
 cco_socket client_socket = CCO_NIL;
 
@@ -19,6 +21,31 @@ typedef struct {
     char msg[128];
 } client_msg;
 
+static unsigned char *construct_msg_buffer(const char *name, const char *msg, usize *out_bytes) {
+    usize msg_buffer_size = 0;
+    msg_buffer_size += sizeof(u32) + sizeof(u32); // Writing strings appends u32s to describe string length
+    msg_buffer_size += strlen(name) + strlen(msg);
+
+    unsigned char *msg_buffer = malloc(msg_buffer_size);
+    usize msg_buffer_offset = 0;
+
+    cco_socket_write_str(msg_buffer, &msg_buffer_offset, name);
+    cco_socket_write_str(msg_buffer, &msg_buffer_offset, msg);
+
+    *out_bytes = msg_buffer_offset;
+    return msg_buffer;
+}
+
+static void print_from_msg_buffer(void *msg, ssize byte_size) {
+    usize msg_offset = 0;
+    char *name = cco_socket_read_str(msg, &msg_offset);
+    char *msg_contents = cco_socket_read_str(msg, &msg_offset);
+
+    CCO_LOG("%s said '%s' (%d bytes received)", name, msg_contents, byte_size);
+    free(name);
+    free(msg_contents);
+}
+
 static void start_host() {
     hosting = CCO_YES;
     cco_socket_open(CCO_SOCKET_PROTOCOL_TCP, &host_socket);
@@ -28,37 +55,39 @@ static void start_host() {
     cco_socket_accept(host_socket, &client_socket);
     CCO_LOG("Accepted client!");
 
-    client_msg msg;
+    unsigned char buffer[512];
     ssize byte_size;
-    cco_socket_recv(client_socket, &msg, sizeof(msg), &byte_size);
-    CCO_LOG("%s said '%s' (%d bytes received)", msg.name, msg.msg, byte_size);
+    cco_socket_recv(client_socket, buffer, 512, &byte_size);
+    CCO_LOG("Received data! %d bytes", byte_size);
 
-    const client_msg host_msg = {
-        .name = "Host",
-        .msg = "Hello Client!"
-    };
-    cco_socket_send(client_socket, &host_msg, sizeof(host_msg));
+    print_from_msg_buffer(buffer, byte_size);
+
+    usize msg_size;
+    unsigned char *msg_buffer = construct_msg_buffer("Server", "Hello Client!", &msg_size);
+    cco_socket_send(client_socket, msg_buffer, (ssize)msg_size);
+    free(msg_buffer);
+
     cco_sleep(1000);
     CCO_LOG("Exiting program..");
 }
 
 static void start_client() {
-    cco_result res = cco_socket_open(CCO_SOCKET_PROTOCOL_TCP, &client_socket);
+    cco_socket_open(CCO_SOCKET_PROTOCOL_TCP, &client_socket);
     cco_socket_connect(client_socket, "127.0.0.1", 3000);
     CCO_LOG("Connected");
 
-    const client_msg msg = {
-        .name = "Client",
-        .msg = "Hello Server!"
-    };
+    usize msg_size;
+    unsigned char *msg_buffer = construct_msg_buffer("Client", "Hello Server!", &msg_size);
+    CCO_LOG("SENDING %llu bytes of data to host!", msg_size);
 
-    CCO_LOG("Sending message with size %llu", sizeof(msg));
-    cco_socket_send(client_socket, &msg, sizeof(msg));
+    cco_socket_send(client_socket, msg_buffer, (ssize)msg_size);
+    free(msg_buffer);
 
-    client_msg host_msg;
+    unsigned char buffer[512];
     ssize byte_size;
-    cco_socket_recv(client_socket, &host_msg, sizeof(host_msg), &byte_size);
-    CCO_LOG("%s said '%s' (%d bytes received)", host_msg.name, host_msg.msg, byte_size);
+    cco_socket_recv(client_socket, buffer, 512, &byte_size);
+    print_from_msg_buffer(buffer, byte_size);
+
     CCO_LOG("Exiting program..");
 }
 

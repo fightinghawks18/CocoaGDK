@@ -9,6 +9,7 @@
 #include "core/log.h"
 #include "platform/audio.h"
 #include "platform/input.h"
+#include "platform/socket.h"
 #include "platform/window.h"
 
 static cco_platform_init_flags g_init_flags;
@@ -45,6 +46,14 @@ CCO_PLATFORM_API cco_result cco_platform_init(const cco_platform_init_flags init
         cco_input_enable();
     }
 
+    if (init_flags & CCO_PLATFORM_INIT_SOCKET_BIT) {
+        const cco_result socket_init_result = cco_socket_init();
+        if (socket_init_result != CCO_SUCCESS) {
+            CCO_LOG("Failed to initialize socket subsystem!");
+            return socket_init_result;
+        }
+    }
+
     g_init_flags = init_flags;
     return CCO_SUCCESS;
 }
@@ -56,6 +65,8 @@ CCO_PLATFORM_API void cco_platform_quit() {
         cco_windowing_quit();
     if (g_init_flags & CCO_PLATFORM_INIT_AUDIO_BIT)
         cco_audio_quit();
+    if (g_init_flags & CCO_PLATFORM_INIT_SOCKET_BIT)
+        cco_socket_quit();
 
     CoUninitialize();
 }

@@ -13,6 +13,7 @@ typedef enum {
     CCO_PLATFORM_INIT_WINDOWING_BIT,
     CCO_PLATFORM_INIT_INPUT_BIT,
     CCO_PLATFORM_INIT_AUDIO_BIT,
+    CCO_PLATFORM_INIT_SOCKET_BIT,
 } cco_platform_init_flag_bits;
 typedef u32 cco_platform_init_flags;
 

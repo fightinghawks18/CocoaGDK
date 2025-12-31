@@ -43,6 +43,7 @@ elseif(WIN32)
             src/win32/win32_window.c
             src/win32/win32_audio.c
             src/win32/win32_platform.c
+            src/win32/win32_socket.c
     )
 
     target_compile_definitions(cocoa_platform
@@ -53,6 +54,7 @@ elseif(WIN32)
     target_link_libraries(cocoa_platform
             PRIVATE xaudio2.lib
             PRIVATE GameInput.lib
+            PRIVATE ws2_32.lib # Winsock
     )
 endif()
 

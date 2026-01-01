@@ -22,10 +22,12 @@ if(APPLE)
             src/cocoa/cocoa_input.m
             src/cocoa/cocoa_keyboard.m
             src/cocoa/cocoa_mouse.m
+            src/cocoa/cocoa_gamepad.m
             src/cocoa/cocoa_window.m
             src/cocoa/cocoa_utils.c
             src/cocoa/cocoa_audio.m
             src/cocoa/cocoa_platform.m
+            src/unix/unix_socket.c
     )
 
     target_link_libraries(cocoa_platform
@@ -34,6 +36,7 @@ if(APPLE)
             PRIVATE "-framework QuartzCore"
             PRIVATE "-framework CoreAudio"
             PRIVATE "-framework AudioToolbox"
+            PRIVATE "-framework GameController"
     )
 elseif(WIN32)
     target_sources(cocoa_platform PRIVATE

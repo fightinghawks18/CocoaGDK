@@ -245,7 +245,7 @@ int main() {
         cco_window_pump_events(window);
         cco_input_poll();
 
-        if (cco_input_key_was_just_pressed(CCO_INPUT_KEY_ESC))
+        if (cco_input_key_was_just_pressed(CCO_INPUT_KEY_ESC) || (cco_input_has_gamepad(0) && cco_input_is_gamepad_button_pressed(0, CCO_GAMEPAD_BUTTON_DOWN)))
             cco_window_request_close(window);
 
         cco_window_content_size window_content_size = cco_window_get_content_size(window);

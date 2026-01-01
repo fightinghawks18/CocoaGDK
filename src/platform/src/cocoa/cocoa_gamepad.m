@@ -28,34 +28,55 @@ void handle_gamepad_connection(GCController *controller) {
         cocoa_gamepad *gamepad = &g_gamepad.gamepads[g];
         if (!gamepad->controller) {
             gamepad->controller = controller;
-            CCO_LOG("Connected new gamepad to slot %d!", g);
+            CCO_LOG("Connected new gamepad (%s) to slot %d!", controller.vendorName.UTF8String, g);
             g_gamepad.gamepad_count++;
             return;
         }
     }
-    CCO_LOG("A new gamepad connection was recognized, but the max amount (%d) of gamepads has already been reached!",
-            CCO_MAX_GAMEPAD_COUNT);
+    CCO_LOG("A new gamepad (%s) connection was recognized, but the max amount (%d) of gamepads has already been reached!",
+            controller.vendorName.UTF8String, CCO_MAX_GAMEPAD_COUNT);
 }
 
 void handle_gamepad_disconnection(GCController *controller) {
     cocoa_gamepad *gamepad = get_gamepad_from_controller(controller);
     if (!gamepad) {
-        CCO_LOG("A gamepad was attempting to disconnect, but it isn't registered? This may be a bug.");
+        CCO_LOG("A gamepad (%s) was attempting to disconnect, but it isn't registered? This may be a bug.", controller.vendorName.UTF8String);
         return;
     }
-    CCO_LOG("Disconnected gamepad from slot %d!", get_gamepad_id_from_controller(controller));
+    CCO_LOG("Disconnected gamepad (%s) from slot %d!", controller.vendorName.UTF8String, get_gamepad_id_from_controller(controller));
     gamepad->controller = CCO_NIL;
     g_gamepad.gamepad_count--;
 }
 
 cco_result cocoa_gamepad_init(void) {
+    [[NSNotificationCenter defaultCenter] 
+        addObserverForName:GCControllerDidConnectNotification
+        object:nil
+        queue:nil
+        usingBlock:^(NSNotification* note) {
+            handle_gamepad_connection(note.object);
+        }];
     
+    [[NSNotificationCenter defaultCenter]
+        addObserverForName:GCControllerDidDisconnectNotification
+        object:nil
+        queue:nil
+        usingBlock:^(NSNotification* note) {
+            handle_gamepad_disconnection(note.object);
+        }];
 
+    [GCController startWirelessControllerDiscoveryWithCompletionHandler:nil];
+    
+    for (u8 g = 0; g < CCO_MAX_GAMEPAD_COUNT; ++g) {
+        cocoa_gamepad *gamepad = &g_gamepad.gamepads[g];
+        gamepad->controller = CCO_NIL;
+        gamepad->enabled = CCO_YES;
+    }
     return CCO_SUCCESS;
 }
 
 void cocoa_gamepad_quit(void) {
-    
+    [GCController stopWirelessControllerDiscovery];
 }
 
 void query_gamepad_input(u8 id, cocoa_gamepad *gamepad) {

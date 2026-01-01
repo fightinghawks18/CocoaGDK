@@ -25,7 +25,8 @@ cco_result cco_input_init(cco_input_init_flags init_flags) {
             return gamepad_init_result;
         }
     }
-
+    
+    g_input_state.enabled = CCO_YES;
     g_input_state.init_flags = init_flags;
     return CCO_SUCCESS;
 }

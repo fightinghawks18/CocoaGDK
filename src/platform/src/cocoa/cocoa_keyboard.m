@@ -18,11 +18,11 @@ cco_bool cco_input_key_was_just_released(cco_input_key key) {
     return g_keyboard.now[key] == CCO_NO && g_keyboard.last[key] == CCO_YES;
 }
 
-void cocoa_clear_hardware_state(void) {
+void cocoa_keyboard_clear_hardware_state(void) {
     memset(g_keyboard.processing, 0, sizeof(g_keyboard.processing));
 }
 
-cco_cocoa_input_event_result cocoa_handle_keyboard_event(NSEvent *event) {
+cco_cocoa_input_event_result cocoa_keyboard_handle_event(NSEvent *event) {
     switch ([event type]) {
     case NSEventTypeFlagsChanged: {
         u16 key_code = [event keyCode];

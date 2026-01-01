@@ -12,6 +12,6 @@ target_compile_definitions(opengl_test PRIVATE
 copy_content_directory(opengl_test assets)
 
 add_test(
-    NAME app_test
+    NAME opengl_app
     COMMAND opengl_test
 )

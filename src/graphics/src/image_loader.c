@@ -2,8 +2,8 @@
 // Created by fightinghawks18 on 12/29/2025.
 //
 
-#include "graphics/image_loader.h"
-#include "core/log.h"
+#include "cocoa_gdk/graphics/image_loader.h"
+#include "cocoa_gdk/core/log.h"
 
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"

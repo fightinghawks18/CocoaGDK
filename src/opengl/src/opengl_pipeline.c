@@ -2,10 +2,10 @@
 // Created by fightinghawks18 on 12/14/25.
 //
 
-#include "opengl/opengl_pipeline.h"
-#include "opengl/opengl_loader.h"
-#include "opengl/opengl_shader.h"
-#include "opengl/opengl_types.h"
+#include "cocoa_gdk/opengl/opengl_pipeline.h"
+#include "cocoa_gdk/opengl/opengl_loader.h"
+#include "cocoa_gdk/opengl/opengl_shader.h"
+#include "cocoa_gdk/opengl/opengl_types.h"
 
 #include <stdlib.h>
 

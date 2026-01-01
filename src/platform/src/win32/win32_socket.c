@@ -2,12 +2,12 @@
 // Created by fightinghawks18 on 12/30/2025.
 //
 
-#include "platform/socket.h"
+#include "cocoa_gdk/platform/socket.h"
 
 #include <winsock2.h>
 #include <ws2tcpip.h>
 
-#include "core/log.h"
+#include "cocoa_gdk/core/log.h"
 
 struct cco_socket_t {
     SOCKET fd;

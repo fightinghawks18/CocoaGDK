@@ -2,8 +2,8 @@
 // Created by fightinghawks18 on 12/16/25.
 //
 
-#include "opengl/opengl_core.h"
-#include "opengl/opengl_loader.h"
+#include "cocoa_gdk/opengl/opengl_core.h"
+#include "cocoa_gdk/opengl/opengl_loader.h"
 
 cco_result cco_initialize_opengl(void) {
     if (!cco_load_opengl_functions()) {

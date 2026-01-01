@@ -1341,6 +1341,7 @@ DRWAV_API drwav_bool32 drwav_guid_equal(const drwav_uint8 a[16], const drwav_uin
 /* Compares a four-character-code for the purpose of checking the type of a RIFF chunk. */
 DRWAV_API drwav_bool32 drwav_fourcc_equal(const drwav_uint8* a, const char* b);
 
+
 #ifdef __cplusplus
 }
 #endif
@@ -9042,3 +9043,7 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
+
+#ifdef __cplusplus
+}
+#endif

@@ -2,12 +2,12 @@
 // Created by fightinghawks18 on 12/29/25.
 //
 
-#include "platform/platform.h"
+#include "cocoa_gdk/platform/platform.h"
 #import <Cocoa/Cocoa.h>
 
-#include "platform/audio.h"
-#include "platform/input.h"
-#include "platform/window.h"
+#include "cocoa_gdk/platform/audio.h"
+#include "cocoa_gdk/platform/input.h"
+#include "cocoa_gdk/platform/window.h"
 
 static cco_platform_init_flags g_init_flags;
 

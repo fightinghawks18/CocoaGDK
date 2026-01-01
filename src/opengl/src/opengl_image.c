@@ -2,10 +2,10 @@
 // Created by fightinghawks18 on 12/29/2025.
 //
 
-#include "opengl/opengl_image.h"
+#include "cocoa_gdk/opengl/opengl_image.h"
 
-#include "opengl/opengl_loader.h"
-#include "opengl/opengl_types.h"
+#include "cocoa_gdk/opengl/opengl_loader.h"
+#include "cocoa_gdk/opengl/opengl_types.h"
 #include <stdlib.h>
 
 struct cco_opengl_image_t {

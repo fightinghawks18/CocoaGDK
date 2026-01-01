@@ -2,11 +2,11 @@
 // Created by fightinghawks18 on 12/20/25.
 //
 
-#include "platform/cocoa/cocoa_input.h"
-#include "platform/input.h"
-#include "platform/cocoa/cocoa_keyboard.h"
-#include "platform/cocoa/cocoa_mouse.h"
-#include "platform/cocoa/cocoa_gamepad.h"
+#include "cocoa_gdk/platform/cocoa/cocoa_input.h"
+#include "cocoa_gdk/platform/input.h"
+#include "cocoa_gdk/platform/cocoa/cocoa_keyboard.h"
+#include "cocoa_gdk/platform/cocoa/cocoa_mouse.h"
+#include "cocoa_gdk/platform/cocoa/cocoa_gamepad.h"
 
 typedef struct {
     cco_window current_window;

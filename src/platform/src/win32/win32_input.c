@@ -2,13 +2,13 @@
 // Created by fightinghawks18 on 12/20/2025.
 //
 
-#include "platform/input.h"
+#include "cocoa_gdk/platform/input.h"
 
-#include "platform/win32/win32_input.h"
+#include "cocoa_gdk/platform/win32/win32_input.h"
 
-#include "platform/win32/win32_gamepad.h"
-#include "platform/win32/win32_keyboard.h"
-#include "platform/win32/win32_mouse.h"
+#include "cocoa_gdk/platform/win32/win32_gamepad.h"
+#include "cocoa_gdk/platform/win32/win32_keyboard.h"
+#include "cocoa_gdk/platform/win32/win32_mouse.h"
 
 typedef struct {
     cco_window current_window;

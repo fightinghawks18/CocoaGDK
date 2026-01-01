@@ -2,9 +2,9 @@
 // Created by fightinghawks18 on 12/19/25.
 //
 
-#include "platform/input.h"
-#include "platform/win32/win32_input.h"
-#include "platform/window.h"
+#include "cocoa_gdk/platform/input.h"
+#include "cocoa_gdk/platform/win32/win32_input.h"
+#include "cocoa_gdk/platform/window.h"
 #include <windows.h>
 
 static const i32 BASE_DPI = 96;

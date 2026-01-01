@@ -13,9 +13,132 @@
 #include "opengl/opengl_vao.h"
 #include "platform/audio.h"
 #include "platform/input.h"
+#include "platform/input_gamepad.h"
+#include "platform/input_keyboard.h"
+#include "platform/input_mouse.h"
 #include "platform/platform.h"
 #include "platform/utils.h"
 #include "platform/window.h"
+
+cco_window window = CCO_NIL;
+cco_opengl_vbo vbo = CCO_NIL;
+cco_opengl_vao vao = CCO_NIL;
+cco_opengl_ebo ebo = CCO_NIL;
+cco_opengl_ubo ubo = CCO_NIL;
+cco_opengl_shader vs = CCO_NIL;
+cco_opengl_shader ps = CCO_NIL;
+cco_opengl_pipeline pip = CCO_NIL;
+cco_opengl_image img = CCO_NIL;
+
+vec3 position = {0, 0, 0};
+vec3 rotation = {0, 0, 0};
+vec3 scale = {1, 1, 1};
+
+
+cco_model_view_projection mvp_buffer = {0};
+
+typedef struct {
+    vec3 position;
+    f32 yaw;    // Horizontal rotation (radians)
+    f32 pitch;  // Vertical rotation (radians)
+} camera;
+
+camera cam;
+f32 fov = 90.0f;
+
+void update_camera(f32 delta_time) {
+    const f32 mouse_sensitivity = 0.002f;
+    const f32 gamepad_sensitivity = 3.0f;
+    
+    const f32 move_speed = 5.0f;
+    
+    cco_mouse_delta mouse = cco_input_get_mouse_delta();
+    
+    f32 rotation_x = mouse.x * mouse_sensitivity;
+    f32 rotation_y = mouse.y * mouse_sensitivity;
+    
+    if (cco_input_has_gamepad(0)) {
+        cco_gamepad_stick_pos right_stick;
+        if (cco_input_read_gamepad_stick_pos(0, CCO_GAMEPAD_STICK_RIGHT, &right_stick)) {
+            rotation_x += right_stick.x * gamepad_sensitivity * delta_time;
+            rotation_y -= right_stick.y * gamepad_sensitivity * delta_time;
+        }
+    }
+
+    cam.yaw += rotation_x;
+    cam.pitch -= rotation_y;
+
+    const f32 max_pitch = cco_deg_to_rad(89.0f);
+    cam.pitch = CCO_CLAMP(cam.pitch, -max_pitch, max_pitch);
+
+    vec3 forward;
+    forward.x = cosf(cam.yaw) * cosf(cam.pitch);
+    forward.y = sinf(cam.pitch);
+    forward.z = sinf(cam.yaw) * cosf(cam.pitch);
+    forward = cco_vec3_normalized(forward);
+
+    vec3 world_up = cco_vec3_up();
+    vec3 right = cco_vec3_normalized(cco_vec3_cross(forward, world_up));
+
+    vec3 move_input = cco_vec3(0, 0, 0);
+    if (cco_input_key_is_pressed(CCO_INPUT_KEY_W)) {
+        move_input = cco_vec3_add(move_input, forward);
+    }
+    if (cco_input_key_is_pressed(CCO_INPUT_KEY_S)) {
+        move_input = cco_vec3_sub(move_input, forward);
+    }
+    if (cco_input_key_is_pressed(CCO_INPUT_KEY_D)) {
+        move_input = cco_vec3_add(move_input, right);
+    }
+    if (cco_input_key_is_pressed(CCO_INPUT_KEY_A)) {
+        move_input = cco_vec3_sub(move_input, right);
+    }
+    if (cco_input_key_is_pressed(CCO_INPUT_KEY_SPACE)) {
+        move_input.y += 1.0f;
+    }
+    if (cco_input_key_is_pressed(CCO_INPUT_KEY_LEFT_SHIFT)) {
+        move_input.y -= 1.0f;
+    }
+
+    if (cco_input_has_gamepad(0)) {
+        cco_gamepad_stick_pos left_stick;
+        if (cco_input_read_gamepad_stick_pos(0, CCO_GAMEPAD_STICK_LEFT, &left_stick)) {
+            vec3 stick_forward = cco_vec3_scale(forward, left_stick.y);
+            move_input = cco_vec3_add(move_input, stick_forward);
+
+            vec3 stick_right = cco_vec3_scale(right, left_stick.x);
+            move_input = cco_vec3_add(move_input, stick_right);
+
+            f32 left_trigger, right_trigger;
+            if (cco_input_read_gamepad_trigger_pressure(0, CCO_GAMEPAD_TRIGGER_LEFT, &left_trigger)) {
+                move_input.y -= left_trigger;
+            }
+            if (cco_input_read_gamepad_trigger_pressure(0, CCO_GAMEPAD_TRIGGER_RIGHT, &right_trigger)) {
+                move_input.y += right_trigger;
+            }
+        }
+    }
+
+    f32 move_magnitude = cco_vec3_magnitude(move_input);
+    if (move_magnitude > 1.0f) {
+        move_input = cco_vec3_normalized(move_input);
+    }
+
+    vec3 movement = cco_vec3_scale(move_input, move_speed * delta_time);
+    cam.position = cco_vec3_add(cam.position, movement);
+
+    vec3 target = cco_vec3_add(cam.position, forward);
+    mat4 view = cco_mat4_eye(cam.position, target, world_up);
+    
+    cco_window_content_size window_content_size = cco_window_get_content_size(window);
+    const cco_mouse_delta delta = cco_input_get_mouse_delta();
+    fov = CCO_CLAMP(fov + delta.wheel * 3.5, 10.0f, 150.0f);
+
+    mvp_buffer.projection = cco_mat4_transpose(cco_mat4_perspective(CCO_NO, CCO_NO, cco_deg_to_rad(fov),
+                             (f32)window_content_size.width / (f32)window_content_size.height, 0.001f, 100.0f));
+    mvp_buffer.view = cco_mat4_transpose(view);
+    mvp_buffer.model = cco_mat4_transpose(cco_mat4_model(cco_mat4_translation(position), cco_mat4_rotation(rotation), cco_mat4_scale(scale)));
+}
 
 int main() {
     if (cco_platform_init(CCO_PLATFORM_INIT_AUDIO_BIT | CCO_PLATFORM_INIT_WINDOWING_BIT |
@@ -24,7 +147,6 @@ int main() {
         return -1;
     }
 
-    cco_window window = CCO_NIL;
     cco_result window_result = cco_create_window(0, 0, 800, 600, "cocoa", &window);
     if (window_result != CCO_SUCCESS) {
         CCO_LOG("Failed to create window!");
@@ -46,31 +168,6 @@ int main() {
     };
 
     u32 indices[3] = {0, 1, 2};
-
-    vec3 position = cco_vec3(0, 0, 0);
-    vec3 rotation = cco_vec3(0, 0, 0);
-    vec3 scale = cco_vec3(1, 1, 1);
-
-    vec3 camera_position = cco_vec3(0, 0, 1.0f);
-
-    mat4 model_matrix =
-        cco_mat4_model(cco_mat4_translation(position), cco_mat4_rotation(rotation), cco_mat4_scale(scale));
-    mat4 view_matrix = cco_mat4_eye(camera_position, cco_vec3(0, 0, 0), cco_vec3_up());
-    mat4 projection_matrix =
-        cco_mat4_perspective(CCO_NO, CCO_NO, cco_deg_to_rad(80.0f), 800.0f / 600.0f, 0.001f, 100.0f);
-
-    cco_model_view_projection mvp_buffer = {.model = cco_mat4_transpose(model_matrix),
-                                            .view = cco_mat4_transpose(view_matrix),
-                                            .projection = cco_mat4_transpose(projection_matrix)};
-
-    cco_opengl_vbo vbo = CCO_NIL;
-    cco_opengl_vao vao = CCO_NIL;
-    cco_opengl_ebo ebo = CCO_NIL;
-    cco_opengl_ubo ubo = CCO_NIL;
-    cco_opengl_shader vs = CCO_NIL;
-    cco_opengl_shader ps = CCO_NIL;
-    cco_opengl_pipeline pip = CCO_NIL;
-    cco_opengl_image img = CCO_NIL;
 
     cco_create_opengl_vbo(&vbo);
     cco_create_opengl_vao(&vao);
@@ -148,39 +245,12 @@ int main() {
         cco_window_pump_events(window);
         cco_input_poll();
 
-        if (cco_input_key_was_just_pressed(CCO_INPUT_KEY_ESC))
-            cco_window_request_close(window); // After the loop runs it'll close
+        if (cco_input_key_was_just_pressed(CCO_INPUT_KEY_ESC) || (cco_input_has_gamepad(0) && cco_input_is_gamepad_button_pressed(0, CCO_GAMEPAD_BUTTON_DOWN)))
+            cco_window_request_close(window);
 
         cco_window_content_size window_content_size = cco_window_get_content_size(window);
 
-        const cco_mouse_delta delta = cco_input_get_mouse_delta();
-        const cco_mouse_point point = cco_input_get_mouse_point();
-        fov = CCO_CLAMP(fov + delta.wheel * 3.5, 10.0f, 150.0f);
-
-        if (cco_input_get_active_window() == window) {
-            yaw -= delta.x / 100.0f;
-            pitch -= delta.y / 100.0f;
-
-            pitch = CCO_CLAMP(pitch, -PI / 2.0f + 0.01f, PI / 2.0f - 0.01f);
-        }
-
-        look_dir.x = cosf(pitch) * sinf(yaw);
-        look_dir.y = sinf(pitch);
-        look_dir.z = cosf(pitch) * cosf(yaw);
-        look_dir = cco_vec3_normalized(look_dir);
-
-        rotation = cco_vec3_add(rotation, cco_vec3(0, 0.05, 0));
-
-        model_matrix =
-            cco_mat4_model(cco_mat4_translation(position), cco_mat4_rotation(rotation), cco_mat4_scale(scale));
-
-        projection_matrix =
-            cco_mat4_perspective(CCO_NO, CCO_NO, cco_deg_to_rad(fov),
-                                 (f32)window_content_size.width / (f32)window_content_size.height, 0.001f, 100.0f);
-        view_matrix = cco_mat4_eye(camera_position, cco_vec3_add(camera_position, look_dir), cco_vec3_up());
-        mvp_buffer.projection = cco_mat4_transpose(projection_matrix);
-        mvp_buffer.view = cco_mat4_transpose(view_matrix);
-        mvp_buffer.model = cco_mat4_transpose(model_matrix);
+        update_camera(1.0f / 60.0f);
 
         cco_opengl_ubo_upload(ubo, &(cco_buffer_mapping){.data_size = sizeof(cco_model_view_projection),
                                                          .data_offset = 0,

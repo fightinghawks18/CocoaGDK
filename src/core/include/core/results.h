@@ -24,7 +24,31 @@ typedef enum {
     CCO_FAIL_WINDOWING_INIT_ERROR,                ///< @brief Failed to initialize the windowing system
     CCO_FAIL_WINDOWING_CREATE_ERROR,              ///< @brief Failed to create a new window
     CCO_FAIL_INPUT_INIT_ERROR,                    ///< @brief Failed to initialize the input system
+    CCO_FAIL_INPUT_KEYBOARD_INIT_ERROR,           ///< @brief Failed to initialize the keyboard
+    CCO_FAIL_INPUT_MOUSE_INIT_ERROR,              ///< @brief Failed to initialize the mouse
+    CCO_FAIL_INPUT_GAMEPAD_INIT_ERROR,            ///< @brief Failed to initialize the gamepad
     CCO_FAIL_AUDIO_INIT_ERROR,                    ///< @brief Failed to initialize the audio system
     CCO_FAIL_AUDIO_STREAM_CREATE_ERROR,           ///< @brief Failed to create an audio stream
     CCO_FAIL_AUDIO_CREATE_PCM_ERROR,              ///< @brief Failed to create PCM data from an audio file
+    CCO_FAIL_SOCKET_INIT_ERROR,                   ///< @brief Failed to initialize the socket system
+    CCO_FAIL_SOCKET_UNKNOWN_ERROR,                ///< @brief Socket operation had an unhandled error reason or is unknown
+    CCO_FAIL_SOCKET_CREATE_ERROR,                 ///< @brief Failed to create a socket
+    CCO_FAIL_SOCKET_ADDR_IN_USE_ERROR,     ///< @brief Attempting to claim an address that is already claimed by another
+                                           ///< socket
+    CCO_FAIL_SOCKET_TOO_MANY_ERROR,        ///< @brief There are way too many sockets active
+    CCO_FAIL_SOCKET_AF_NO_SUPPORTED_ERROR, ///< @brief The address family attempting to claim is not supported
+    CCO_FAIL_SOCKET_NO_PERMS_ERROR,        ///< @brief Trying to bind to a port that requires admin permission
+    CCO_FAIL_SOCKET_ADDR_NOT_AVAIL_ERROR,  ///< @brief Socket address doesn't exist on this computer
+    CCO_FAIL_SOCKET_BAD_ARGS_ERROR,        ///< @brief Arguments provided to a socket operation were invalid
+    CCO_FAIL_SOCKET_BAD_ADDR_ERROR,        ///< @brief Address provided to socket was invalid
+    CCO_FAIL_SOCKET_BAD_SOCK_ERROR,        ///< @brief Socket provided was invalid
+    CCO_FAIL_SOCKET_CONNECT_TIMEOUT_ERROR, ///< @brief Timed out trying to connect to a host
+    CCO_FAIL_SOCKET_CONNECT_REJECTED_ERROR, ///< @brief Socket join was rejected by the host
+    CCO_FAIL_SOCKET_CONNECT_MIA_HOST_ERROR, ///< @brief Socket join was rejected due to an unreachable host
+    CCO_FAIL_SOCKET_KICKED_ERROR,           ///< @brief Socket was kicked forcefully from a host
+    CCO_FAIL_SOCKET_BROKEN_PIPE_ERROR,      ///< @brief Socket attempted to send data to a socket that was closed
+    CCO_FAIL_SOCKET_UNCONNECTED_ERROR,      ///< @brief Socket attempted to perform operation that requires them to be
+                                            ///< connected
+    CCO_FAIL_SOCKET_CONNECTED_ERROR,        ///< @brief Socket attempted to perform operation that requires them to be
+                                            ///< unconnected
 } cco_result;

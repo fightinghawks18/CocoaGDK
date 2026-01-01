@@ -33,7 +33,7 @@ cco_result cco_platform_init(cco_platform_init_flags init_flags) {
     }
     
     if (init_flags & CCO_PLATFORM_INIT_INPUT_BIT) {
-        const cco_result input_init_result = cco_input_init();
+        const cco_result input_init_result = cco_input_init(CCO_INPUT_INIT_KEYBOARD_BIT | CCO_INPUT_INIT_MOUSE_BIT | CCO_INPUT_INIT_GAMEPAD_BIT);
         if (input_init_result != CCO_SUCCESS) {
             CCO_LOG("Failed to initialize input subsystem!");
             return input_init_result;

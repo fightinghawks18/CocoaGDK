@@ -8,6 +8,7 @@ target_link_libraries(cocoa_platform
 target_include_directories(cocoa_platform
         PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include
         PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/third_party
+        PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/internal
 )
 
 target_compile_definitions(cocoa_platform PRIVATE
@@ -19,10 +20,14 @@ target_compile_definitions(cocoa_platform PRIVATE
 if(APPLE)
     target_sources(cocoa_platform PRIVATE
             src/cocoa/cocoa_input.m
+            src/cocoa/cocoa_keyboard.m
+            src/cocoa/cocoa_mouse.m
+            src/cocoa/cocoa_gamepad.m
             src/cocoa/cocoa_window.m
             src/cocoa/cocoa_utils.c
             src/cocoa/cocoa_audio.m
             src/cocoa/cocoa_platform.m
+            src/unix/unix_socket.c
     )
 
     target_link_libraries(cocoa_platform
@@ -31,14 +36,19 @@ if(APPLE)
             PRIVATE "-framework QuartzCore"
             PRIVATE "-framework CoreAudio"
             PRIVATE "-framework AudioToolbox"
+            PRIVATE "-framework GameController"
     )
 elseif(WIN32)
     target_sources(cocoa_platform PRIVATE
             src/win32/win32_input.c
+            src/win32/win32_keyboard.c
+            src/win32/win32_mouse.c
+            src/win32/win32_gamepad.c
             src/win32/win32_utils.c
             src/win32/win32_window.c
             src/win32/win32_audio.c
             src/win32/win32_platform.c
+            src/win32/win32_socket.c
     )
 
     target_compile_definitions(cocoa_platform
@@ -48,6 +58,8 @@ elseif(WIN32)
 
     target_link_libraries(cocoa_platform
             PRIVATE xaudio2.lib
+            PRIVATE GameInput.lib
+            PRIVATE ws2_32.lib # Winsock
     )
 endif()
 

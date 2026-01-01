@@ -58,6 +58,9 @@ target_link_libraries(cocoa_gdk INTERFACE
 )
 
 
+# Main tests
+add_subdirectory("src/tests/net")
+
 if(BUILD_OPENGL)
     add_subdirectory("src/opengl")
     add_library(cocoa_gdk::opengl ALIAS cocoa_opengl)

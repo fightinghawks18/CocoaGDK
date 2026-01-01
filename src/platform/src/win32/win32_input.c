@@ -55,6 +55,9 @@ void cco_input_quit(void) {
 }
 
 void cco_input_poll(void) {
+    if (!g_input.enabled)
+        return;
+
     if (g_input.init_flags & CCO_INPUT_INIT_KEYBOARD_BIT)
         win32_keyboard_poll();
     if (g_input.init_flags & CCO_INPUT_INIT_MOUSE_BIT)

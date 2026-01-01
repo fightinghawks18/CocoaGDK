@@ -8,6 +8,7 @@
 #include "core/results.h"
 #include "export.h"
 
+#define CCO_MAX_GAMEPAD_COUNT 8
 #define CCO_GAMEPAD_BUTTON_COUNT 15
 
 typedef struct cco_gamepad_t cco_gamepad_t;

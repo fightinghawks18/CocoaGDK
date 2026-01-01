@@ -6,8 +6,6 @@
 
 #ifdef _WIN32
 
-#define MAX_GAMEPAD_COUNT 8
-
 #include "platform/input_gamepad.h"
 #include <windows.h>
 
@@ -47,7 +45,7 @@ typedef struct {
     IGameInput *game_input;
     GameInputCallbackToken cb_token;
 
-    win32_gamepad gamepads[MAX_GAMEPAD_COUNT];
+    win32_gamepad gamepads[CCO_MAX_GAMEPAD_COUNT];
     u8 gamepad_count;
 } win32_gamepad_state;
 

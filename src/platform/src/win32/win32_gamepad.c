@@ -9,7 +9,7 @@
 static win32_gamepad_state g_gamepad = {0};
 
 win32_gamepad *get_gamepad_from_input_device(IGameInputDevice *device) {
-    for (u8 g = 0; g < MAX_GAMEPAD_COUNT; ++g) {
+    for (u8 g = 0; g < CCO_MAX_GAMEPAD_COUNT; ++g) {
         if (g_gamepad.gamepads[g].input_device == device)
             return &g_gamepad.gamepads[g];
     }
@@ -17,7 +17,7 @@ win32_gamepad *get_gamepad_from_input_device(IGameInputDevice *device) {
 }
 
 cco_gamepad_id get_gamepad_id_from_input_device(IGameInputDevice *device) {
-    for (u8 g = 0; g < MAX_GAMEPAD_COUNT; ++g) {
+    for (u8 g = 0; g < CCO_MAX_GAMEPAD_COUNT; ++g) {
         if (g_gamepad.gamepads[g].input_device == device)
             return g;
     }
@@ -25,7 +25,7 @@ cco_gamepad_id get_gamepad_id_from_input_device(IGameInputDevice *device) {
 }
 
 void handle_gamepad_connection(IGameInputDevice *device) {
-    for (u8 g = 0; g < MAX_GAMEPAD_COUNT; ++g) {
+    for (u8 g = 0; g < CCO_MAX_GAMEPAD_COUNT; ++g) {
         win32_gamepad *gamepad = &g_gamepad.gamepads[g];
         if (!gamepad->input_device) {
             gamepad->input_device = device;
@@ -35,7 +35,7 @@ void handle_gamepad_connection(IGameInputDevice *device) {
         }
     }
     CCO_LOG("A new gamepad connection was recognized, but the max amount (%d) of gamepads has already been reached!",
-            MAX_GAMEPAD_COUNT);
+            CCO_MAX_GAMEPAD_COUNT);
 }
 
 void handle_gamepad_disconnection(IGameInputDevice *device) {
@@ -68,7 +68,7 @@ cco_result win32_gamepad_init(void) {
         return CCO_FAIL_INPUT_GAMEPAD_INIT_ERROR;
     }
 
-    for (u8 g = 0; g < MAX_GAMEPAD_COUNT; ++g) {
+    for (u8 g = 0; g < CCO_MAX_GAMEPAD_COUNT; ++g) {
         g_gamepad.gamepads[g].enabled = CCO_YES;
     }
 
@@ -144,7 +144,7 @@ void query_gamepad_input(u8 id, win32_gamepad *gamepad) {
 }
 
 void win32_gamepad_poll(void) {
-    for (u8 g = 0; g < MAX_GAMEPAD_COUNT; ++g) {
+    for (u8 g = 0; g < CCO_MAX_GAMEPAD_COUNT; ++g) {
         win32_gamepad *gamepad = &g_gamepad.gamepads[g];
         if (!gamepad->input_device || !gamepad->enabled)
             continue;
@@ -213,9 +213,9 @@ void cco_input_disable_gamepad(const cco_gamepad_id gamepad_id) { g_gamepad.game
 void cco_input_enable_gamepad(const cco_gamepad_id gamepad_id) { g_gamepad.gamepads[gamepad_id].enabled = CCO_YES; }
 
 cco_bool cco_input_has_gamepad(const cco_gamepad_id gamepad_id) {
-    if (gamepad_id > MAX_GAMEPAD_COUNT) {
+    if (gamepad_id > CCO_MAX_GAMEPAD_COUNT) {
         CCO_LOG("Attempted to check gamepad (%d), but the id exceeded the max amount of gamepads allowed (%d)",
-                gamepad_id, MAX_GAMEPAD_COUNT);
+                gamepad_id, CCO_MAX_GAMEPAD_COUNT);
         return CCO_NO;
     }
     return g_gamepad.gamepads[gamepad_id].input_device != CCO_NIL;

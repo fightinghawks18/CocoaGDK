@@ -20,6 +20,8 @@ target_compile_definitions(cocoa_platform PRIVATE
 if(APPLE)
     target_sources(cocoa_platform PRIVATE
             src/cocoa/cocoa_input.m
+            src/cocoa/cocoa_keyboard.m
+            src/cocoa/cocoa_mouse.m
             src/cocoa/cocoa_window.m
             src/cocoa/cocoa_utils.c
             src/cocoa/cocoa_audio.m

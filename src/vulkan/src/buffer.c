@@ -2,7 +2,7 @@
 // Created by fightinghawks18 on 12/24/2025.
 //
 
-#include "vulkan/internal/buffer_vulkan.h"
+#include "cocoa_gdk/vulkan/internal/buffer_vulkan.h"
 
 #include <stdlib.h>
 #include <string.h>

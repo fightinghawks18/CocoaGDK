@@ -838,8 +838,14 @@ BOOL WINAPI wglWaitForSbcOML (HDC hdc, INT64 target_sbc, INT64 *ust, INT64 *msc,
 #endif
 #endif /* WGL_OML_sync_control */
 
+
 #ifdef __cplusplus
 }
 #endif
 
+#endif
+
+
+#ifdef __cplusplus
+}
 #endif

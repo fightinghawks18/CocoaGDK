@@ -2,12 +2,12 @@
 // Created by fightinghawks18 on 12/29/2025.
 //
 
-#include "platform/audio.h"
+#include "cocoa_gdk/platform/audio.h"
 #include <xaudio2.h>
 
-#include "math/angles.h"
-#include "math/utilities.h"
-#include "core/log.h"
+#include "cocoa_gdk/math/angles.h"
+#include "cocoa_gdk/math/utilities.h"
+#include "cocoa_gdk/core/log.h"
 
 #define DR_WAV_IMPLEMENTATION
 #include "dr_wav.h"

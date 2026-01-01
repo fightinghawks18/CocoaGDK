@@ -4,10 +4,10 @@
 
 #include <string.h>
 
-#include "core/log.h"
-#include "platform/platform.h"
-#include "platform/socket.h"
-#include "platform/utils.h"
+#include "cocoa_gdk/core/log.h"
+#include "cocoa_gdk/platform/platform.h"
+#include "cocoa_gdk/platform/socket.h"
+#include "cocoa_gdk/platform/utils.h"
 
 #include <stdlib.h>
 

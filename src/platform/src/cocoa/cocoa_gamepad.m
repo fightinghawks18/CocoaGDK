@@ -2,8 +2,8 @@
 // Created by fightinghawks18 on 12/31/25
 //
 
-#include "platform/cocoa/cocoa_gamepad.h"
-#include "core/log.h"
+#include "cocoa_gdk/platform/cocoa/cocoa_gamepad.h"
+#include "cocoa_gdk/core/log.h"
 
 static cocoa_gamepad_state g_gamepad = {0};
 

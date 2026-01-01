@@ -2,13 +2,13 @@
 // Created by fightinghawks18 on 12/30/2025.
 //
 
-#include "platform/win32/win32_mouse.h"
+#include "cocoa_gdk/platform/win32/win32_mouse.h"
 
 #include <hidusage.h>
 #include <windows.h>
 
-#include "core/log.h"
-#include "platform/window.h"
+#include "cocoa_gdk/core/log.h"
+#include "cocoa_gdk/platform/window.h"
 
 static win32_mouse_state g_mouse = {0};
 

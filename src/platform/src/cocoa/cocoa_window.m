@@ -2,11 +2,11 @@
 // Created by fightinghawks18 on 12/19/25.
 //
 
-#include "platform/window.h"
+#include "cocoa_gdk/platform/window.h"
 #import <Cocoa/Cocoa.h>
 #import <CoreFoundation/CoreFoundation.h>
-#include "platform/cocoa/cocoa_input.h"
-#include "platform/input.h"
+#include "cocoa_gdk/platform/cocoa/cocoa_input.h"
+#include "cocoa_gdk/platform/input.h"
 
 struct cco_window_t {
     NSWindow *window;

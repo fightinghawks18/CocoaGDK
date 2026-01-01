@@ -2,7 +2,7 @@
 // Created by fightinghawks18 on 12/29/25.
 //
 
-#include "platform/audio.h"
+#include "cocoa_gdk/platform/audio.h"
 
 #import <AudioToolbox/AudioToolbox.h>
 #import <CoreAudio/CoreAudio.h>
@@ -16,10 +16,10 @@
 #define MAX_STREAMS 250
 #define SAMPLE_RATE 44100
 
-#include "platform/audio_utils.h"
-#include "core/log.h"
-#include "math/utilities.h"
-#include "math/angles.h"
+#include "cocoa_gdk/platform/audio_utils.h"
+#include "cocoa_gdk/core/log.h"
+#include "cocoa_gdk/math/utilities.h"
+#include "cocoa_gdk/math/angles.h"
 
 struct cco_audio_pcm_t {
     i16 *samples;

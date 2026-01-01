@@ -2,7 +2,7 @@
 // Created by fightinghawks18 on 12/31/25.
 //
 
-#include "platform/cocoa/cocoa_keyboard.h"
+#include "cocoa_gdk/platform/cocoa/cocoa_keyboard.h"
 
 static cocoa_keyboard g_keyboard = {0};
 

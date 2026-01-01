@@ -2,9 +2,9 @@
 // Created by fightinghawks18 on 12/30/2025.
 //
 
-#include "platform/win32/win32_gamepad.h"
+#include "cocoa_gdk/platform/win32/win32_gamepad.h"
 
-#include "core/log.h"
+#include "cocoa_gdk/core/log.h"
 
 static win32_gamepad_state g_gamepad = {0};
 

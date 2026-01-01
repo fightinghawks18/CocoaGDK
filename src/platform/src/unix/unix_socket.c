@@ -2,7 +2,7 @@
 // Created by fightinghawks18 on 12/31/25.
 //
 
-#include "platform/socket.h"
+#include "cocoa_gdk/platform/socket.h"
 
 #include <stdlib.h>
 #include <sys/socket.h>
@@ -12,7 +12,7 @@
 #include <errno.h>
 #include <string.h>
 
-#include "core/log.h"
+#include "cocoa_gdk/core/log.h"
 
 struct cco_socket_t {
     i32 fd;

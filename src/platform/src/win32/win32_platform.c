@@ -2,15 +2,15 @@
 // Created by fightinghawks18 on 12/29/2025.
 //
 
-#include "platform/platform.h"
+#include "cocoa_gdk/platform/platform.h"
 
 #include <windows.h>
 
-#include "core/log.h"
-#include "platform/audio.h"
-#include "platform/input.h"
-#include "platform/socket.h"
-#include "platform/window.h"
+#include "cocoa_gdk/core/log.h"
+#include "cocoa_gdk/platform/audio.h"
+#include "cocoa_gdk/platform/input.h"
+#include "cocoa_gdk/platform/socket.h"
+#include "cocoa_gdk/platform/window.h"
 
 static cco_platform_init_flags g_init_flags;
 

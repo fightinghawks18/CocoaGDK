@@ -2,7 +2,7 @@
 // Created by fightinghawks18 on 12/31/25.
 //
 
-#include "platform/cocoa/cocoa_mouse.h"
+#include "cocoa_gdk/platform/cocoa/cocoa_mouse.h"
 
 static cocoa_mouse g_mouse = {0};
 

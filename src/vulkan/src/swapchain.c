@@ -4,10 +4,10 @@
 
 #include <stdlib.h>
 
-#include "math/utilities.h"
+#include "cocoa_gdk/math/utilities.h"
 
-#include "../include/vulkan/internal/instance_vulkan.h"
-#include "vulkan/internal/swapchain_vulkan.h"
+#include "cocoa_gdk/vulkan/internal/instance_vulkan.h"
+#include "cocoa_gdk/vulkan/internal/swapchain_vulkan.h"
 
 #ifdef _WIN32
 #include <windows.h>

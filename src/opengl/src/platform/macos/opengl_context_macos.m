@@ -2,7 +2,7 @@
 // Created by fightinghawks18 on 12/14/25.
 //
 
-#include "opengl/opengl_context.h"
+#include "cocoa_gdk/opengl/opengl_context.h"
 #include <AppKit/AppKit.h>
 
 struct cco_opengl_context_t {

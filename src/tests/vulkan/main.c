@@ -1,10 +1,10 @@
 #include <stdio.h>
 
-#include "vulkan/instance.h"
-#include "vulkan/swapchain.h"
-#include "platform/input.h"
-#include "platform/utils.h"
-#include "platform/window.h"
+#include "cocoa_gdk/vulkan/instance.h"
+#include "cocoa_gdk/vulkan/swapchain.h"
+#include "cocoa_gdk/platform/input.h"
+#include "cocoa_gdk/platform/utils.h"
+#include "cocoa_gdk/platform/window.h"
 
 int main() {
     if (cco_windowing_init() != CCO_SUCCESS) {

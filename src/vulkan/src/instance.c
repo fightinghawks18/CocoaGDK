@@ -4,8 +4,8 @@
 
 #include <stdlib.h>
 
-#include "../include/vulkan/internal/instance_vulkan.h"
-#include "vulkan/instance.h"
+#include "cocoa_gdk/vulkan/internal/instance_vulkan.h"
+#include "cocoa_gdk/vulkan/instance.h"
 
 static const char * validation_layers[] = {
     "VK_LAYER_KHRONOS_validation"

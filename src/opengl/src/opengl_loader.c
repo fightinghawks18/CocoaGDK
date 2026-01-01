@@ -2,7 +2,7 @@
 // Created by fightinghawks18 on 12/22/2025.
 //
 
-#include "opengl/opengl_loader.h"
+#include "cocoa_gdk/opengl/opengl_loader.h"
 
 // Buffers
 PFNGLGENBUFFERSPROC glGenBuffers = CCO_NIL;
